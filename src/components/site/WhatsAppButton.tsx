@@ -1,7 +1,7 @@
 import { Instagram, MessageCircle } from "lucide-react";
 
 export const WHATSAPP_URL = "https://wa.me/17865268228";
-export const INSTAGRAM_URL = "https://instagram.com/synthesialabs";
+export const INSTAGRAM_URL = "https://www.instagram.com/synthesialabs";
 export const INSTAGRAM_HANDLE = "@synthesialabs";
 
 export function WhatsAppButton() {
