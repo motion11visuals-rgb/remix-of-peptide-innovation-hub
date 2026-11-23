@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/site/ProductCard";
 import { BRAND, PRODUCTS, formatPrice, getProduct, isSizeAvailable, isSoldOut } from "@/lib/products";
 import { cn } from "@/lib/utils";
+import { productHead } from "@/lib/product-seo";
 
 export const Route = createFileRoute("/products/$slug")({
   loader: ({ params }) => {
@@ -18,46 +19,7 @@ export const Route = createFileRoute("/products/$slug")({
   },
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Product not found — Synthesia Labs" }, { name: "robots", content: "noindex" }] };
-    const p = loaderData.product;
-    const title = `${p.name} — ${p.fullName} | Synthesia Labs`;
-    return {
-      meta: [
-        { title },
-        { name: "description", content: `${p.name} research peptide, ${p.purity} purity. ${p.summary}` },
-        { property: "og:title", content: title },
-        { property: "og:description", content: p.summary },
-        { property: "og:type", content: "product" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: [{ rel: "canonical", href: `/products/${p.slug}` }],
-      scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Product",
-            name: `${p.name} — ${p.fullName}`,
-            description: `${p.description} For laboratory research use only.`,
-            sku: p.slug,
-            category: p.category,
-            brand: { "@type": "Brand", name: "Synthesia Labs" },
-            additionalProperty: [
-              { "@type": "PropertyValue", name: "CAS number", value: p.cas },
-              { "@type": "PropertyValue", name: "Purity", value: p.purity },
-              { "@type": "PropertyValue", name: "Form", value: p.form },
-            ],
-            offers: p.sizes.map((s) => ({
-              "@type": "Offer",
-              name: `${p.name} ${s.label}`,
-              price: s.price.toFixed(2),
-              priceCurrency: "USD",
-              url: `/products/${p.slug}`,
-              availability: isSizeAvailable(p, s.label) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-            })),
-          }),
-        },
-      ],
-    };
+    return productHead(loaderData.product);
   },
   notFoundComponent: () => (
     <div className="mx-auto max-w-xl px-6 py-32 text-center">

@@ -7,13 +7,29 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/products/")({
   head: () => ({
     meta: [
-      { title: "Peptide Catalog — Synthesia Labs" },
-      { name: "description", content: "Browse BPC-157, TB-500, GHK-Cu, Ipamorelin and more research peptides, with facility COAs on request." },
-      { property: "og:title", content: "Peptide Catalog — Synthesia Labs" },
-      { property: "og:description", content: "Research-grade peptides with facility Certificates of Analysis available on request." },
+      { title: "Research Peptides & Compounds Catalog | Synthesia Labs" },
+      { name: "description", content: "Compare Retatrutide, Tirzepatide, GHK-Cu, Semax, HGH and other laboratory compounds by vial size, price and availability. Research use only. COAs on request." },
+      { property: "og:title", content: "Research Peptides & Compounds Catalog | Synthesia Labs" },
+      { property: "og:description", content: "Browse vial sizes, prices and availability for research peptides and laboratory compounds. Facility COAs on request; not for human consumption." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "/products" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "/products" }],
+    scripts: [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: "Synthesia Labs research catalog",
+        url: "/products",
+        mainEntity: {
+          "@type": "ItemList",
+          numberOfItems: PRODUCTS.length,
+          itemListElement: PRODUCTS.map((product, index) => ({ "@type": "ListItem", position: index + 1, name: `${product.name} — ${product.fullName}`, url: `/products/${product.slug}` })),
+        },
+      }),
+    }],
   }),
   component: Catalog,
 });

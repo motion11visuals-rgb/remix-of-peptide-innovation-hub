@@ -1,4 +1,6 @@
 # Requested updates
+- [x] Improve homepage and every product's search metadata and structured data; verify rendered results.
+- [x] Add the owner-confirmed 150+ lifetime completed orders to the homepage.
 - [x] Update processing time to 1–2 days throughout shipping information.
 - [x] Remove sample COA data; add motto and included laboratory directions/applicable COA information.
 - [x] Replace Lipo-C powder photograph with red liquid; verify pages.

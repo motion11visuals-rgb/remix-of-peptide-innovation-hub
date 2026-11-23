@@ -4,32 +4,44 @@ import hero from "@/assets/hero-vials.jpg";
 import lab from "@/assets/lab-analysis.jpg";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/site/ProductCard";
-import { PRODUCTS } from "@/lib/products";
+import { BRAND, PRODUCTS } from "@/lib/products";
 import { ORDER_PROCESSING_LABEL } from "@/lib/store-policy";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Synthesia Labs — Research-Grade Synthetic Peptides" },
+      { title: "Synthesia Labs | Research Peptides & Laboratory Compounds" },
       {
         name: "description",
-        content: "≥99% purity research peptides with facility Certificates of Analysis on request. Ships cold, fast.",
+        content: "Explore Retatrutide, Tirzepatide, GHK-Cu, Semax and more at Synthesia Labs. Facility COAs on request. Laboratory research use only, not for human consumption.",
       },
-      { property: "og:title", content: "Synthesia Labs — Research-Grade Synthetic Peptides" },
+      { property: "og:title", content: "Synthesia Labs | Research Peptides & Laboratory Compounds" },
       {
         property: "og:description",
-        content: "≥99% purity research peptides with facility Certificates of Analysis on request.",
+        content: "Research peptides and laboratory compounds with facility COAs on request. Best prices. Best quality. 150+ lifetime orders completed. Research use only.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": [
+          { "@type": "Organization", "@id": "/#organization", name: BRAND.name, url: "/", email: BRAND.email, sameAs: ["https://www.instagram.com/synthesialabs/"] },
+          { "@type": "WebSite", "@id": "/#website", name: BRAND.name, url: "/", description: "Research peptides and laboratory compounds. For laboratory research use only, not for human consumption.", publisher: { "@id": "/#organization" }, inLanguage: "en" },
+        ],
+      }),
+    }],
   }),
   component: Index,
 });
 
 const STATS = [
   { value: "≥99%", label: "Typical HPLC purity" },
-  { value: "100%", label: "COAs on request" },
+  { value: "150+", label: "Lifetime orders completed" },
   { value: ORDER_PROCESSING_LABEL, label: "Order processing" },
   { value: "−20°C", label: "Cold-chain storage" },
 ];
@@ -59,7 +71,7 @@ function Index() {
         <div className="mx-auto flex max-h-[900px] max-w-7xl flex-col justify-center px-6 py-16 md:min-h-[78vh] md:py-24">
           <p className="eyebrow animate-rise">Research-grade synthetic peptides</p>
           <h1 className="mt-6 max-w-2xl animate-rise text-5xl font-semibold leading-[1.02] text-foreground [animation-delay:100ms] md:text-7xl">
-            Purity you can <span className="text-gold">measure.</span>
+            Synthesia <span className="text-gold">Labs</span>
           </h1>
           <p className="mt-5 font-classic text-xl font-semibold text-primary md:text-2xl">Best prices. Best quality.</p>
           <p className="mt-6 max-w-lg animate-rise text-lg text-muted-foreground [animation-delay:200ms]">

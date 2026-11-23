@@ -30,6 +30,7 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## Project rules
+- Product search metadata and per-size structured offers are derived from the catalog in `src/lib/product-seo.ts` so search prices and availability stay aligned with shopping pages; use relative page URLs until a public domain is known.
 - Product catalog lives in a single static data module (`src/lib/products.ts`); pages read from it so adding a product needs no route changes.
 - Shared header/footer wrap `<Outlet />` in `src/routes/__root.tsx`; pages render only their own content.
 - Cart state lives in a browser-local provider (`src/lib/cart.tsx`) with pure math in `src/lib/cart-logic.ts` (tested); checkout hands the cart summary to the contact form because no payment provider is connected.

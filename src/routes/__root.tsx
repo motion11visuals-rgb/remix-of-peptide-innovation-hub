@@ -85,8 +85,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Synthesia Labs — Research-Grade Synthetic Peptides" },
-      { name: "description", content: "High-purity research peptides, with facility Certificates of Analysis available on request." },
+      { property: "og:site_name", content: "Synthesia Labs" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
