@@ -1,4 +1,5 @@
 <!-- LOVABLE:BEGIN -->
+
 > [!IMPORTANT]
 > This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
 > published git history — force pushing, or rebasing/amending/squashing commits
@@ -27,9 +28,11 @@ use the editor.
   `LOVABLE_API_KEY`. When Lovable does not provide one, users can bring their
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
+
 <!-- LOVABLE:END -->
 
 ## Project rules
+
 - Product search metadata and per-size structured offers are derived from the catalog in `src/lib/product-seo.ts` so search prices and availability stay aligned with shopping pages; use relative page URLs until a public domain is known.
 - Product catalog lives in a single static data module (`src/lib/products.ts`); pages read from it so adding a product needs no route changes.
 - Shared header/footer wrap `<Outlet />` in `src/routes/__root.tsx`; pages render only their own content.

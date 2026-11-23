@@ -1,4 +1,5 @@
 # Requested updates
+
 - [x] Change shipping to $9 throughout checkout, saved order pricing, and policies; verify.
 - [x] Remove the canceled lab-tools set and add and verify a flat $2 processing fee per order.
 - [x] Improve homepage and every product's search metadata and structured data; verify rendered results.

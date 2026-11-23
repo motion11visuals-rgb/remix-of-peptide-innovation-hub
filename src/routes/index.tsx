@@ -13,28 +13,51 @@ export const Route = createFileRoute("/")({
       { title: "Synthesia Labs | Research Peptides & Laboratory Compounds" },
       {
         name: "description",
-        content: "Explore Retatrutide, Tirzepatide, GHK-Cu, Semax and more at Synthesia Labs. Facility COAs on request. Laboratory research use only, not for human consumption.",
+        content:
+          "Explore Retatrutide, Tirzepatide, GHK-Cu, Semax and more at Synthesia Labs. Facility COAs on request. Laboratory research use only, not for human consumption.",
       },
-      { property: "og:title", content: "Synthesia Labs | Research Peptides & Laboratory Compounds" },
+      {
+        property: "og:title",
+        content: "Synthesia Labs | Research Peptides & Laboratory Compounds",
+      },
       {
         property: "og:description",
-        content: "Research peptides and laboratory compounds with facility COAs on request. Best prices. Best quality. 150+ lifetime orders completed. Research use only.",
+        content:
+          "Research peptides and laboratory compounds with facility COAs on request. Best prices. Best quality. 150+ lifetime orders completed. Research use only.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/" }],
-    scripts: [{
-      type: "application/ld+json",
-      children: JSON.stringify({
-        "@context": "https://schema.org",
-        "@graph": [
-          { "@type": "Organization", "@id": "/#organization", name: BRAND.name, url: "/", email: BRAND.email, sameAs: ["https://www.instagram.com/synthesialabs/"] },
-          { "@type": "WebSite", "@id": "/#website", name: BRAND.name, url: "/", description: "Research peptides and laboratory compounds. For laboratory research use only, not for human consumption.", publisher: { "@id": "/#organization" }, inLanguage: "en" },
-        ],
-      }),
-    }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "/#organization",
+              name: BRAND.name,
+              url: "/",
+              email: BRAND.email,
+              sameAs: ["https://www.instagram.com/synthesialabs/"],
+            },
+            {
+              "@type": "WebSite",
+              "@id": "/#website",
+              name: BRAND.name,
+              url: "/",
+              description:
+                "Research peptides and laboratory compounds. For laboratory research use only, not for human consumption.",
+              publisher: { "@id": "/#organization" },
+              inLanguage: "en",
+            },
+          ],
+        }),
+      },
+    ],
   }),
   component: Index,
 });
@@ -47,10 +70,26 @@ const STATS = [
 ];
 
 const PILLARS = [
-  { icon: FlaskConical, title: "Verified synthesis", body: "Solid-phase synthesis with HPLC and mass spec confirmation on every batch." },
-  { icon: ShieldCheck, title: "COAs on request", body: "Certificates of Analysis from the manufacturing facility — text us and we will send the one for your lot." },
-  { icon: Snowflake, title: "Cold-chain handling", body: "Lyophilized and stored frozen until dispatch to preserve stability." },
-  { icon: Truck, title: "Fast, discreet shipping", body: `Order processing takes ${ORDER_PROCESSING_LABEL} after payment verification and research eligibility review. Carrier transit time is additional.` },
+  {
+    icon: FlaskConical,
+    title: "Verified synthesis",
+    body: "Solid-phase synthesis with HPLC and mass spec confirmation on every batch.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "COAs on request",
+    body: "Certificates of Analysis from the manufacturing facility — text us and we will send the one for your lot.",
+  },
+  {
+    icon: Snowflake,
+    title: "Cold-chain handling",
+    body: "Lyophilized and stored frozen until dispatch to preserve stability.",
+  },
+  {
+    icon: Truck,
+    title: "Fast, discreet shipping",
+    body: `Order processing takes ${ORDER_PROCESSING_LABEL} after payment verification and research eligibility review. Carrier transit time is additional.`,
+  },
 ];
 
 function Index() {
@@ -73,10 +112,12 @@ function Index() {
           <h1 className="mt-6 max-w-2xl animate-rise text-5xl font-semibold leading-[1.02] text-foreground [animation-delay:100ms] md:text-7xl">
             Synthesia <span className="text-gold">Labs</span>
           </h1>
-          <p className="mt-5 font-classic text-xl font-semibold text-primary md:text-2xl">Best prices. Best quality.</p>
+          <p className="mt-5 font-classic text-xl font-semibold text-primary md:text-2xl">
+            Best prices. Best quality.
+          </p>
           <p className="mt-6 max-w-lg animate-rise text-lg text-muted-foreground [animation-delay:200ms]">
-            Precision-synthesized peptides for serious laboratories — facility Certificates of Analysis on request,
-            and a full refund plus website credit if a test fails.
+            Precision-synthesized peptides for serious laboratories — facility Certificates of
+            Analysis on request, and a full refund plus website credit if a test fails.
           </p>
           <div className="mt-10 flex animate-rise flex-wrap gap-3 [animation-delay:300ms]">
             <Button asChild variant="gold" size="xl">
@@ -103,8 +144,12 @@ function Index() {
         <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-border md:grid-cols-4">
           {STATS.map((s) => (
             <div key={s.label} className="px-6 py-8 text-center">
-              <div className="font-display text-3xl font-semibold text-primary-glow md:text-4xl">{s.value}</div>
-              <div className="mt-1 text-xs uppercase tracking-[0.18em] text-muted-foreground">{s.label}</div>
+              <div className="font-display text-3xl font-semibold text-primary-glow md:text-4xl">
+                {s.value}
+              </div>
+              <div className="mt-1 text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                {s.label}
+              </div>
             </div>
           ))}
         </div>
@@ -115,11 +160,21 @@ function Index() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="eyebrow">Featured compounds</p>
-            <h2 className="mt-3 text-4xl font-semibold text-foreground md:text-5xl">Most requested</h2>
-            <p className="mt-4 font-classic text-lg font-semibold text-primary">Best prices. Best quality.</p>
-            <p className="mt-2 max-w-xl text-sm text-muted-foreground">Every vial comes with laboratory-use directions and applicable COA information. For research use only.</p>
+            <h2 className="mt-3 text-4xl font-semibold text-foreground md:text-5xl">
+              Most requested
+            </h2>
+            <p className="mt-4 font-classic text-lg font-semibold text-primary">
+              Best prices. Best quality.
+            </p>
+            <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+              Every vial comes with laboratory-use directions and applicable COA information. For
+              research use only.
+            </p>
           </div>
-          <Link to="/products" className="flex items-center gap-2 text-sm text-primary hover:text-primary-glow">
+          <Link
+            to="/products"
+            className="flex items-center gap-2 text-sm text-primary hover:text-primary-glow"
+          >
             Full catalog <ArrowRight className="size-4" />
           </Link>
         </div>
@@ -145,7 +200,9 @@ function Index() {
           </div>
           <div className="grid-lines bg-surface p-10 md:p-14">
             <p className="eyebrow">The Synthesia standard</p>
-            <h2 className="mt-3 text-3xl font-semibold text-foreground md:text-4xl">Built for reproducible research</h2>
+            <h2 className="mt-3 text-3xl font-semibold text-foreground md:text-4xl">
+              Built for reproducible research
+            </h2>
             <div className="mt-10 grid gap-8 sm:grid-cols-2">
               {PILLARS.map((p) => (
                 <div key={p.title}>
@@ -165,10 +222,13 @@ function Index() {
           Need bulk or custom <span className="text-gold">synthesis?</span>
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-          Institutional pricing, custom sequences and lot reservations are available for research teams.
+          Institutional pricing, custom sequences and lot reservations are available for research
+          teams.
         </p>
         <Button asChild variant="gold" size="xl" className="mt-8">
-          <Link to="/contact" search={{ product: undefined }}>Talk to our team</Link>
+          <Link to="/contact" search={{ product: undefined }}>
+            Talk to our team
+          </Link>
         </Button>
       </section>
     </>

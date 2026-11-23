@@ -1,4 +1,5 @@
-export type Category = "Metabolic" | "Recovery" | "Growth Hormone" | "Cognitive" | "Longevity" | "Cosmetic";
+export type Category =
+  "Metabolic" | "Recovery" | "Growth Hormone" | "Cognitive" | "Longevity" | "Cosmetic";
 
 export type Product = {
   slug: string;
@@ -157,9 +158,7 @@ export const PRODUCTS: Product[] = [
     cas: "89030-95-5",
     purity: "≥ 99%",
     form: "Lyophilized powder",
-    sizes: [
-      { label: "50 mg", price: 20 },
-    ],
+    sizes: [{ label: "50 mg", price: 20 }],
     featured: true,
   },
   {
@@ -305,7 +304,14 @@ PRODUCTS.splice(2, 0, {
   featured: true,
 });
 
-export const CATEGORIES: Category[] = ["Metabolic", "Recovery", "Growth Hormone", "Cognitive", "Longevity", "Cosmetic"];
+export const CATEGORIES: Category[] = [
+  "Metabolic",
+  "Recovery",
+  "Growth Hormone",
+  "Cognitive",
+  "Longevity",
+  "Cosmetic",
+];
 
 export function getProduct(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug);

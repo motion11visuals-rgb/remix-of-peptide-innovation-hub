@@ -37,15 +37,32 @@ export const orderFieldsSchema = z.object({
   paymentMethod: z.enum(["zelle", "paypal", "cashapp"]),
   paymentName: z.string().trim().max(120).optional(),
   notes: z.string().trim().max(1000).optional(),
-  researchOnly: z.literal("true", { errorMap: () => ({ message: "You must accept research-use-only terms" }) }),
-  termsAccepted: z.literal("true", { errorMap: () => ({ message: "You must accept the terms and store policies" }) }),
+  researchOnly: z.literal("true", {
+    errorMap: () => ({ message: "You must accept research-use-only terms" }),
+  }),
+  termsAccepted: z.literal("true", {
+    errorMap: () => ({ message: "You must accept the terms and store policies" }),
+  }),
   policyVersion: z.literal(POLICY_VERSION),
 });
 
-export type PricedLine = { slug: string; name: string; size: string; qty: number; unitPrice: number; total: number };
+export type PricedLine = {
+  slug: string;
+  name: string;
+  size: string;
+  qty: number;
+  unitPrice: number;
+  total: number;
+};
 
 /** Prices an order from the catalog; never trusts client-sent prices. Returns null if any item is unknown or sold out. */
-export function priceOrder(items: z.infer<typeof orderItemSchema>[]): { lines: PricedLine[]; subtotal: number; shipping: number; processingFee: number; total: number } | null {
+export function priceOrder(items: z.infer<typeof orderItemSchema>[]): {
+  lines: PricedLine[];
+  subtotal: number;
+  shipping: number;
+  processingFee: number;
+  total: number;
+} | null {
   if (items.length === 0) return null;
   const lines: PricedLine[] = [];
   for (const item of items) {

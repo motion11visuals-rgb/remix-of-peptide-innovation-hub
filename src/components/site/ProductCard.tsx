@@ -18,7 +18,10 @@ export function ProductCard({ product }: { product: Product }) {
             name={product.name}
             liquid={product.slug === "lipo-c-b12"}
             alt={`${product.name} (${product.fullName}) ${product.purity} ${product.slug === "lipo-c-b12" ? "red liquid " : ""}research vial — Synthesia Labs, research use only`}
-            className={cn("h-full transition-transform duration-700 group-hover:scale-105", soldOut && "opacity-40 grayscale")}
+            className={cn(
+              "h-full transition-transform duration-700 group-hover:scale-105",
+              soldOut && "opacity-40 grayscale",
+            )}
           />
         </div>
         {soldOut && (
@@ -31,7 +34,9 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="absolute left-4 top-4 rounded-sm border border-primary/40 bg-background/70 px-2 py-1 font-display text-[10px] uppercase tracking-[0.2em] text-primary backdrop-blur">
           {product.category}
         </div>
-        <div className="absolute bottom-4 right-4 font-display text-xs text-primary-glow">{product.purity}</div>
+        <div className="absolute bottom-4 right-4 font-display text-xs text-primary-glow">
+          {product.purity}
+        </div>
       </div>
       <div className="flex flex-1 flex-col gap-2 p-5">
         <div className="flex items-start justify-between gap-3">
@@ -45,7 +50,11 @@ export function ProductCard({ product }: { product: Product }) {
             <span className="font-display text-sm text-muted-foreground">Sold out</span>
           ) : (
             <span className="font-display text-sm text-foreground">
-              {product.compareAt && <span className="mr-2 text-muted-foreground line-through">{formatPrice(product.compareAt)}</span>}
+              {product.compareAt && (
+                <span className="mr-2 text-muted-foreground line-through">
+                  {formatPrice(product.compareAt)}
+                </span>
+              )}
               from <span className="text-primary">{formatPrice(startingPrice(product))}</span>
             </span>
           )}

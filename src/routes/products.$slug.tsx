@@ -7,7 +7,14 @@ import { useState } from "react";
 import { VialImage } from "@/components/site/VialImage";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/site/ProductCard";
-import { BRAND, PRODUCTS, formatPrice, getProduct, isSizeAvailable, isSoldOut } from "@/lib/products";
+import {
+  BRAND,
+  PRODUCTS,
+  formatPrice,
+  getProduct,
+  isSizeAvailable,
+  isSoldOut,
+} from "@/lib/products";
 import { cn } from "@/lib/utils";
 import { productHead } from "@/lib/product-seo";
 
@@ -18,13 +25,21 @@ export const Route = createFileRoute("/products/$slug")({
     return { product };
   },
   head: ({ loaderData }) => {
-    if (!loaderData) return { meta: [{ title: "Product not found — Synthesia Labs" }, { name: "robots", content: "noindex" }] };
+    if (!loaderData)
+      return {
+        meta: [
+          { title: "Product not found — Synthesia Labs" },
+          { name: "robots", content: "noindex" },
+        ],
+      };
     return productHead(loaderData.product);
   },
   notFoundComponent: () => (
     <div className="mx-auto max-w-xl px-6 py-32 text-center">
       <h1 className="text-4xl font-semibold text-foreground">Compound not found</h1>
-      <Link to="/products" className="mt-6 inline-block text-primary">Back to catalog</Link>
+      <Link to="/products" className="mt-6 inline-block text-primary">
+        Back to catalog
+      </Link>
     </div>
   ),
   component: ProductPage,
@@ -41,7 +56,9 @@ function ProductPage() {
   const cart = useCart();
   const current = product.sizes[size];
   const currentAvailable = !!current && isSizeAvailable(product, current.label);
-  const related = PRODUCTS.filter((p) => p.slug !== product.slug && p.category === product.category).slice(0, 3);
+  const related = PRODUCTS.filter(
+    (p) => p.slug !== product.slug && p.category === product.category,
+  ).slice(0, 3);
   const specs = [
     ["Sequence", product.sequence],
     ["Molecular formula", product.formula],
@@ -53,16 +70,27 @@ function ProductPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 pt-12">
-      <Link to="/products" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        to="/products"
+        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeft className="size-4" /> Catalog
       </Link>
       <div className="mt-8 grid gap-12 lg:grid-cols-2">
         <div className="self-start overflow-hidden rounded-lg border bg-background lg:sticky lg:top-32">
-          <VialImage name={product.name} liquid={product.slug === "lipo-c-b12"} alt={`${product.name} (${product.fullName}) ${product.purity} purity, ${product.slug === "lipo-c-b12" ? "red liquid, " : ""}${product.form.toLowerCase()} — Synthesia Labs research vial`} size="lg" className="w-full" />
+          <VialImage
+            name={product.name}
+            liquid={product.slug === "lipo-c-b12"}
+            alt={`${product.name} (${product.fullName}) ${product.purity} purity, ${product.slug === "lipo-c-b12" ? "red liquid, " : ""}${product.form.toLowerCase()} — Synthesia Labs research vial`}
+            size="lg"
+            className="w-full"
+          />
         </div>
         <div>
           <p className="eyebrow">{product.category}</p>
-          <h1 className="mt-3 text-5xl font-semibold text-foreground md:text-6xl">{product.name}</h1>
+          <h1 className="mt-3 text-5xl font-semibold text-foreground md:text-6xl">
+            {product.name}
+          </h1>
           <p className="mt-2 text-lg text-muted-foreground">{product.fullName}</p>
           <p className="mt-6 text-foreground/85">{product.description}</p>
 
@@ -85,8 +113,20 @@ function ProductPage() {
                           : "hover:border-primary/50",
                     )}
                   >
-                    <div className={cn("font-display text-sm text-foreground", !available && "line-through")}>{s.label}</div>
-                    <div className={cn("text-sm", available ? "text-primary" : "text-muted-foreground")}>
+                    <div
+                      className={cn(
+                        "font-display text-sm text-foreground",
+                        !available && "line-through",
+                      )}
+                    >
+                      {s.label}
+                    </div>
+                    <div
+                      className={cn(
+                        "text-sm",
+                        available ? "text-primary" : "text-muted-foreground",
+                      )}
+                    >
                       {available ? formatPrice(s.price) : "Sold out"}
                     </div>
                   </button>
@@ -149,10 +189,17 @@ function ProductPage() {
           </div>
 
           <div className="mt-6 flex flex-wrap gap-6 text-sm text-muted-foreground">
-            <span className="flex items-center gap-2"><FileCheck2 className="size-4 text-primary" /> COA on request</span>
-            <span className="flex items-center gap-2"><Snowflake className="size-4 text-primary" /> Store at −20°C</span>
+            <span className="flex items-center gap-2">
+              <FileCheck2 className="size-4 text-primary" /> COA on request
+            </span>
+            <span className="flex items-center gap-2">
+              <Snowflake className="size-4 text-primary" /> Store at −20°C
+            </span>
           </div>
-          <p className="mt-4 text-sm text-muted-foreground">Every vial comes with laboratory-use directions and applicable COA information. Full facility COAs are available on request. Not for human consumption.</p>
+          <p className="mt-4 text-sm text-muted-foreground">
+            Every vial comes with laboratory-use directions and applicable COA information. Full
+            facility COAs are available on request. Not for human consumption.
+          </p>
 
           <dl className="mt-10 divide-y rounded-lg border bg-surface">
             {specs.map(([k, v]) => (
@@ -174,7 +221,9 @@ function ProductPage() {
         <section className="mt-28">
           <h2 className="text-3xl font-semibold text-foreground">Related compounds</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {related.map((p) => <ProductCard key={p.slug} product={p} />)}
+            {related.map((p) => (
+              <ProductCard key={p.slug} product={p} />
+            ))}
           </div>
         </section>
       )}

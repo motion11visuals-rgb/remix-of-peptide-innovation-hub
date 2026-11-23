@@ -1,5 +1,20 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { addLine, cartCount, cartSubtotal, parseStoredCart, setLineQty, type CartLine } from "./cart-logic";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
+import {
+  addLine,
+  cartCount,
+  cartSubtotal,
+  parseStoredCart,
+  setLineQty,
+  type CartLine,
+} from "./cart-logic";
 
 const STORAGE_KEY = "aurum-cart";
 
@@ -39,7 +54,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const clear = useCallback(() => setLines([]), []);
 
   const value = useMemo(
-    () => ({ lines, ready: loaded, count: cartCount(lines), subtotal: cartSubtotal(lines), open, setOpen, add, setQty, clear }),
+    () => ({
+      lines,
+      ready: loaded,
+      count: cartCount(lines),
+      subtotal: cartSubtotal(lines),
+      open,
+      setOpen,
+      add,
+      setQty,
+      clear,
+    }),
     [lines, loaded, open, add, setQty, clear],
   );
 
