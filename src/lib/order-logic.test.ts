@@ -3,27 +3,27 @@ import { generateOrderRef, isValidOrderRef, priceOrder, validateProof, MAX_PROOF
 import { POLICY_VERSION } from "./store-policy";
 
 describe("checkout order rules", () => {
-  it("adds one optional $6 set with alcohol swabs and a syringe to the saved order", () => {
+  it("charges a flat $2 processing fee with no lab-tools item", () => {
     const items = [{ slug: "retatrutide", size: "5 mg", qty: 1 }];
-    const priced = priceOrder(items, true);
+    const priced = priceOrder(items);
     expect(priced?.subtotal).toBe(35);
     expect(priced?.shipping).toBe(9);
-    expect(priced?.total).toBe(50);
-    expect(priced?.lines.at(-1)).toEqual({ slug: "research-lab-tools", name: "Lab tools — alcohol swabs and syringe", size: "Set", qty: 1, unitPrice: 6, total: 6 });
-    expect(priceOrder(items)?.total).toBe(44);
-    expect(priceOrder(items)?.lines).toHaveLength(1);
+    expect(priced?.processingFee).toBe(2);
+    expect(priced?.total).toBe(46);
+    expect(priced?.lines.map((line) => line.slug)).toEqual(["retatrutide"]);
   });
 
-  it("does not let the $6 tools set qualify merchandise for free shipping", () => {
-    const priced = priceOrder([{ slug: "retatrutide", size: "10 mg", qty: 3 }], true);
+  it("does not let the $2 processing fee qualify merchandise for free shipping", () => {
+    const priced = priceOrder([{ slug: "retatrutide", size: "10 mg", qty: 3 }]);
     expect(priced?.subtotal).toBe(150);
     expect(priced?.shipping).toBe(9);
-    expect(priced?.total).toBe(165);
+    expect(priced?.processingFee).toBe(2);
+    expect(priced?.total).toBe(161);
   });
 
-  it("rejects a tools-only order and unknown tools selections", () => {
-    expect(priceOrder([], true)).toBeNull();
-    expect(orderFieldsSchema.shape.labTools.safeParse("anything").success).toBe(false);
+  it("rejects the canceled lab-tools set even when submitted directly", () => {
+    expect(priceOrder([{ slug: "research-lab-tools", size: "Set", qty: 1 }])).toBeNull();
+    expect(priceOrder([{ slug: "retatrutide", size: "5 mg", qty: 1 }, { slug: "research-lab-tools", size: "Set", qty: 1 }])).toBeNull();
   });
 
   it("prices orders from the catalog, not from the browser", () => {
@@ -33,14 +33,15 @@ describe("checkout order rules", () => {
     ]);
     expect(priced?.subtotal).toBe(140);
     expect(priced?.shipping).toBe(9);
-    expect(priced?.total).toBe(149);
+    expect(priced?.total).toBe(151);
   });
 
   it("recomputes free shipping from catalog prices on orders over $150", () => {
     const priced = priceOrder([{ slug: "retatrutide", size: "20 mg", qty: 2 }]);
     expect(priced?.subtotal).toBe(190);
     expect(priced?.shipping).toBe(0);
-    expect(priced?.total).toBe(190);
+    expect(priced?.processingFee).toBe(2);
+    expect(priced?.total).toBe(192);
   });
 
   it("requires affirmative acceptance of current store policies", () => {

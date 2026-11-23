@@ -1,6 +1,6 @@
 # Requested updates
 - [x] Change shipping to $9 throughout checkout, saved order pricing, and policies; verify.
-- [x] Add and verify optional $6 research-tools set with alcohol swabs and a syringe.
+- [x] Remove the canceled lab-tools set and add and verify a flat $2 processing fee per order.
 - [x] Improve homepage and every product's search metadata and structured data; verify rendered results.
 - [x] Add the owner-confirmed 150+ lifetime completed orders to the homepage.
 - [x] Update processing time to 1–2 days throughout shipping information.

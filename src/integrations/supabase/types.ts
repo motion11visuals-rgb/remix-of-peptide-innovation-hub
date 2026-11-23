@@ -56,6 +56,7 @@ export type Database = {
           payment_name: string | null
           phone: string | null
           policy_version: string | null
+          processing_fee: number
           proof_path: string
           shipping: number | null
           state: string
@@ -81,6 +82,7 @@ export type Database = {
           payment_name?: string | null
           phone?: string | null
           policy_version?: string | null
+          processing_fee?: number
           proof_path: string
           shipping?: number | null
           state: string
@@ -106,6 +108,7 @@ export type Database = {
           payment_name?: string | null
           phone?: string | null
           policy_version?: string | null
+          processing_fee?: number
           proof_path?: string
           shipping?: number | null
           state?: string

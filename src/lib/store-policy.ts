@@ -1,23 +1,18 @@
 export const BUSINESS_ADDRESS = "12950 NW 17th St, Miami, FL 33182, United States";
-export const POLICY_VERSION = "2026-11-23-shipping-9";
+export const POLICY_VERSION = "2026-11-23-processing-fee-2";
 export const POLICY_DATE = "November 23, 2026";
 export const SHIPPING_FLAT_RATE = 9;
 export const FREE_SHIPPING_THRESHOLD = 150;
 export const QUALITY_REFUND_CREDIT = 20;
 export const ORDER_PROCESSING_DAYS = { min: 1, max: 2 } as const;
 export const ORDER_PROCESSING_LABEL = `${ORDER_PROCESSING_DAYS.min}–${ORDER_PROCESSING_DAYS.max} days`;
-export const LAB_TOOLS = {
-  slug: "research-lab-tools",
-  name: "Lab tools — alcohol swabs and syringe",
-  price: 6,
-} as const;
+export const PROCESSING_FEE = 2;
 
 /** Compare integer cents: exactly $150 still incurs shipping. */
-export function orderTotals(subtotal: number, includeLabTools = false) {
+export function orderTotals(subtotal: number) {
   const cents = Math.round(subtotal * 100);
   const shipping = cents > FREE_SHIPPING_THRESHOLD * 100 ? 0 : SHIPPING_FLAT_RATE;
-  const toolsCents = includeLabTools ? LAB_TOOLS.price * 100 : 0;
-  return { subtotal: cents / 100, shipping, total: (cents + shipping * 100 + toolsCents) / 100 };
+  return { subtotal: cents / 100, shipping, processingFee: PROCESSING_FEE, total: (cents + shipping * 100 + PROCESSING_FEE * 100) / 100 };
 }
 
 export const POLICY_LINKS = [

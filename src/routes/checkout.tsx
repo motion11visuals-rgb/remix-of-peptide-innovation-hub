@@ -17,7 +17,7 @@ import { PAYMENT_METHODS, type PaymentMethodId } from "@/lib/payments";
 import { BRAND, formatPrice } from "@/lib/products";
 import { AFFILIATIONS, readGateRecord } from "@/lib/research-gate";
 import { cn } from "@/lib/utils";
-import { LAB_TOOLS, orderTotals, POLICY_VERSION, ORDER_PROCESSING_LABEL, SHIPPING_FLAT_RATE, FREE_SHIPPING_THRESHOLD } from "@/lib/store-policy";
+import { orderTotals, POLICY_VERSION, ORDER_PROCESSING_LABEL, SHIPPING_FLAT_RATE, FREE_SHIPPING_THRESHOLD } from "@/lib/store-policy";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
@@ -68,12 +68,11 @@ function Checkout() {
   const [preview, setPreview] = useState<string | null>(null);
   const [agreed, setAgreed] = useState(false);
   const [termsAgreed, setTermsAgreed] = useState(false);
-  const [labTools, setLabTools] = useState(false);
   const [org, setOrg] = useState("");
   const [affiliation, setAffiliation] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState<{ orderRef: string; total: number; method: string } | null>(null);
-  const totals = orderTotals(cart.subtotal, labTools);
+  const totals = orderTotals(cart.subtotal);
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -132,7 +131,6 @@ function Checkout() {
     fd.set("researchOnly", "true");
     fd.set("termsAccepted", "true");
     fd.set("policyVersion", POLICY_VERSION);
-    fd.set("labTools", String(labTools));
     fd.set("items", JSON.stringify(cart.lines));
     fd.set("proof", proof);
 
@@ -161,7 +159,7 @@ function Checkout() {
         <h1 className="mt-6 text-4xl font-semibold text-foreground">Order received</h1>
         <p className="mt-4 text-muted-foreground">
           Thanks! We'll verify your {done.method} payment of{" "}
-          <span className="text-foreground">{formatPrice(done.total)}</span>, including shipping. This receipt does not confirm payment settlement.
+          <span className="text-foreground">{formatPrice(done.total)}</span>, including shipping and the processing fee. This receipt does not confirm payment settlement.
         </p>
         <div className="mx-auto mt-8 inline-block rounded-lg border bg-card-gradient px-8 py-5 shadow-card">
           <p className="eyebrow">Order reference</p>
@@ -277,7 +275,7 @@ function Checkout() {
                 <div>
                   <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Amount</p>
                   <p className="mt-1 font-display text-2xl font-semibold text-foreground">{formatPrice(totals.total)}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">Includes {formatPrice(totals.shipping)} shipping</p>
+                  <p className="mt-1 text-xs text-muted-foreground">Includes {formatPrice(totals.shipping)} shipping and {formatPrice(totals.processingFee)} processing fee</p>
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Memo / note</p>
@@ -385,16 +383,9 @@ function Checkout() {
                 );
               })}
             </ul>
-            <div className="mt-4 flex items-start gap-3 border-t pt-4">
-              <Checkbox id="lab-tools" checked={labTools} onCheckedChange={(value) => setLabTools(value === true)} className="mt-1" />
-              <div className="min-w-0 flex-1">
-                <Label htmlFor="lab-tools" className="text-sm leading-relaxed">Optional lab tools · {formatPrice(LAB_TOOLS.price)}</Label>
-                <p className="mt-1 text-xs text-muted-foreground">Alcohol swabs and a syringe. Laboratory research only. Not for human or animal use.</p>
-              </div>
-            </div>
             <dl className="mt-4 space-y-3 border-t pt-4 text-sm">
               <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Merchandise subtotal</dt><dd>{formatPrice(totals.subtotal)}</dd></div>
-              {labTools && <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Lab tools</dt><dd>{formatPrice(LAB_TOOLS.price)}</dd></div>}
+              <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Processing fee</dt><dd>{formatPrice(totals.processingFee)}</dd></div>
               <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Shipping</dt><dd>{totals.shipping === 0 ? "Free" : formatPrice(totals.shipping)}</dd></div>
             </dl>
             <p className="mt-3 text-xs text-muted-foreground">{formatPrice(SHIPPING_FLAT_RATE)} flat-rate shipping · Free on merchandise orders over ${FREE_SHIPPING_THRESHOLD}</p>

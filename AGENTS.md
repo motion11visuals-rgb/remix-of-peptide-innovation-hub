@@ -38,7 +38,7 @@ use the editor.
 - Checkout writes orders and payment screenshots only through the `submitOrder` server function (`src/lib/orders.functions.ts`), which re-prices from the catalog; the orders table and payment-proofs bucket have no visitor access.
 - Marketing opt-in emails from the entry gate go only to the private `marketing_signups` table via `subscribeMarketing` (src/lib/marketing.functions.ts); promos are sent from an external newsletter service, never the app-email sender.
 - Shipping math lives in `src/lib/store-policy.ts` and is reused by checkout and server pricing; persist subtotal, shipping, total, and accepted policy version separately so payment instructions match saved orders.
-- Optional checkout tools use the shared `LAB_TOOLS` definition and server-validated selection; persist the set as a priced order item and separate `lab_tools_total`, excluding it from merchandise subtotal for shipping eligibility.
+- Checkout fees derive from `store-policy.ts` and server pricing; persist `processing_fee` separately from merchandise and shipping, and retain deprecated lab-tools data only for historical orders.
 - Each legal policy has a distinct route with shared `PolicyPage` presentation; policy pages remain accessible without the research gate so visitors can read terms before agreeing.
 - All catalog, product, cart, and checkout vial pictures use `VialImage` with an explicit liquid flag so product appearance stays consistent across shopping views.
 - Processing-day bounds and their display label live in `store-policy.ts` so homepage, shipping policy, and checkout share the tested time range.

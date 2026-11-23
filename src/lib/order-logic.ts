@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { PRODUCTS, isSizeAvailable } from "./products";
-import { LAB_TOOLS, orderTotals, POLICY_VERSION } from "./store-policy";
+import { orderTotals, POLICY_VERSION } from "./store-policy";
 
 export const MAX_PROOF_BYTES = 10 * 1024 * 1024;
 export const PROOF_TYPES = ["image/png", "image/jpeg", "image/webp", "image/heic", "image/heif"];
@@ -40,13 +40,12 @@ export const orderFieldsSchema = z.object({
   researchOnly: z.literal("true", { errorMap: () => ({ message: "You must accept research-use-only terms" }) }),
   termsAccepted: z.literal("true", { errorMap: () => ({ message: "You must accept the terms and store policies" }) }),
   policyVersion: z.literal(POLICY_VERSION),
-  labTools: z.enum(["true", "false"]).default("false"),
 });
 
 export type PricedLine = { slug: string; name: string; size: string; qty: number; unitPrice: number; total: number };
 
 /** Prices an order from the catalog; never trusts client-sent prices. Returns null if any item is unknown or sold out. */
-export function priceOrder(items: z.infer<typeof orderItemSchema>[], includeLabTools = false): { lines: PricedLine[]; subtotal: number; shipping: number; total: number } | null {
+export function priceOrder(items: z.infer<typeof orderItemSchema>[]): { lines: PricedLine[]; subtotal: number; shipping: number; processingFee: number; total: number } | null {
   if (items.length === 0) return null;
   const lines: PricedLine[] = [];
   for (const item of items) {
@@ -62,10 +61,7 @@ export function priceOrder(items: z.infer<typeof orderItemSchema>[], includeLabT
       total: size.price * item.qty,
     });
   }
-  const totals = orderTotals(lines.reduce((s, l) => s + l.total, 0), includeLabTools);
-  if (includeLabTools) {
-    lines.push({ slug: LAB_TOOLS.slug, name: LAB_TOOLS.name, size: "Set", qty: 1, unitPrice: LAB_TOOLS.price, total: LAB_TOOLS.price });
-  }
+  const totals = orderTotals(lines.reduce((s, l) => s + l.total, 0));
   return { lines, ...totals };
 }
 
