@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/admin/orders")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Orders — Synthesia Labs admin" }, { name: "description", content: "Store orders." }, { name: "robots", content: "noindex" }, { property: "og:title", content: "Orders — Synthesia Labs admin" }, { property: "og:description", content: "Store orders." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: OrdersPage,
 });

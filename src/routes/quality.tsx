@@ -6,6 +6,7 @@ import { BRAND } from "@/lib/products";
 import { QUALITY_REFUND_CREDIT } from "@/lib/store-policy";
 
 export const Route = createFileRoute("/quality")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Quality & Testing — Synthesia Labs" },

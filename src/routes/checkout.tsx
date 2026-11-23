@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { orderTotals, POLICY_VERSION, ORDER_PROCESSING_LABEL, SHIPPING_FLAT_RATE, FREE_SHIPPING_THRESHOLD } from "@/lib/store-policy";
 
 export const Route = createFileRoute("/checkout")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Checkout — Synthesia Labs" },

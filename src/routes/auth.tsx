@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/auth")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Owner sign in — Synthesia Labs" }, { name: "description", content: "Store owner sign in." }, { name: "robots", content: "noindex" }, { property: "og:title", content: "Owner sign in — Synthesia Labs" }, { property: "og:description", content: "Store owner sign in." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: AuthPage,
 });

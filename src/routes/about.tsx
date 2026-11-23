@@ -3,6 +3,7 @@ import hero from "@/assets/hero-vials.jpg";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/about")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "About — Synthesia Labs" },

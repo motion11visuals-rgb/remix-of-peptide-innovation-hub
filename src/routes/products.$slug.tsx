@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { productHead } from "@/lib/product-seo";
 
 export const Route = createFileRoute("/products/$slug")({
+  staticData: { sitemap: true },
   loader: ({ params }) => {
     const product = getProduct(params.slug);
     if (!product) throw notFound();

@@ -17,6 +17,7 @@ export const Route = createFileRoute("/contact")({
   validateSearch: (search: Record<string, unknown>): ContactSearch => ({
     product: typeof search["product"] === "string" ? search["product"] : undefined,
   }),
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Contact & Orders — Synthesia Labs" },

@@ -8,6 +8,7 @@ import { BRAND, PRODUCTS } from "@/lib/products";
 import { ORDER_PROCESSING_LABEL } from "@/lib/store-policy";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Synthesia Labs | Research Peptides & Laboratory Compounds" },

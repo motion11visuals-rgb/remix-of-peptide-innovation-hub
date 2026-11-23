@@ -21,6 +21,7 @@ import { Route as QualityRouteImport } from './routes/quality'
 import { Route as ResearchUseOnlyRouteImport } from './routes/research-use-only'
 import { Route as ReturnPolicyRouteImport } from './routes/return-policy'
 import { Route as ShippingPolicyRouteImport } from './routes/shipping-policy'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
@@ -85,6 +86,11 @@ const ShippingPolicyRoute = ShippingPolicyRouteImport.update({
   path: '/shipping-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/research-use-only': typeof ResearchUseOnlyRoute
   '/return-policy': typeof ReturnPolicyRoute
   '/shipping-policy': typeof ShippingPolicyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/': typeof ProductsIndexRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/research-use-only': typeof ResearchUseOnlyRoute
   '/return-policy': typeof ReturnPolicyRoute
   '/shipping-policy': typeof ShippingPolicyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products': typeof ProductsIndexRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/research-use-only': typeof ResearchUseOnlyRoute
   '/return-policy': typeof ReturnPolicyRoute
   '/shipping-policy': typeof ShippingPolicyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/products/': typeof ProductsIndexRoute
@@ -174,6 +183,7 @@ export interface FileRouteTypes {
     | '/research-use-only'
     | '/return-policy'
     | '/shipping-policy'
+    | '/sitemap.xml'
     | '/terms'
     | '/products/$slug'
     | '/products/'
@@ -191,6 +201,7 @@ export interface FileRouteTypes {
     | '/research-use-only'
     | '/return-policy'
     | '/shipping-policy'
+    | '/sitemap.xml'
     | '/terms'
     | '/products/$slug'
     | '/products'
@@ -209,6 +220,7 @@ export interface FileRouteTypes {
     | '/research-use-only'
     | '/return-policy'
     | '/shipping-policy'
+    | '/sitemap.xml'
     | '/terms'
     | '/products/$slug'
     | '/products/'
@@ -228,6 +240,7 @@ export interface RootRouteChildren {
   ResearchUseOnlyRoute: typeof ResearchUseOnlyRoute
   ReturnPolicyRoute: typeof ReturnPolicyRoute
   ShippingPolicyRoute: typeof ShippingPolicyRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
@@ -319,6 +332,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShippingPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -374,6 +394,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResearchUseOnlyRoute: ResearchUseOnlyRoute,
   ReturnPolicyRoute: ReturnPolicyRoute,
   ShippingPolicyRoute: ShippingPolicyRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   ProductsIndexRoute: ProductsIndexRoute,

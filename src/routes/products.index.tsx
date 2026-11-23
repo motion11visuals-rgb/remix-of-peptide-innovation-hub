@@ -5,6 +5,7 @@ import { CATEGORIES, PRODUCTS, isSoldOut, type Category } from "@/lib/products";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/products/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Research Peptides & Compounds Catalog | Synthesia Labs" },
