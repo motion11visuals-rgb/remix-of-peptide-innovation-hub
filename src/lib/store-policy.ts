@@ -6,12 +6,18 @@ export const FREE_SHIPPING_THRESHOLD = 150;
 export const QUALITY_REFUND_CREDIT = 20;
 export const ORDER_PROCESSING_DAYS = { min: 1, max: 2 } as const;
 export const ORDER_PROCESSING_LABEL = `${ORDER_PROCESSING_DAYS.min}–${ORDER_PROCESSING_DAYS.max} days`;
+export const LAB_TOOLS = {
+  slug: "research-lab-tools",
+  name: "Lab tools — alcohol swabs and syringe",
+  price: 6,
+} as const;
 
 /** Compare integer cents: exactly $150 still incurs shipping. */
-export function orderTotals(subtotal: number) {
+export function orderTotals(subtotal: number, includeLabTools = false) {
   const cents = Math.round(subtotal * 100);
   const shipping = cents > FREE_SHIPPING_THRESHOLD * 100 ? 0 : SHIPPING_FLAT_RATE;
-  return { subtotal: cents / 100, shipping, total: (cents + shipping * 100) / 100 };
+  const toolsCents = includeLabTools ? LAB_TOOLS.price * 100 : 0;
+  return { subtotal: cents / 100, shipping, total: (cents + shipping * 100 + toolsCents) / 100 };
 }
 
 export const POLICY_LINKS = [

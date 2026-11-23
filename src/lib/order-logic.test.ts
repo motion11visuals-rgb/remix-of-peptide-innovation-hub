@@ -3,6 +3,29 @@ import { generateOrderRef, isValidOrderRef, priceOrder, validateProof, MAX_PROOF
 import { POLICY_VERSION } from "./store-policy";
 
 describe("checkout order rules", () => {
+  it("adds one optional $6 set with alcohol swabs and a syringe to the saved order", () => {
+    const items = [{ slug: "retatrutide", size: "5 mg", qty: 1 }];
+    const priced = priceOrder(items, true);
+    expect(priced?.subtotal).toBe(35);
+    expect(priced?.shipping).toBe(9);
+    expect(priced?.total).toBe(50);
+    expect(priced?.lines.at(-1)).toEqual({ slug: "research-lab-tools", name: "Lab tools — alcohol swabs and syringe", size: "Set", qty: 1, unitPrice: 6, total: 6 });
+    expect(priceOrder(items)?.total).toBe(44);
+    expect(priceOrder(items)?.lines).toHaveLength(1);
+  });
+
+  it("does not let the $6 tools set qualify merchandise for free shipping", () => {
+    const priced = priceOrder([{ slug: "retatrutide", size: "10 mg", qty: 3 }], true);
+    expect(priced?.subtotal).toBe(150);
+    expect(priced?.shipping).toBe(9);
+    expect(priced?.total).toBe(165);
+  });
+
+  it("rejects a tools-only order and unknown tools selections", () => {
+    expect(priceOrder([], true)).toBeNull();
+    expect(orderFieldsSchema.shape.labTools.safeParse("anything").success).toBe(false);
+  });
+
   it("prices orders from the catalog, not from the browser", () => {
     const priced = priceOrder([
       { slug: "retatrutide", size: "10 mg", qty: 2 }, // 50 each

@@ -48,6 +48,7 @@ export type Database = {
           email: string
           id: string
           items: Json
+          lab_tools_total: number
           notes: string | null
           order_ref: string
           organization: string
@@ -72,6 +73,7 @@ export type Database = {
           email: string
           id?: string
           items: Json
+          lab_tools_total?: number
           notes?: string | null
           order_ref: string
           organization: string
@@ -96,6 +98,7 @@ export type Database = {
           email?: string
           id?: string
           items?: Json
+          lab_tools_total?: number
           notes?: string | null
           order_ref?: string
           organization?: string

@@ -2,6 +2,12 @@ import { describe, expect, it } from "vitest";
 import { orderTotals, QUALITY_REFUND_CREDIT, ORDER_PROCESSING_DAYS } from "./store-policy";
 
 describe("owner shipping policy", () => {
+  it("charges $6 only when the optional lab-tools set is selected", () => {
+    expect(orderTotals(35, true)).toEqual({ subtotal: 35, shipping: 9, total: 50 });
+    expect(orderTotals(35, false)).toEqual({ subtotal: 35, shipping: 9, total: 44 });
+    expect(orderTotals(150, true)).toEqual({ subtotal: 150, shipping: 9, total: 165 });
+    expect(orderTotals(190, true)).toEqual({ subtotal: 190, shipping: 0, total: 196 });
+  });
   it("sets order processing to 1–2 days", () => {
     expect(ORDER_PROCESSING_DAYS).toEqual({ min: 1, max: 2 });
   });

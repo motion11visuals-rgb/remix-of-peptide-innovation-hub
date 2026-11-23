@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { orderFieldsSchema, orderItemSchema, priceOrder, validateProof } from "./order-logic";
+import { LAB_TOOLS } from "./store-policy";
 
 type SubmitResult = { ok: true; orderRef: string; subtotal: number; shipping: number; total: number } | { ok: false; error: string };
 
@@ -32,6 +33,7 @@ export const submitOrder = createServerFn({ method: "POST" })
       researchOnly: str(data, "researchOnly"),
       termsAccepted: str(data, "termsAccepted"),
       policyVersion: str(data, "policyVersion"),
+      labTools: str(data, "labTools"),
     });
     if (!fields.success) return { ok: false, error: fields.error.issues[0]?.message ?? "Check your details" };
 
@@ -42,7 +44,7 @@ export const submitOrder = createServerFn({ method: "POST" })
       return { ok: false, error: "Your cart could not be read. Please try again." };
     }
     const items = z.array(orderItemSchema).max(50).safeParse(rawItems);
-    const priced = items.success ? priceOrder(items.data) : null;
+    const priced = items.success ? priceOrder(items.data, fields.data.labTools === "true") : null;
     if (!priced) return { ok: false, error: "Your cart has an item that is sold out or no longer carried. Please update your cart." };
 
     const proof = data.get("proof");
@@ -79,6 +81,7 @@ export const submitOrder = createServerFn({ method: "POST" })
       items: priced.lines,
       subtotal: priced.subtotal,
       shipping: priced.shipping,
+      lab_tools_total: f.labTools === "true" ? LAB_TOOLS.price : 0,
       total: priced.total,
       policy_version: f.policyVersion,
       payment_method: f.paymentMethod,
