@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { BRAND } from "@/lib/products";
 import { BUSINESS_ADDRESS, POLICY_LINKS } from "@/lib/store-policy";
 import { Logo } from "./SiteHeader";
-import { WHATSAPP_URL } from "./WhatsAppButton";
+import { INSTAGRAM_HANDLE, INSTAGRAM_URL, WHATSAPP_URL } from "./WhatsAppButton";
 
 export function SiteFooter() {
   return (
@@ -29,6 +29,11 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
             <li><a href={`mailto:${BRAND.email}`} className="hover:text-foreground">{BRAND.email}</a></li>
             <li><Link to="/contact" className="hover:text-foreground">Send an inquiry</Link></li>
+            <li>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
+                Instagram: {INSTAGRAM_HANDLE}
+              </a>
+            </li>
             <li>
               <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
                 Text us on WhatsApp: +1 (786) 526-8228
@@ -57,8 +62,8 @@ export function SiteFooter() {
           <nav aria-label="Legal policies" className="mt-5 flex flex-wrap gap-x-5 gap-y-3 pb-12 text-xs text-muted-foreground">
             {POLICY_LINKS.map((link) => <Link key={link.to} to={link.to} className="underline-offset-4 hover:text-primary hover:underline">{link.label}</Link>)}
           </nav>
-          {/* Extra space so the fixed WhatsApp button never covers footer content. */}
-          <div className="h-16" aria-hidden />
+          {/* Extra space so the fixed social buttons never cover footer content. */}
+          <div className="h-28" aria-hidden />
         </div>
       </div>
     </footer>
