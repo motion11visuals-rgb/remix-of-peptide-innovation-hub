@@ -1,6 +1,6 @@
-import cashappQr from "@/assets/qr-IMG_8674.jpg.asset.json";
-import paypalQr from "@/assets/qr-IMG_8675.jpg.asset.json";
-import zelleQr from "@/assets/qr-IMG_8676.jpg.asset.json";
+const cashappQr = { url: "/images/qr-8674.jpg" };
+const paypalQr = { url: "/images/qr-8675.jpg" };
+const zelleQr = { url: "/images/qr-8676.jpg" };
 
 export type PaymentMethodId = "zelle" | "paypal" | "cashapp";
 

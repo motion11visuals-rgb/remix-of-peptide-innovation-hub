@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BRAND } from "@/lib/products";
 import { CartButton } from "./CartSheet";
-import mark from "@/assets/synthesia_mark.png.asset.json";
+const mark = { url: "/images/synthesia_mark.png" };
 
 const NAV = [
   { to: "/products", label: "Catalog" },

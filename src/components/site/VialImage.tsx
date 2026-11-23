@@ -1,6 +1,6 @@
 import vial from "@/assets/vial-single.jpg";
-import redLiquid from "@/assets/lipo-c-red-liquid.png.asset.json";
-import mark from "@/assets/synthesia_mark.png.asset.json";
+const redLiquid = { url: "/images/lipo-c-red-liquid.png" };
+const mark = { url: "/images/synthesia_mark.png" };
 import { cn } from "@/lib/utils";
 
 /** Vial photo with a branded label (logo, peptide name, research-use-only) overlaid on its blank black band. */
