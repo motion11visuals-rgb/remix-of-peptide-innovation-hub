@@ -25,7 +25,7 @@ const EMPTY: GateInput = { affiliation: "", otherDetail: "", organization: "", i
 
 export function ResearchGate() {
   const pathname = useLocation({ select: (location) => location.pathname });
-  const policyPage = isPolicyPath(pathname);
+  const policyPage = isPolicyPath(pathname) || pathname === "/auth" || pathname.startsWith("/admin");
   const [show, setShow] = useState(false);
   const [form, setForm] = useState<GateInput>(EMPTY);
   const [errors, setErrors] = useState<GateErrors>({});
