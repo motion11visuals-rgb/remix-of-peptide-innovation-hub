@@ -1,0 +1,13 @@
+# Requested updates
+- [x] Update processing time to 1–2 days throughout shipping information.
+- [x] Remove sample COA data; add motto and included laboratory directions/applicable COA information.
+- [x] Replace Lipo-C powder photograph with red liquid; verify pages.
+- [x] Add business address, disclaimers, and six footer policy links.
+- [x] Draft privacy, terms, research-use, shipping, returns, and accessibility pages.
+- [x] Charge $8 shipping unless merchandise subtotal exceeds $150; persist and verify totals.
+- [x] Test shipping boundaries and checkout; review final changes.
+- [x] Set additional quality-refund website credit to $20 (handled manually by the store).
+- [x] Pre-publish check: tests, all routes, gate, cart, checkout, order + screenshot storage, mobile.
+- [x] Confirm customer orders, promo emails, and payment screenshots are locked from visitors.
+- [x] Fix mobile hero: headline was unreadable over the vial photo on both home and quality pages.
+- [ ] Keep test orders and test promo email in the database until the owner deletes them (owner's choice).
