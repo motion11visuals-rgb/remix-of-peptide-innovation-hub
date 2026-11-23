@@ -17,7 +17,7 @@ import { PAYMENT_METHODS, type PaymentMethodId } from "@/lib/payments";
 import { BRAND, formatPrice } from "@/lib/products";
 import { AFFILIATIONS, readGateRecord } from "@/lib/research-gate";
 import { cn } from "@/lib/utils";
-import { orderTotals, POLICY_VERSION, ORDER_PROCESSING_LABEL } from "@/lib/store-policy";
+import { orderTotals, POLICY_VERSION, ORDER_PROCESSING_LABEL, SHIPPING_FLAT_RATE, FREE_SHIPPING_THRESHOLD } from "@/lib/store-policy";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
@@ -387,7 +387,7 @@ function Checkout() {
               <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Merchandise subtotal</dt><dd>{formatPrice(totals.subtotal)}</dd></div>
               <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Shipping</dt><dd>{totals.shipping === 0 ? "Free" : formatPrice(totals.shipping)}</dd></div>
             </dl>
-            <p className="mt-3 text-xs text-muted-foreground">$8 flat-rate shipping · Free on merchandise orders over $150</p>
+            <p className="mt-3 text-xs text-muted-foreground">{formatPrice(SHIPPING_FLAT_RATE)} flat-rate shipping · Free on merchandise orders over ${FREE_SHIPPING_THRESHOLD}</p>
             <p className="mt-2 text-xs text-muted-foreground">Processing: {ORDER_PROCESSING_LABEL} after payment verification and research eligibility review. Carrier transit time is additional.</p>
             <div className="mt-4 flex items-baseline justify-between border-t pt-4">
               <span className="text-muted-foreground">Total</span>

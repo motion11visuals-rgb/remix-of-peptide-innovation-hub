@@ -5,12 +5,12 @@ describe("owner shipping policy", () => {
   it("sets order processing to 1–2 days", () => {
     expect(ORDER_PROCESSING_DAYS).toEqual({ min: 1, max: 2 });
   });
-  it("charges a flat $8 below $150", () => {
-    expect(orderTotals(35)).toEqual({ subtotal: 35, shipping: 8, total: 43 });
-    expect(orderTotals(149.99)).toEqual({ subtotal: 149.99, shipping: 8, total: 157.99 });
+  it("charges a flat $9 below $150", () => {
+    expect(orderTotals(35)).toEqual({ subtotal: 35, shipping: 9, total: 44 });
+    expect(orderTotals(149.99)).toEqual({ subtotal: 149.99, shipping: 9, total: 158.99 });
   });
-  it("still charges $8 on exactly $150 because free shipping is only over $150", () => {
-    expect(orderTotals(150)).toEqual({ subtotal: 150, shipping: 8, total: 158 });
+  it("still charges $9 on exactly $150 because free shipping is only over $150", () => {
+    expect(orderTotals(150)).toEqual({ subtotal: 150, shipping: 9, total: 159 });
   });
   it("waives shipping above $150", () => {
     expect(orderTotals(150.01)).toEqual({ subtotal: 150.01, shipping: 0, total: 150.01 });

@@ -1,4 +1,6 @@
 # Requested updates
+- [x] Change shipping to $9 throughout checkout, saved order pricing, and policies; verify.
+- [ ] Add optional $6 vial lab-tools set — blocked on owner confirming the exact contents.
 - [x] Improve homepage and every product's search metadata and structured data; verify rendered results.
 - [x] Add the owner-confirmed 150+ lifetime completed orders to the homepage.
 - [x] Update processing time to 1–2 days throughout shipping information.
@@ -6,7 +8,7 @@
 - [x] Replace Lipo-C powder photograph with red liquid; verify pages.
 - [x] Add business address, disclaimers, and six footer policy links.
 - [x] Draft privacy, terms, research-use, shipping, returns, and accessibility pages.
-- [x] Charge $8 shipping unless merchandise subtotal exceeds $150; persist and verify totals.
+- [x] Charge $9 shipping unless merchandise subtotal exceeds $150; persist and verify totals.
 - [x] Test shipping boundaries and checkout; review final changes.
 - [x] Set additional quality-refund website credit to $20 (handled manually by the store).
 - [x] Pre-publish check: tests, all routes, gate, cart, checkout, order + screenshot storage, mobile.

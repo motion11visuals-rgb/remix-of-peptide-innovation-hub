@@ -9,8 +9,8 @@ describe("checkout order rules", () => {
       { slug: "hgh", size: "10 IU", qty: 1 }, // 40
     ]);
     expect(priced?.subtotal).toBe(140);
-    expect(priced?.shipping).toBe(8);
-    expect(priced?.total).toBe(148);
+    expect(priced?.shipping).toBe(9);
+    expect(priced?.total).toBe(149);
   });
 
   it("recomputes free shipping from catalog prices on orders over $150", () => {

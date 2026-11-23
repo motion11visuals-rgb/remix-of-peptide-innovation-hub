@@ -1,7 +1,7 @@
 export const BUSINESS_ADDRESS = "12950 NW 17th St, Miami, FL 33182, United States";
-export const POLICY_VERSION = "2026-11-23";
+export const POLICY_VERSION = "2026-11-23-shipping-9";
 export const POLICY_DATE = "November 23, 2026";
-export const SHIPPING_FLAT_RATE = 8;
+export const SHIPPING_FLAT_RATE = 9;
 export const FREE_SHIPPING_THRESHOLD = 150;
 export const QUALITY_REFUND_CREDIT = 20;
 export const ORDER_PROCESSING_DAYS = { min: 1, max: 2 } as const;
