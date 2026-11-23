@@ -11,13 +11,23 @@ describe("owner shipping policy", () => {
   });
   it("charges a flat $9 below $150", () => {
     expect(orderTotals(35)).toEqual({ subtotal: 35, shipping: 9, processingFee: 2, total: 46 });
-    expect(orderTotals(149.99)).toEqual({ subtotal: 149.99, shipping: 9, processingFee: 2, total: 160.99 });
+    expect(orderTotals(149.99)).toEqual({
+      subtotal: 149.99,
+      shipping: 9,
+      processingFee: 2,
+      total: 160.99,
+    });
   });
   it("still charges $9 on exactly $150 because free shipping is only over $150", () => {
     expect(orderTotals(150)).toEqual({ subtotal: 150, shipping: 9, processingFee: 2, total: 161 });
   });
   it("waives shipping above $150", () => {
-    expect(orderTotals(150.01)).toEqual({ subtotal: 150.01, shipping: 0, processingFee: 2, total: 152.01 });
+    expect(orderTotals(150.01)).toEqual({
+      subtotal: 150.01,
+      shipping: 0,
+      processingFee: 2,
+      total: 152.01,
+    });
     expect(orderTotals(200)).toEqual({ subtotal: 200, shipping: 0, processingFee: 2, total: 202 });
   });
 });

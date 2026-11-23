@@ -17,15 +17,27 @@ import { PAYMENT_METHODS, type PaymentMethodId } from "@/lib/payments";
 import { BRAND, formatPrice } from "@/lib/products";
 import { AFFILIATIONS, readGateRecord } from "@/lib/research-gate";
 import { cn } from "@/lib/utils";
-import { orderTotals, POLICY_VERSION, ORDER_PROCESSING_LABEL, SHIPPING_FLAT_RATE, FREE_SHIPPING_THRESHOLD } from "@/lib/store-policy";
+import {
+  orderTotals,
+  POLICY_VERSION,
+  ORDER_PROCESSING_LABEL,
+  SHIPPING_FLAT_RATE,
+  FREE_SHIPPING_THRESHOLD,
+} from "@/lib/store-policy";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
     meta: [
       { title: "Checkout — Synthesia Labs" },
-      { name: "description", content: "Complete your research peptide order with Zelle, PayPal or Cash App." },
+      {
+        name: "description",
+        content: "Complete your research peptide order with Zelle, PayPal or Cash App.",
+      },
       { property: "og:title", content: "Checkout — Synthesia Labs" },
-      { property: "og:description", content: "Pay by Zelle, PayPal or Cash App and upload your payment confirmation." },
+      {
+        property: "og:description",
+        content: "Pay by Zelle, PayPal or Cash App and upload your payment confirmation.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
@@ -71,7 +83,9 @@ function Checkout() {
   const [org, setOrg] = useState("");
   const [affiliation, setAffiliation] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState<{ orderRef: string; total: number; method: string } | null>(null);
+  const [done, setDone] = useState<{ orderRef: string; total: number; method: string } | null>(
+    null,
+  );
   const totals = orderTotals(cart.subtotal);
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -81,7 +95,9 @@ function Checkout() {
     if (gate) {
       setOrg(gate.organization);
       const label = AFFILIATIONS.find((a) => a.value === gate.affiliation)?.label ?? "";
-      setAffiliation(gate.affiliation === "other" && gate.otherDetail ? `Other: ${gate.otherDetail}` : label);
+      setAffiliation(
+        gate.affiliation === "other" && gate.otherDetail ? `Other: ${gate.otherDetail}` : label,
+      );
     }
   }, []);
 
@@ -159,13 +175,18 @@ function Checkout() {
         <h1 className="mt-6 text-4xl font-semibold text-foreground">Order received</h1>
         <p className="mt-4 text-muted-foreground">
           Thanks! We'll verify your {done.method} payment of{" "}
-          <span className="text-foreground">{formatPrice(done.total)}</span>, including shipping and the processing fee. This receipt does not confirm payment settlement.
+          <span className="text-foreground">{formatPrice(done.total)}</span>, including shipping and
+          the processing fee. This receipt does not confirm payment settlement.
         </p>
         <div className="mx-auto mt-8 inline-block rounded-lg border bg-card-gradient px-8 py-5 shadow-card">
           <p className="eyebrow">Order reference</p>
-          <p className="mt-2 font-display text-3xl font-semibold text-primary-glow">{done.orderRef}</p>
+          <p className="mt-2 font-display text-3xl font-semibold text-primary-glow">
+            {done.orderRef}
+          </p>
         </div>
-        <p className="mt-6 text-sm text-muted-foreground">Keep this reference for any questions about your order.</p>
+        <p className="mt-6 text-sm text-muted-foreground">
+          Keep this reference for any questions about your order.
+        </p>
         <Button asChild variant="goldOutline" size="lg" className="mt-8">
           <Link to="/products">Back to catalog</Link>
         </Button>
@@ -177,7 +198,9 @@ function Checkout() {
     return (
       <div className="mx-auto max-w-xl px-6 pt-24 text-center">
         <h1 className="text-4xl font-semibold text-foreground">Your cart is empty</h1>
-        <p className="mt-4 text-muted-foreground">Add some compounds to your cart before checking out.</p>
+        <p className="mt-4 text-muted-foreground">
+          Add some compounds to your cart before checking out.
+        </p>
         <Button asChild variant="gold" size="lg" className="mt-8">
           <Link to="/products">Browse catalog</Link>
         </Button>
@@ -195,7 +218,9 @@ function Checkout() {
           {/* Step 1 */}
           <section>
             <h2 className="flex items-center gap-3 text-xl font-semibold text-foreground">
-              <span className="grid size-7 place-items-center rounded-full bg-gold text-sm text-primary-foreground">1</span>
+              <span className="grid size-7 place-items-center rounded-full bg-gold text-sm text-primary-foreground">
+                1
+              </span>
               Your details
             </h2>
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
@@ -213,7 +238,13 @@ function Checkout() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="organization">Institution / lab</Label>
-                <Input id="organization" name="organization" required value={org} onChange={(e) => setOrg(e.target.value)} />
+                <Input
+                  id="organization"
+                  name="organization"
+                  required
+                  value={org}
+                  onChange={(e) => setOrg(e.target.value)}
+                />
               </div>
               <input type="hidden" name="affiliation" value={affiliation} />
               <div className="space-y-2 sm:col-span-2">
@@ -240,10 +271,16 @@ function Checkout() {
           {/* Step 2 */}
           <section>
             <h2 className="flex items-center gap-3 text-xl font-semibold text-foreground">
-              <span className="grid size-7 place-items-center rounded-full bg-gold text-sm text-primary-foreground">2</span>
+              <span className="grid size-7 place-items-center rounded-full bg-gold text-sm text-primary-foreground">
+                2
+              </span>
               Send your payment
             </h2>
-            <div className="mt-6 grid grid-cols-3 gap-3" role="radiogroup" aria-label="Payment method">
+            <div
+              className="mt-6 grid grid-cols-3 gap-3"
+              role="radiogroup"
+              aria-label="Payment method"
+            >
               {PAYMENT_METHODS.map((m) => (
                 <button
                   key={m.id}
@@ -263,23 +300,40 @@ function Checkout() {
               ))}
             </div>
             <div className="mt-5 rounded-lg border bg-card-gradient p-6 shadow-card">
-              <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{selected.handleLabel}</p>
+              <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                {selected.handleLabel}
+              </p>
               <div className="mt-2">
                 <CopyField value={selected.copyValue} display={selected.handle} />
               </div>
               <div className="mt-5 flex flex-col items-center gap-2">
-                <img src={selected.qr} alt={`${selected.label} QR code`} className="w-56 max-w-full rounded-md border bg-background p-2" />
+                <img
+                  src={selected.qr}
+                  alt={`${selected.label} QR code`}
+                  className="w-56 max-w-full rounded-md border bg-background p-2"
+                />
                 <p className="text-xs text-muted-foreground">Scan with your {selected.label} app</p>
               </div>
               <div className="mt-5 grid gap-4 sm:grid-cols-2">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Amount</p>
-                  <p className="mt-1 font-display text-2xl font-semibold text-foreground">{formatPrice(totals.total)}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">Includes {formatPrice(totals.shipping)} shipping and {formatPrice(totals.processingFee)} processing fee</p>
+                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                    Amount
+                  </p>
+                  <p className="mt-1 font-display text-2xl font-semibold text-foreground">
+                    {formatPrice(totals.total)}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Includes {formatPrice(totals.shipping)} shipping and{" "}
+                    {formatPrice(totals.processingFee)} processing fee
+                  </p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Memo / note</p>
-                  <p className="mt-1 font-display text-2xl font-semibold text-primary">{orderRef || "…"}</p>
+                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                    Memo / note
+                  </p>
+                  <p className="mt-1 font-display text-2xl font-semibold text-primary">
+                    {orderRef || "…"}
+                  </p>
                 </div>
               </div>
               <ol className="mt-5 list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
@@ -288,8 +342,14 @@ function Checkout() {
                 ))}
               </ol>
               <div className="mt-5 space-y-2">
-                <Label htmlFor="paymentName">Name on your {selected.label} account (optional)</Label>
-                <Input id="paymentName" name="paymentName" placeholder="Helps us match your payment" />
+                <Label htmlFor="paymentName">
+                  Name on your {selected.label} account (optional)
+                </Label>
+                <Input
+                  id="paymentName"
+                  name="paymentName"
+                  placeholder="Helps us match your payment"
+                />
               </div>
             </div>
           </section>
@@ -297,7 +357,9 @@ function Checkout() {
           {/* Step 3 */}
           <section>
             <h2 className="flex items-center gap-3 text-xl font-semibold text-foreground">
-              <span className="grid size-7 place-items-center rounded-full bg-gold text-sm text-primary-foreground">3</span>
+              <span className="grid size-7 place-items-center rounded-full bg-gold text-sm text-primary-foreground">
+                3
+              </span>
               Upload your payment screenshot
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -314,10 +376,16 @@ function Checkout() {
             />
             {proof && preview ? (
               <div className="mt-5 flex items-center gap-5 rounded-lg border bg-surface p-4">
-                <img src={preview} alt="Payment screenshot preview" className="h-28 w-20 rounded-md border object-cover" />
+                <img
+                  src={preview}
+                  alt="Payment screenshot preview"
+                  className="h-28 w-20 rounded-md border object-cover"
+                />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm text-foreground">{proof.name}</p>
-                  <p className="text-xs text-muted-foreground">{(proof.size / 1024 / 1024).toFixed(2)} MB</p>
+                  <p className="text-xs text-muted-foreground">
+                    {(proof.size / 1024 / 1024).toFixed(2)} MB
+                  </p>
                   <button
                     type="button"
                     onClick={() => fileInput.current?.click()}
@@ -350,8 +418,12 @@ function Checkout() {
                 className="mt-5 flex w-full flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-primary/30 bg-surface px-6 py-10 text-center transition-colors hover:border-primary/60"
               >
                 <ImageUp className="size-8 text-primary" />
-                <span className="text-sm text-foreground">Click to upload or drag your screenshot here</span>
-                <span className="text-xs text-muted-foreground">PNG, JPG, WEBP or HEIC · up to 10 MB</span>
+                <span className="text-sm text-foreground">
+                  Click to upload or drag your screenshot here
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  PNG, JPG, WEBP or HEIC · up to 10 MB
+                </span>
               </button>
             )}
             <div className="mt-5 space-y-2">
@@ -371,7 +443,11 @@ function Checkout() {
                 if (!d) return null;
                 return (
                   <li key={`${l.slug}-${l.size}`} className="flex items-center gap-3 py-3">
-                    <VialImage name={d.product.name} liquid={d.product.slug === "lipo-c-b12"} className="size-12 shrink-0 overflow-hidden rounded-md border" />
+                    <VialImage
+                      name={d.product.name}
+                      liquid={d.product.slug === "lipo-c-b12"}
+                      className="size-12 shrink-0 overflow-hidden rounded-md border"
+                    />
                     <div className="flex-1">
                       <p className="text-sm font-semibold text-foreground">{d.product.name}</p>
                       <p className="text-xs text-muted-foreground">
@@ -384,15 +460,32 @@ function Checkout() {
               })}
             </ul>
             <dl className="mt-4 space-y-3 border-t pt-4 text-sm">
-              <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Merchandise subtotal</dt><dd>{formatPrice(totals.subtotal)}</dd></div>
-              <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Processing fee</dt><dd>{formatPrice(totals.processingFee)}</dd></div>
-              <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Shipping</dt><dd>{totals.shipping === 0 ? "Free" : formatPrice(totals.shipping)}</dd></div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">Merchandise subtotal</dt>
+                <dd>{formatPrice(totals.subtotal)}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">Processing fee</dt>
+                <dd>{formatPrice(totals.processingFee)}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">Shipping</dt>
+                <dd>{totals.shipping === 0 ? "Free" : formatPrice(totals.shipping)}</dd>
+              </div>
             </dl>
-            <p className="mt-3 text-xs text-muted-foreground">{formatPrice(SHIPPING_FLAT_RATE)} flat-rate shipping · Free on merchandise orders over ${FREE_SHIPPING_THRESHOLD}</p>
-            <p className="mt-2 text-xs text-muted-foreground">Processing: {ORDER_PROCESSING_LABEL} after payment verification and research eligibility review. Carrier transit time is additional.</p>
+            <p className="mt-3 text-xs text-muted-foreground">
+              {formatPrice(SHIPPING_FLAT_RATE)} flat-rate shipping · Free on merchandise orders over
+              ${FREE_SHIPPING_THRESHOLD}
+            </p>
+            <p className="mt-2 text-xs text-muted-foreground">
+              Processing: {ORDER_PROCESSING_LABEL} after payment verification and research
+              eligibility review. Carrier transit time is additional.
+            </p>
             <div className="mt-4 flex items-baseline justify-between border-t pt-4">
               <span className="text-muted-foreground">Total</span>
-              <span className="font-display text-3xl font-semibold text-primary-glow">{formatPrice(totals.total)}</span>
+              <span className="font-display text-3xl font-semibold text-primary-glow">
+                {formatPrice(totals.total)}
+              </span>
             </div>
             <label className="mt-6 flex items-start gap-3 text-xs leading-relaxed text-muted-foreground">
               <Checkbox
@@ -404,18 +497,70 @@ function Checkout() {
               I confirm this order is for laboratory research use only. {BRAND.disclaimer}
             </label>
             <div className="mt-4 flex items-start gap-3 text-xs leading-relaxed text-muted-foreground">
-              <Checkbox id="store-terms" checked={termsAgreed} onCheckedChange={(value) => setTermsAgreed(value === true)} aria-label="Accept terms and store policies" className="mt-0.5" />
+              <Checkbox
+                id="store-terms"
+                checked={termsAgreed}
+                onCheckedChange={(value) => setTermsAgreed(value === true)}
+                aria-label="Accept terms and store policies"
+                className="mt-0.5"
+              />
               <div>
                 <label htmlFor="store-terms">I agree to the </label>
-                <Link to="/terms" target="_blank" rel="noopener" className="text-primary underline">Terms & Conditions</Link>, <Link to="/research-use-only" target="_blank" rel="noopener" className="text-primary underline">Research Use Only Policy</Link>, <Link to="/shipping-policy" target="_blank" rel="noopener" className="text-primary underline">Shipping Policy</Link>, and <Link to="/return-policy" target="_blank" rel="noopener" className="text-primary underline">Return Policy</Link>, and acknowledge the <Link to="/privacy-policy" target="_blank" rel="noopener" className="text-primary underline">Privacy Policy</Link>.
+                <Link to="/terms" target="_blank" rel="noopener" className="text-primary underline">
+                  Terms & Conditions
+                </Link>
+                ,{" "}
+                <Link
+                  to="/research-use-only"
+                  target="_blank"
+                  rel="noopener"
+                  className="text-primary underline"
+                >
+                  Research Use Only Policy
+                </Link>
+                ,{" "}
+                <Link
+                  to="/shipping-policy"
+                  target="_blank"
+                  rel="noopener"
+                  className="text-primary underline"
+                >
+                  Shipping Policy
+                </Link>
+                , and{" "}
+                <Link
+                  to="/return-policy"
+                  target="_blank"
+                  rel="noopener"
+                  className="text-primary underline"
+                >
+                  Return Policy
+                </Link>
+                , and acknowledge the{" "}
+                <Link
+                  to="/privacy-policy"
+                  target="_blank"
+                  rel="noopener"
+                  className="text-primary underline"
+                >
+                  Privacy Policy
+                </Link>
+                .
               </div>
             </div>
-            <Button type="submit" variant="gold" size="xl" className="mt-6 w-full" disabled={submitting || !orderRef}>
+            <Button
+              type="submit"
+              variant="gold"
+              size="xl"
+              className="mt-6 w-full"
+              disabled={submitting || !orderRef}
+            >
               {submitting ? <Loader2 className="animate-spin" /> : <ShieldCheck />}
               {submitting ? "Submitting…" : "Submit order"}
             </Button>
             <p className="mt-3 text-center text-xs text-muted-foreground">
-              Orders are processed in {ORDER_PROCESSING_LABEL} after payment verification and research eligibility review.
+              Orders are processed in {ORDER_PROCESSING_LABEL} after payment verification and
+              research eligibility review.
             </p>
           </div>
         </aside>

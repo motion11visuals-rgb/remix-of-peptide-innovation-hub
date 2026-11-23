@@ -8,28 +8,43 @@ export const Route = createFileRoute("/products/")({
   head: () => ({
     meta: [
       { title: "Research Peptides & Compounds Catalog | Synthesia Labs" },
-      { name: "description", content: "Compare Retatrutide, Tirzepatide, GHK-Cu, Semax, HGH and other laboratory compounds by vial size, price and availability. Research use only. COAs on request." },
+      {
+        name: "description",
+        content:
+          "Compare Retatrutide, Tirzepatide, GHK-Cu, Semax, HGH and other laboratory compounds by vial size, price and availability. Research use only. COAs on request.",
+      },
       { property: "og:title", content: "Research Peptides & Compounds Catalog | Synthesia Labs" },
-      { property: "og:description", content: "Browse vial sizes, prices and availability for research peptides and laboratory compounds. Facility COAs on request; not for human consumption." },
+      {
+        property: "og:description",
+        content:
+          "Browse vial sizes, prices and availability for research peptides and laboratory compounds. Facility COAs on request; not for human consumption.",
+      },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/products" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/products" }],
-    scripts: [{
-      type: "application/ld+json",
-      children: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        name: "Synthesia Labs research catalog",
-        url: "/products",
-        mainEntity: {
-          "@type": "ItemList",
-          numberOfItems: PRODUCTS.length,
-          itemListElement: PRODUCTS.map((product, index) => ({ "@type": "ListItem", position: index + 1, name: `${product.name} — ${product.fullName}`, url: `/products/${product.slug}` })),
-        },
-      }),
-    }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Synthesia Labs research catalog",
+          url: "/products",
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: PRODUCTS.length,
+            itemListElement: PRODUCTS.map((product, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              name: `${product.name} — ${product.fullName}`,
+              url: `/products/${product.slug}`,
+            })),
+          },
+        }),
+      },
+    ],
   }),
   component: Catalog,
 });
@@ -43,11 +58,14 @@ function Catalog() {
     <section className="mx-auto max-w-7xl px-6 pt-20">
       <p className="eyebrow">Catalog</p>
       <h1 className="mt-3 text-5xl font-semibold text-foreground md:text-6xl">Research peptides</h1>
-      <p className="mt-4 font-classic text-xl font-semibold text-primary">Best prices. Best quality.</p>
+      <p className="mt-4 font-classic text-xl font-semibold text-primary">
+        Best prices. Best quality.
+      </p>
       <p className="mt-4 max-w-xl text-muted-foreground">
-        Every vial comes with laboratory-use directions and applicable COA information. Lipo-C with B12 is
-        supplied as a red liquid; peptide forms are listed on each product page. Full facility Certificates of
-        Analysis are available on request — text us on WhatsApp for your lot. For research use only.
+        Every vial comes with laboratory-use directions and applicable COA information. Lipo-C with
+        B12 is supplied as a red liquid; peptide forms are listed on each product page. Full
+        facility Certificates of Analysis are available on request — text us on WhatsApp for your
+        lot. For research use only.
       </p>
       <div className="mt-10 flex flex-wrap gap-2">
         {(["All", ...CATEGORIES] as const).map((c) => (

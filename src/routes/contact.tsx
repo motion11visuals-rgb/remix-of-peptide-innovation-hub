@@ -20,9 +20,15 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact & Orders — Synthesia Labs" },
-      { name: "description", content: "Request an order, bulk pricing or custom synthesis from Synthesia Labs." },
+      {
+        name: "description",
+        content: "Request an order, bulk pricing or custom synthesis from Synthesia Labs.",
+      },
       { property: "og:title", content: "Contact & Orders — Synthesia Labs" },
-      { property: "og:description", content: "Order requests, institutional pricing and custom synthesis." },
+      {
+        property: "og:description",
+        content: "Order requests, institutional pricing and custom synthesis.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -46,7 +52,9 @@ function Contact() {
       toast.error("Please confirm research-use-only terms.");
       return;
     }
-    toast.success("Request received", { description: "Our team will reply within one business day." });
+    toast.success("Request received", {
+      description: "Our team will reply within one business day.",
+    });
     e.currentTarget.reset();
     setAgreed(false);
   }
@@ -57,10 +65,14 @@ function Contact() {
         <p className="eyebrow">Contact & orders</p>
         <h1 className="mt-4 text-5xl font-semibold text-foreground">Let's talk research.</h1>
         <p className="mt-6 text-muted-foreground">
-          Order requests, bulk pricing, custom sequences or COA questions — we usually reply within one business day.
+          Order requests, bulk pricing, custom sequences or COA questions — we usually reply within
+          one business day.
         </p>
         <div className="mt-10 space-y-4 text-sm">
-          <a href={`mailto:${BRAND.email}`} className="flex items-center gap-3 text-foreground hover:text-primary">
+          <a
+            href={`mailto:${BRAND.email}`}
+            className="flex items-center gap-3 text-foreground hover:text-primary"
+          >
             <Mail className="size-5 text-primary" /> {BRAND.email}
           </a>
           <p className="flex items-center gap-3 text-muted-foreground">
@@ -76,7 +88,10 @@ function Contact() {
           </a>
         </div>
       </div>
-      <form onSubmit={onSubmit} className="space-y-5 rounded-lg border bg-card-gradient p-8 shadow-card lg:col-span-3">
+      <form
+        onSubmit={onSubmit}
+        className="space-y-5 rounded-lg border bg-card-gradient p-8 shadow-card lg:col-span-3"
+      >
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
@@ -93,15 +108,26 @@ function Contact() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="product">Order details</Label>
-          <Textarea id="product" name="product" rows={3} defaultValue={product ?? ""} placeholder="e.g. BPC-157 10 mg × 5" />
+          <Textarea
+            id="product"
+            name="product"
+            rows={3}
+            defaultValue={product ?? ""}
+            placeholder="e.g. BPC-157 10 mg × 5"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="message">Message</Label>
           <Textarea id="message" name="message" rows={5} required />
         </div>
         <label className="flex items-start gap-3 text-sm text-muted-foreground">
-          <Checkbox checked={agreed} onCheckedChange={(v) => setAgreed(v === true)} className="mt-0.5" />
-          I confirm these products are for laboratory research use only and not for human consumption.
+          <Checkbox
+            checked={agreed}
+            onCheckedChange={(v) => setAgreed(v === true)}
+            className="mt-0.5"
+          />
+          I confirm these products are for laboratory research use only and not for human
+          consumption.
         </label>
         <Button type="submit" variant="gold" size="xl" className="w-full">
           Send request

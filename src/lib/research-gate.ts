@@ -35,7 +35,8 @@ export function validateGate(input: GateInput): GateErrors {
   if (!input.affiliation) errors.affiliation = "Select your affiliation.";
   if (input.affiliation === "other" && input.otherDetail.trim().length < 2)
     errors.otherDetail = "Tell us what type of organization you're with.";
-  if (input.organization.trim().length < 2) errors.organization = "Enter your institution, lab or company name.";
+  if (input.organization.trim().length < 2)
+    errors.organization = "Enter your institution, lab or company name.";
   if (!input.isAdult) errors.isAdult = "You must confirm you are 21 or older.";
   if (!input.researchOnly) errors.researchOnly = "You must agree to research-use-only terms.";
   return errors;

@@ -2,7 +2,14 @@ import { Link } from "@tanstack/react-router";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { VialImage } from "./VialImage";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { useCart } from "@/lib/cart";
 import { lineDetails } from "@/lib/cart-logic";
 import { formatPrice } from "@/lib/products";
@@ -32,7 +39,9 @@ export function CartSheet() {
       <SheetContent className="flex w-full flex-col border-l bg-background sm:max-w-md">
         <SheetHeader>
           <SheetTitle className="font-display text-2xl text-foreground">Your cart</SheetTitle>
-          <SheetDescription className="text-muted-foreground">Research use only. Not for human consumption.</SheetDescription>
+          <SheetDescription className="text-muted-foreground">
+            Research use only. Not for human consumption.
+          </SheetDescription>
         </SheetHeader>
 
         {lines.length === 0 ? (
@@ -51,12 +60,20 @@ export function CartSheet() {
                 if (!d) return null;
                 return (
                   <li key={`${l.slug}-${l.size}`} className="flex gap-4 py-4">
-                    <VialImage name={d.product.name} liquid={d.product.slug === "lipo-c-b12"} className="size-16 shrink-0 overflow-hidden rounded-md border" />
+                    <VialImage
+                      name={d.product.name}
+                      liquid={d.product.slug === "lipo-c-b12"}
+                      className="size-16 shrink-0 overflow-hidden rounded-md border"
+                    />
                     <div className="flex flex-1 flex-col">
                       <div className="flex justify-between gap-2">
                         <div>
-                          <p className="font-display font-semibold text-foreground">{d.product.name}</p>
-                          <p className="text-xs text-muted-foreground">{l.size} · {formatPrice(d.unitPrice)}</p>
+                          <p className="font-display font-semibold text-foreground">
+                            {d.product.name}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {l.size} · {formatPrice(d.unitPrice)}
+                          </p>
                         </div>
                         <p className="font-display text-sm text-primary">{formatPrice(d.total)}</p>
                       </div>
@@ -94,10 +111,20 @@ export function CartSheet() {
             <SheetFooter className="flex-col gap-4 sm:flex-col">
               <div className="flex items-baseline justify-between">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-display text-2xl font-semibold text-primary-glow">{formatPrice(subtotal)}</span>
+                <span className="font-display text-2xl font-semibold text-primary-glow">
+                  {formatPrice(subtotal)}
+                </span>
               </div>
-              <p className="text-xs text-muted-foreground">Pay by Zelle, PayPal or Cash App at checkout.</p>
-              <Button asChild variant="gold" size="xl" className="w-full" onClick={() => setOpen(false)}>
+              <p className="text-xs text-muted-foreground">
+                Pay by Zelle, PayPal or Cash App at checkout.
+              </p>
+              <Button
+                asChild
+                variant="gold"
+                size="xl"
+                className="w-full"
+                onClick={() => setOpen(false)}
+              >
                 <Link to="/checkout">Checkout</Link>
               </Button>
             </SheetFooter>

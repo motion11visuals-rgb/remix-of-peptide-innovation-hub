@@ -12,7 +12,12 @@ export const PROCESSING_FEE = 2;
 export function orderTotals(subtotal: number) {
   const cents = Math.round(subtotal * 100);
   const shipping = cents > FREE_SHIPPING_THRESHOLD * 100 ? 0 : SHIPPING_FLAT_RATE;
-  return { subtotal: cents / 100, shipping, processingFee: PROCESSING_FEE, total: (cents + shipping * 100 + PROCESSING_FEE * 100) / 100 };
+  return {
+    subtotal: cents / 100,
+    shipping,
+    processingFee: PROCESSING_FEE,
+    total: (cents + shipping * 100 + PROCESSING_FEE * 100) / 100,
+  };
 }
 
 export const POLICY_LINKS = [

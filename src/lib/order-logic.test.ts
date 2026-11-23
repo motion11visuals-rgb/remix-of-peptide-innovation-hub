@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { generateOrderRef, isValidOrderRef, priceOrder, validateProof, MAX_PROOF_BYTES, orderFieldsSchema } from "./order-logic";
+import {
+  generateOrderRef,
+  isValidOrderRef,
+  priceOrder,
+  validateProof,
+  MAX_PROOF_BYTES,
+  orderFieldsSchema,
+} from "./order-logic";
 import { POLICY_VERSION } from "./store-policy";
 
 describe("checkout order rules", () => {
@@ -23,7 +30,12 @@ describe("checkout order rules", () => {
 
   it("rejects the canceled lab-tools set even when submitted directly", () => {
     expect(priceOrder([{ slug: "research-lab-tools", size: "Set", qty: 1 }])).toBeNull();
-    expect(priceOrder([{ slug: "retatrutide", size: "5 mg", qty: 1 }, { slug: "research-lab-tools", size: "Set", qty: 1 }])).toBeNull();
+    expect(
+      priceOrder([
+        { slug: "retatrutide", size: "5 mg", qty: 1 },
+        { slug: "research-lab-tools", size: "Set", qty: 1 },
+      ]),
+    ).toBeNull();
   });
 
   it("prices orders from the catalog, not from the browser", () => {
@@ -45,7 +57,20 @@ describe("checkout order rules", () => {
   });
 
   it("requires affirmative acceptance of current store policies", () => {
-    const fields = { orderRef: "AU-ABCDEF", customerName: "Test Researcher", email: "test@example.com", organization: "Test Lab", address: "123 Test Street", city: "Miami", state: "FL", zip: "33182", paymentMethod: "zelle", researchOnly: "true", termsAccepted: "true", policyVersion: POLICY_VERSION };
+    const fields = {
+      orderRef: "AU-ABCDEF",
+      customerName: "Test Researcher",
+      email: "test@example.com",
+      organization: "Test Lab",
+      address: "123 Test Street",
+      city: "Miami",
+      state: "FL",
+      zip: "33182",
+      paymentMethod: "zelle",
+      researchOnly: "true",
+      termsAccepted: "true",
+      policyVersion: POLICY_VERSION,
+    };
     expect(orderFieldsSchema.safeParse(fields).success).toBe(true);
     expect(orderFieldsSchema.safeParse({ ...fields, termsAccepted: "false" }).success).toBe(false);
     expect(orderFieldsSchema.safeParse({ ...fields, policyVersion: "old" }).success).toBe(false);
@@ -54,7 +79,12 @@ describe("checkout order rules", () => {
   it("rejects orders containing a sold-out peptide or size", () => {
     expect(priceOrder([{ slug: "cjc-1295-ipamorelin", size: "5 mg / 5 mg", qty: 1 }])).toBeNull();
     expect(priceOrder([{ slug: "hgh", size: "100 IU kit", qty: 1 }])).toBeNull();
-    expect(priceOrder([{ slug: "retatrutide", size: "20 mg", qty: 1 }, { slug: "kpv", size: "10 mg", qty: 1 }])).toBeNull();
+    expect(
+      priceOrder([
+        { slug: "retatrutide", size: "20 mg", qty: 1 },
+        { slug: "kpv", size: "10 mg", qty: 1 },
+      ]),
+    ).toBeNull();
   });
 
   it("rejects unknown products, unknown sizes and empty carts", () => {

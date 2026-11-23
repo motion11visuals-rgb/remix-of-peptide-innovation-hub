@@ -21,7 +21,13 @@ import { subscribeMarketing } from "@/lib/marketing.functions";
 import { Link, useLocation } from "@tanstack/react-router";
 import { isPolicyPath } from "@/lib/store-policy";
 
-const EMPTY: GateInput = { affiliation: "", otherDetail: "", organization: "", isAdult: false, researchOnly: false };
+const EMPTY: GateInput = {
+  affiliation: "",
+  otherDetail: "",
+  organization: "",
+  isAdult: false,
+  researchOnly: false,
+};
 
 export function ResearchGate() {
   const pathname = useLocation({ select: (location) => location.pathname });
@@ -59,12 +65,16 @@ export function ResearchGate() {
     setErrors(errs);
     const wantsPromo = promoOptIn || promoEmail.trim() !== "";
     if (wantsPromo && (!promoOptIn || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(promoEmail.trim()))) {
-      setPromoError(!promoOptIn ? "Tick the box to receive deals, or clear the email." : "Enter a valid email.");
+      setPromoError(
+        !promoOptIn ? "Tick the box to receive deals, or clear the email." : "Enter a valid email.",
+      );
       return;
     }
     if (Object.keys(errs).length > 0 || !form.affiliation) return;
     if (wantsPromo) {
-      void subscribeMarketing({ data: { email: promoEmail.trim(), organization: form.organization } }).catch(() => {});
+      void subscribeMarketing({
+        data: { email: promoEmail.trim(), organization: form.organization },
+      }).catch(() => {});
     }
     const record: GateRecord = {
       affiliation: form.affiliation,
@@ -98,7 +108,8 @@ export function ResearchGate() {
           Welcome to {BRAND.name}
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Our products are supplied exclusively for laboratory research. Please tell us who you're with before entering.
+          Our products are supplied exclusively for laboratory research. Please tell us who you're
+          with before entering.
         </p>
 
         <fieldset className="mt-6">
@@ -122,7 +133,9 @@ export function ResearchGate() {
               </Label>
             ))}
           </RadioGroup>
-          {errors.affiliation && <p className="mt-2 text-xs text-destructive">{errors.affiliation}</p>}
+          {errors.affiliation && (
+            <p className="mt-2 text-xs text-destructive">{errors.affiliation}</p>
+          )}
         </fieldset>
 
         {form.affiliation === "other" && (
@@ -168,8 +181,8 @@ export function ResearchGate() {
               className="mt-0.5"
               aria-label="I agree to research use only terms"
             />
-            I understand all products are for laboratory research use only, not for human or veterinary use, and not
-            for consumption.
+            I understand all products are for laboratory research use only, not for human or
+            veterinary use, and not for consumption.
           </label>
           {errors.researchOnly && <p className="text-xs text-destructive">{errors.researchOnly}</p>}
         </div>
@@ -203,16 +216,24 @@ export function ResearchGate() {
 
         <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <Button asChild variant="ghost" className="text-muted-foreground">
-            <a href="https://www.google.com" rel="noopener">Leave site</a>
+            <a href="https://www.google.com" rel="noopener">
+              Leave site
+            </a>
           </Button>
           <Button type="submit" variant="gold" size="lg">
             Enter site
           </Button>
         </div>
         <p className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
-          <Link to="/privacy-policy" className="underline underline-offset-4">Privacy Policy</Link>
-          <Link to="/terms" className="underline underline-offset-4">Terms & Conditions</Link>
-          <Link to="/research-use-only" className="underline underline-offset-4">Research Use Only Policy</Link>
+          <Link to="/privacy-policy" className="underline underline-offset-4">
+            Privacy Policy
+          </Link>
+          <Link to="/terms" className="underline underline-offset-4">
+            Terms & Conditions
+          </Link>
+          <Link to="/research-use-only" className="underline underline-offset-4">
+            Research Use Only Policy
+          </Link>
         </p>
       </form>
     </div>

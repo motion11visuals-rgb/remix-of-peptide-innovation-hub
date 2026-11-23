@@ -100,9 +100,23 @@
   --sidebar-border: oklch(0.66 0.13 80 / 30%);
   --sidebar-ring: oklch(0.66 0.13 80);
 
-  --gradient-gold: linear-gradient(120deg, oklch(0.6 0.13 75) 0%, var(--primary-glow) 50%, oklch(0.6 0.13 75) 100%);
-  --gradient-fade-left: linear-gradient(90deg, var(--background) 0%, oklch(0.995 0.003 90 / 88%) 45%, oklch(0.995 0.003 90 / 0%) 80%);
-  --gradient-fade-bottom: linear-gradient(0deg, var(--background) 0%, oklch(0.995 0.003 90 / 0%) 40%);
+  --gradient-gold: linear-gradient(
+    120deg,
+    oklch(0.6 0.13 75) 0%,
+    var(--primary-glow) 50%,
+    oklch(0.6 0.13 75) 100%
+  );
+  --gradient-fade-left: linear-gradient(
+    90deg,
+    var(--background) 0%,
+    oklch(0.995 0.003 90 / 88%) 45%,
+    oklch(0.995 0.003 90 / 0%) 80%
+  );
+  --gradient-fade-bottom: linear-gradient(
+    0deg,
+    var(--background) 0%,
+    oklch(0.995 0.003 90 / 0%) 40%
+  );
   --gradient-card: linear-gradient(160deg, oklch(1 0 0) 0%, oklch(0.975 0.012 88) 100%);
   --shadow-gold: 0 10px 30px -12px oklch(0.66 0.13 80 / 45%);
   --shadow-card: 0 0 0 1px oklch(0.66 0.13 80 / 12%), 0 18px 36px -24px oklch(0.4 0.05 75 / 35%);
@@ -135,7 +149,10 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-classic);
     letter-spacing: -0.02em;
   }

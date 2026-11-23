@@ -6,9 +6,16 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About — Synthesia Labs" },
-      { name: "description", content: "Synthesia Labs supplies research laboratories with rigorously tested synthetic peptides." },
+      {
+        name: "description",
+        content:
+          "Synthesia Labs supplies research laboratories with rigorously tested synthetic peptides.",
+      },
       { property: "og:title", content: "About — Synthesia Labs" },
-      { property: "og:description", content: "Our mission: transparent, reproducible peptide supply for research." },
+      {
+        property: "og:description",
+        content: "Our mission: transparent, reproducible peptide supply for research.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -17,9 +24,18 @@ export const Route = createFileRoute("/about")({
 });
 
 const VALUES = [
-  { title: "Transparency", body: "Lot-level data for every vial. If we can't prove it, we don't ship it." },
-  { title: "Consistency", body: "Tight specifications so results replicate from one order to the next." },
-  { title: "Responsibility", body: "We supply qualified researchers only, and every product is labeled for research use." },
+  {
+    title: "Transparency",
+    body: "Lot-level data for every vial. If we can't prove it, we don't ship it.",
+  },
+  {
+    title: "Consistency",
+    body: "Tight specifications so results replicate from one order to the next.",
+  },
+  {
+    title: "Responsibility",
+    body: "We supply qualified researchers only, and every product is labeled for research use.",
+  },
 ];
 
 function About() {
@@ -32,15 +48,22 @@ function About() {
             Supplying science with <span className="text-gold">certainty.</span>
           </h1>
           <p className="mt-6 text-lg text-muted-foreground">
-            Synthesia Labs was founded by analytical chemists frustrated by inconsistent peptide quality. We built the supplier
-            we wanted: verified compounds, honest documentation and responsive support.
+            Synthesia Labs was founded by analytical chemists frustrated by inconsistent peptide
+            quality. We built the supplier we wanted: verified compounds, honest documentation and
+            responsive support.
           </p>
           <Button asChild variant="gold" size="xl" className="mt-8">
             <Link to="/products">Explore the catalog</Link>
           </Button>
         </div>
         <div className="overflow-hidden rounded-lg border">
-          <img src={hero} alt="Synthesia Labs peptide vials" width={1672} height={941} className="aspect-[4/3] w-full object-cover object-right" />
+          <img
+            src={hero}
+            alt="Synthesia Labs peptide vials"
+            width={1672}
+            height={941}
+            className="aspect-[4/3] w-full object-cover object-right"
+          />
         </div>
       </div>
       <div className="mt-28 grid gap-6 md:grid-cols-3">

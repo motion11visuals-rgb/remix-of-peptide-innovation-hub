@@ -19,8 +19,12 @@ describe("research visitor gate", () => {
   });
 
   it("requires a description when 'Other' is chosen", () => {
-    expect(validateGate({ ...valid, affiliation: "other", otherDetail: "" }).otherDetail).toBeDefined();
-    expect(validateGate({ ...valid, affiliation: "other", otherDetail: "Veterinary school" })).toEqual({});
+    expect(
+      validateGate({ ...valid, affiliation: "other", otherDetail: "" }).otherDetail,
+    ).toBeDefined();
+    expect(
+      validateGate({ ...valid, affiliation: "other", otherDetail: "Veterinary school" }),
+    ).toEqual({});
   });
 
   it("requires the institution name", () => {
