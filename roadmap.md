@@ -1,4 +1,6 @@
 # Requested updates
+- [x] Update order reads and approvals to verify the owner's token with getUser against the browser's paired connection; token/configuration regression tests pass.
+- [ ] Confirm orders load on the live Vercel site after redeployment — blocked on the external deployment and an owner sign-in; preview owner verification also awaits owner sign-in.
 - [x] Add and verify automatic order-details email with shipping label pending notice; checkout test AU-98UMGE saved and a sent event confirmed for the owner's Gmail.
 - [ ] Activate order emails on the separate Vercel site — blocked because Lovable's managed sending credential is not provided there; Lovable-hosted production requires publishing.
 - [x] Owner can approve orders ("Review successful") on the orders page; orders page no longer needs a private server key.

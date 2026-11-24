@@ -1,11 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireOrderAuth } from "@/lib/order-auth";
 import { parseOrderStatusInput } from "@/lib/order-status";
 
 // Uses the signed-in owner's own session (admin-only access rules in the database),
 // so the orders page works without any private server key.
 export const listOrders = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireOrderAuth])
   .handler(async ({ context }) => {
     const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
     if (!isAdmin) return { ok: false as const, error: null, orders: [] };
@@ -22,7 +22,7 @@ export const listOrders = createServerFn({ method: "GET" })
   });
 
 export const setOrderStatus = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireOrderAuth])
   .inputValidator(parseOrderStatusInput)
   .handler(async ({ context, data }) => {
     const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
