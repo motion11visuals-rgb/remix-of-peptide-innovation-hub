@@ -1,4 +1,6 @@
 # Requested updates
+- [x] Check photo rejection throughout selection, submission, storage configuration, and owner-view code; normalize missing phone MIME types consistently without altering past orders.
+- [ ] Fix the reproduced live screenshot storage error — blocked on the Vercel “proof upload failed” log; no matching Cloud logs are available.
 - [x] Fix and verify payment screenshot attachment on phone-sized checkout.
 - [x] Change shipping to $9 throughout checkout, saved order pricing, and policies; verify.
 - [x] Remove the canceled lab-tools set and add and verify a flat $2 processing fee per order.

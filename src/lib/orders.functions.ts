@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { orderFieldsSchema, orderItemSchema, priceOrder, validateProof } from "./order-logic";
+import { normalizeProof, orderFieldsSchema, orderItemSchema, priceOrder, validateProof } from "./order-logic";
 
 type SubmitResult = { ok: true; orderRef: string; subtotal: number; shipping: number; total: number } | { ok: false; error: string };
 
@@ -46,7 +46,7 @@ export const submitOrder = createServerFn({ method: "POST" })
     if (!priced) return { ok: false, error: "Your cart has an item that is sold out or no longer carried. Please update your cart." };
 
     const proof = data.get("proof");
-    const file = proof instanceof File ? proof : null;
+    const file = proof instanceof File ? normalizeProof(proof) : null;
     const proofError = validateProof(file);
     if (proofError || !file) return { ok: false, error: proofError ?? "Upload your payment screenshot." };
 
