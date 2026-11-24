@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { PRODUCTS, isSizeAvailable } from "./products";
 import { orderTotals, POLICY_VERSION } from "./store-policy";
+import { KITS, warehouseFreeShipping } from "./china-warehouse";
 
 export const MAX_PROOF_BYTES = 10 * 1024 * 1024;
 export const PROOF_TYPES = ["image/png", "image/jpeg", "image/webp", "image/heic", "image/heif"];
@@ -54,11 +55,11 @@ export const orderFieldsSchema = z.object({
 export type PricedLine = { slug: string; name: string; size: string; qty: number; unitPrice: number; total: number };
 
 /** Prices an order from the catalog; never trusts client-sent prices. Returns null if any item is unknown or sold out. */
-export function priceOrder(items: z.infer<typeof orderItemSchema>[]): { lines: PricedLine[]; subtotal: number; shipping: number; processingFee: number; total: number } | null {
+export function priceOrder(items: z.infer<typeof orderItemSchema>[], now: Date = new Date()): { lines: PricedLine[]; subtotal: number; shipping: number; processingFee: number; total: number } | null {
   if (items.length === 0) return null;
   const lines: PricedLine[] = [];
   for (const item of items) {
-    const product = PRODUCTS.find((p) => p.slug === item.slug);
+    const product = PRODUCTS.find((p) => p.slug === item.slug) ?? KITS.find((k) => k.slug === item.slug);
     const size = product?.sizes.find((s) => s.label === item.size);
     if (!product || !size || !isSizeAvailable(product, size.label)) return null;
     lines.push({
@@ -70,7 +71,7 @@ export function priceOrder(items: z.infer<typeof orderItemSchema>[]): { lines: P
       total: size.price * item.qty,
     });
   }
-  const totals = orderTotals(lines.reduce((s, l) => s + l.total, 0));
+  const totals = orderTotals(lines.reduce((s, l) => s + l.total, 0), { freeShipping: warehouseFreeShipping(lines.map((l) => l.slug), now) });
   return { lines, ...totals };
 }
 

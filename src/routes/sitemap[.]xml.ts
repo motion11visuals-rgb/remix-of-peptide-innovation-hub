@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { getRouterInstance } from "@tanstack/react-start";
 import { isSitemapRouteIncluded, sitemapPathForLocation, sitemapStaticPaths, sitemapXML, type SitemapEntry } from "@/lib/sitemap";
 import { PRODUCTS } from "@/lib/products";
+import { KITS } from "@/lib/china-warehouse";
 
 const BASE_URL = "https://synthesialabsofficial.com";
 
@@ -27,6 +28,8 @@ export const Route = createFileRoute("/sitemap.xml")({
             if (path) entries.push({ path });
           }
         }
+
+        for (const kit of KITS) entries.push({ path: `/china-warehouse/${kit.slug}` });
 
         if (entries.length === 0) {
           return new Response(

@@ -1,4 +1,5 @@
 import { PRODUCTS, formatPrice, isSizeAvailable } from "./products";
+import { KITS } from "./china-warehouse";
 
 export type CartLine = { slug: string; size: string; qty: number };
 
@@ -25,10 +26,11 @@ export function setLineQty(lines: CartLine[], slug: string, size: string, qty: n
 }
 
 export function lineDetails(line: CartLine) {
-  const product = PRODUCTS.find((p) => p.slug === line.slug);
+  const product = PRODUCTS.find((p) => p.slug === line.slug) ?? KITS.find((k) => k.slug === line.slug);
   const size = product?.sizes.find((s) => s.label === line.size);
   if (!product || !size || !isSizeAvailable(product, size.label)) return undefined;
-  return { product, unitPrice: size.price, total: size.price * line.qty };
+  const liquid = product.slug === "lipo-c-b12" || ("liquid" in product && product.liquid === true);
+  return { product, liquid, unitPrice: size.price, total: size.price * line.qty };
 }
 
 export function cartSubtotal(lines: CartLine[]): number {

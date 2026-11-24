@@ -45,3 +45,4 @@ use the editor.
 - All catalog, product, cart, and checkout vial pictures use `VialImage` with an explicit liquid flag so product appearance stays consistent across shopping views.
 - Processing-day bounds and their display label live in `store-policy.ts` so homepage, shipping policy, and checkout share the tested time range.
 - Owner order reads and approvals use requireOrderAuth to verify the bearer via getUser against the browser's paired URL/publishable key (internal preview URL only when keys match), then check has_role and apply admin-only database policies; this prevents external-host environment mismatches and JWKS-only token rejection without a private key. Allowed review statuses live in order-status.ts (tested).
+- China warehouse section sells only 10-vial kits; prices are supplier 1–20 box price ×3, live in src/lib/china-warehouse.ts. Free shipping only on warehouse-only orders in Nov/Dec; 7–14 day shipping.

@@ -51,7 +51,7 @@ export function CartSheet() {
                 if (!d) return null;
                 return (
                   <li key={`${l.slug}-${l.size}`} className="flex gap-4 py-4">
-                    <VialImage name={d.product.name} liquid={d.product.slug === "lipo-c-b12"} className="size-16 shrink-0 overflow-hidden rounded-md border" />
+                    <VialImage name={d.product.name} liquid={d.liquid} className="size-16 shrink-0 overflow-hidden rounded-md border" />
                     <div className="flex flex-1 flex-col">
                       <div className="flex justify-between gap-2">
                         <div>

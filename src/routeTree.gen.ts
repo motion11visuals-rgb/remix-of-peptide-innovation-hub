@@ -23,6 +23,8 @@ import { Route as ReturnPolicyRouteImport } from './routes/return-policy'
 import { Route as ShippingPolicyRouteImport } from './routes/shipping-policy'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ChinaWarehouseIndexRouteImport } from './routes/china-warehouse.index'
+import { Route as ChinaWarehouseSlugRouteImport } from './routes/china-warehouse.$slug'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as AuthenticatedAdminOrdersRouteImport } from './routes/_authenticated/admin.orders'
@@ -97,6 +99,16 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChinaWarehouseIndexRoute = ChinaWarehouseIndexRouteImport.update({
+  id: '/china-warehouse/',
+  path: '/china-warehouse/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChinaWarehouseSlugRoute = ChinaWarehouseSlugRouteImport.update({
+  id: '/china-warehouse/$slug',
+  path: '/china-warehouse/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsIndexRoute = ProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
@@ -134,7 +146,9 @@ export interface FileRoutesByFullPath {
   '/shipping-policy': typeof ShippingPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/china-warehouse/$slug': typeof ChinaWarehouseSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/china-warehouse/': typeof ChinaWarehouseIndexRoute
   '/products/': typeof ProductsIndexRoute
   '/admin/orders': typeof AuthenticatedAdminOrdersRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -153,7 +167,9 @@ export interface FileRoutesByTo {
   '/shipping-policy': typeof ShippingPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/china-warehouse/$slug': typeof ChinaWarehouseSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/china-warehouse': typeof ChinaWarehouseIndexRoute
   '/products': typeof ProductsIndexRoute
   '/admin/orders': typeof AuthenticatedAdminOrdersRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -174,7 +190,9 @@ export interface FileRoutesById {
   '/shipping-policy': typeof ShippingPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/china-warehouse/$slug': typeof ChinaWarehouseSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/china-warehouse/': typeof ChinaWarehouseIndexRoute
   '/products/': typeof ProductsIndexRoute
   '/_authenticated/admin/orders': typeof AuthenticatedAdminOrdersRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -195,7 +213,9 @@ export interface FileRouteTypes {
     | '/shipping-policy'
     | '/sitemap.xml'
     | '/terms'
+    | '/china-warehouse/$slug'
     | '/products/$slug'
+    | '/china-warehouse/'
     | '/products/'
     | '/admin/orders'
     | '/lovable/email/transactional/preview'
@@ -214,7 +234,9 @@ export interface FileRouteTypes {
     | '/shipping-policy'
     | '/sitemap.xml'
     | '/terms'
+    | '/china-warehouse/$slug'
     | '/products/$slug'
+    | '/china-warehouse'
     | '/products'
     | '/admin/orders'
     | '/lovable/email/transactional/preview'
@@ -234,7 +256,9 @@ export interface FileRouteTypes {
     | '/shipping-policy'
     | '/sitemap.xml'
     | '/terms'
+    | '/china-warehouse/$slug'
     | '/products/$slug'
+    | '/china-warehouse/'
     | '/products/'
     | '/_authenticated/admin/orders'
     | '/lovable/email/transactional/preview'
@@ -255,7 +279,9 @@ export interface RootRouteChildren {
   ShippingPolicyRoute: typeof ShippingPolicyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  ChinaWarehouseSlugRoute: typeof ChinaWarehouseSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
+  ChinaWarehouseIndexRoute: typeof ChinaWarehouseIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
@@ -360,6 +386,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/china-warehouse/': {
+      id: '/china-warehouse/'
+      path: '/china-warehouse'
+      fullPath: '/china-warehouse/'
+      preLoaderRoute: typeof ChinaWarehouseIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/china-warehouse/$slug': {
+      id: '/china-warehouse/$slug'
+      path: '/china-warehouse/$slug'
+      fullPath: '/china-warehouse/$slug'
+      preLoaderRoute: typeof ChinaWarehouseSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/': {
       id: '/products/'
       path: '/products'
@@ -417,7 +457,9 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingPolicyRoute: ShippingPolicyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  ChinaWarehouseSlugRoute: ChinaWarehouseSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
+  ChinaWarehouseIndexRoute: ChinaWarehouseIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }

@@ -311,7 +311,7 @@ export function getProduct(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug);
 }
 
-export function isSizeAvailable(p: Product, sizeLabel: string): boolean {
+export function isSizeAvailable(p: Pick<Product, "soldOut" | "sizes">, sizeLabel: string): boolean {
   if (p.soldOut) return false;
   const size = p.sizes.find((s) => s.label === sizeLabel);
   return !!size && !size.soldOut;

@@ -8,6 +8,7 @@ const mark = { url: "/images/synthesia_mark.png" };
 
 const NAV = [
   { to: "/products", label: "Catalog" },
+  { to: "/china-warehouse", label: "China Warehouse" },
   { to: "/quality", label: "Quality & Testing" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },

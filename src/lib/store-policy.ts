@@ -9,9 +9,9 @@ export const ORDER_PROCESSING_LABEL = `${ORDER_PROCESSING_DAYS.min}–${ORDER_PR
 export const PROCESSING_FEE = 2;
 
 /** Compare integer cents: exactly $150 still incurs shipping. */
-export function orderTotals(subtotal: number) {
+export function orderTotals(subtotal: number, opts: { freeShipping?: boolean } = {}) {
   const cents = Math.round(subtotal * 100);
-  const shipping = cents > FREE_SHIPPING_THRESHOLD * 100 ? 0 : SHIPPING_FLAT_RATE;
+  const shipping = opts.freeShipping || cents > FREE_SHIPPING_THRESHOLD * 100 ? 0 : SHIPPING_FLAT_RATE;
   return { subtotal: cents / 100, shipping, processingFee: PROCESSING_FEE, total: (cents + shipping * 100 + PROCESSING_FEE * 100) / 100 };
 }
 

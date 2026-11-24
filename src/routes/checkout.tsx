@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useCart } from "@/lib/cart";
 import { lineDetails } from "@/lib/cart-logic";
+import { isKitSlug, WAREHOUSE_SHIPPING_LABEL, warehouseFreeShipping } from "@/lib/china-warehouse";
 import { generateOrderRef, normalizeProof, validateProof } from "@/lib/order-logic";
 import { submitOrder } from "@/lib/orders.functions";
 import { PAYMENT_METHODS, type PaymentMethodId } from "@/lib/payments";
@@ -75,7 +76,7 @@ function Checkout() {
   const [affiliation, setAffiliation] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState<{ orderRef: string; total: number; method: string; emailStatus: "sent" | "suppressed" | "unavailable" } | null>(null);
-  const totals = orderTotals(cart.subtotal);
+  const totals = orderTotals(cart.subtotal, { freeShipping: warehouseFreeShipping(cart.lines.map((l) => l.slug)) });
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -374,7 +375,7 @@ function Checkout() {
                 if (!d) return null;
                 return (
                   <li key={`${l.slug}-${l.size}`} className="flex items-center gap-3 py-3">
-                    <VialImage name={d.product.name} liquid={d.product.slug === "lipo-c-b12"} className="size-12 shrink-0 overflow-hidden rounded-md border" />
+                    <VialImage name={d.product.name} liquid={d.liquid} className="size-12 shrink-0 overflow-hidden rounded-md border" />
                     <div className="flex-1">
                       <p className="text-sm font-semibold text-foreground">{d.product.name}</p>
                       <p className="text-xs text-muted-foreground">
@@ -392,6 +393,9 @@ function Checkout() {
               <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Shipping</dt><dd>{totals.shipping === 0 ? "Free" : formatPrice(totals.shipping)}</dd></div>
             </dl>
             <p className="mt-3 text-xs text-muted-foreground">{formatPrice(SHIPPING_FLAT_RATE)} flat-rate shipping · Free on merchandise orders over ${FREE_SHIPPING_THRESHOLD}</p>
+            {cart.lines.some((l) => isKitSlug(l.slug)) && (
+              <p className="mt-2 text-xs text-primary">China warehouse kits ship in {WAREHOUSE_SHIPPING_LABEL} · Free shipping in November & December on warehouse-only orders</p>
+            )}
             <p className="mt-2 text-xs text-muted-foreground">Processing: {ORDER_PROCESSING_LABEL} after payment verification and research eligibility review. Carrier transit time is additional.</p>
             <div className="mt-4 flex items-baseline justify-between border-t pt-4">
               <span className="text-muted-foreground">Total</span>
