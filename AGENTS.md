@@ -30,6 +30,7 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## Project rules
+- Order confirmation emails send synchronously through the managed template helper only after submitOrder saves the order, with event-based deduplication and a five-per-recipient/hour cap derived from existing orders; email failures never undo an order, and no email queue or tables are created.
 - Product search metadata and per-size structured offers are derived from the catalog in `src/lib/product-seo.ts` so search prices and availability stay aligned with shopping pages; use relative page URLs until a public domain is known.
 - Product catalog lives in a single static data module (`src/lib/products.ts`); pages read from it so adding a product needs no route changes.
 - Shared header/footer wrap `<Outlet />` in `src/routes/__root.tsx`; pages render only their own content.

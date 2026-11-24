@@ -74,7 +74,7 @@ function Checkout() {
   const [org, setOrg] = useState("");
   const [affiliation, setAffiliation] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState<{ orderRef: string; total: number; method: string } | null>(null);
+  const [done, setDone] = useState<{ orderRef: string; total: number; method: string; emailStatus: "sent" | "suppressed" | "unavailable" } | null>(null);
   const totals = orderTotals(cart.subtotal);
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -148,7 +148,7 @@ function Checkout() {
         toast.error(res.error);
         return;
       }
-      setDone({ orderRef: res.orderRef, total: res.total, method: selected.label });
+      setDone({ orderRef: res.orderRef, total: res.total, method: selected.label, emailStatus: res.emailStatus });
       cart.clear();
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
@@ -173,6 +173,12 @@ function Checkout() {
           <p className="mt-2 font-display text-3xl font-semibold text-primary-glow">{done.orderRef}</p>
         </div>
         <p className="mt-6 text-sm text-muted-foreground">Keep this reference for any questions about your order.</p>
+        <p className="mt-4 text-sm text-muted-foreground">
+          {done.emailStatus === "sent"
+            ? "Your order details and shipping label notice have been emailed to you. Check your spam folder too."
+            : "Your order is saved, but we couldn't send the confirmation email. Keep your order reference."}
+        </p>
+        <p className="mt-4 text-sm text-muted-foreground">Your shipping label will be prepared as soon as possible after payment verification and research eligibility review.</p>
         <Button asChild variant="goldOutline" size="lg" className="mt-8">
           <Link to="/products">Back to catalog</Link>
         </Button>

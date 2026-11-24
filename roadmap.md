@@ -1,4 +1,6 @@
 # Requested updates
+- [x] Add and verify automatic order-details email with shipping label pending notice; checkout test AU-98UMGE saved and a sent event confirmed for the owner's Gmail.
+- [ ] Activate order emails on the separate Vercel site — blocked because Lovable's managed sending credential is not provided there; Lovable-hosted production requires publishing.
 - [x] Owner can approve orders ("Review successful") on the orders page; orders page no longer needs a private server key.
 - [x] Check photo rejection throughout selection, submission, storage configuration, and owner-view code; normalize missing phone MIME types consistently without altering past orders.
 - [ ] Fix the reproduced live screenshot storage error — blocked on the Vercel “proof upload failed” log; no matching Cloud logs are available.

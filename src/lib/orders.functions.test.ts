@@ -6,6 +6,9 @@ import { POLICY_VERSION } from "./store-policy";
 const storage = vi.hoisted(() => ({
   upload: vi.fn().mockResolvedValue({ error: null }),
   insert: vi.fn().mockResolvedValue({ error: null }),
+  remove: vi.fn().mockResolvedValue({ error: null }),
+  recent: vi.fn().mockResolvedValue({ error: null, count: 0 }),
+  sendEmail: vi.fn().mockResolvedValue({ sent: true }),
 }));
 
 vi.mock("@tanstack/react-start", () => ({
@@ -13,10 +16,11 @@ vi.mock("@tanstack/react-start", () => ({
 }));
 vi.mock("@/integrations/supabase/client.server", () => ({
   supabaseAdmin: {
-    storage: { from: () => ({ upload: storage.upload }) },
-    from: () => ({ insert: storage.insert }),
+    storage: { from: () => ({ upload: storage.upload, remove: storage.remove }) },
+    from: () => ({ insert: storage.insert, select: () => ({ eq: () => ({ gte: storage.recent }) }) }),
   },
 }));
+vi.mock("./email-templates/send-email", () => ({ sendTemplateEmail: storage.sendEmail }));
 
 function submission(file: File) {
   const data = new FormData();
@@ -34,6 +38,10 @@ function submission(file: File) {
 describe("payment screenshot submission", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    storage.upload.mockResolvedValue({ error: null });
+    storage.insert.mockResolvedValue({ error: null });
+    storage.recent.mockResolvedValue({ error: null, count: 0 });
+    storage.sendEmail.mockResolvedValue({ sent: true });
   });
 
   it("normalizes a phone screenshot with missing MIME type before uploading and saving", async () => {
@@ -56,5 +64,56 @@ describe("payment screenshot submission", () => {
     expect(result).toEqual({ ok: false, error: "Screenshot must be 10 MB or smaller." });
     expect(storage.upload).not.toHaveBeenCalled();
     expect(storage.insert).not.toHaveBeenCalled();
+  });
+
+  it("emails each saved order with its server-priced details and event idempotency key", async () => {
+    const result = await submitOrder({ data: submission(new File(["proof"], "proof.png", { type: "image/png" })) });
+    expect(result).toMatchObject({ ok: true, total: 46, emailStatus: "sent" });
+    expect(storage.sendEmail).toHaveBeenCalledTimes(1);
+    expect(storage.sendEmail).toHaveBeenCalledWith("order-confirmation", "upload-test@example.com", {
+      idempotencyKey: "order-confirmation-AU-ABCDEF", replyTo: "synthesialabs1@gmail.com",
+      templateData: {
+        customerName: "Upload Test", orderRef: "AU-ABCDEF",
+        items: [{ slug: "retatrutide", name: "GLP-RT", size: "5 mg", qty: 1, unitPrice: 35, total: 35 }],
+        subtotal: 35, shipping: 9, processingFee: 2, total: 46,
+        paymentMethod: "Zelle", shippingAddress: "123 Test Street, Miami, FL 33182",
+      },
+    });
+    const savedAt = storage.insert.mock.invocationCallOrder[0];
+    const sentAt = storage.sendEmail.mock.invocationCallOrder[0];
+    expect(savedAt).toBeDefined();
+    expect(sentAt).toBeDefined();
+    if (savedAt === undefined || sentAt === undefined) throw new Error("Missing save/send calls");
+    expect(savedAt).toBeLessThan(sentAt);
+  });
+
+  it("never emails an order whose screenshot or order save fails", async () => {
+    storage.upload.mockResolvedValueOnce({ error: { message: "upload failed" } });
+    expect(await submitOrder({ data: submission(new File(["proof"], "proof.png", { type: "image/png" })) })).toMatchObject({ ok: false });
+    storage.insert.mockResolvedValueOnce({ error: { code: "save_failed" } });
+    expect(await submitOrder({ data: submission(new File(["proof"], "proof.png", { type: "image/png" })) })).toMatchObject({ ok: false });
+    expect(storage.sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("keeps the order successful when email sending fails", async () => {
+    storage.sendEmail.mockRejectedValueOnce(new Error("email unavailable"));
+    const result = await submitOrder({ data: submission(new File(["proof"], "proof.png", { type: "image/png" })) });
+    expect(result).toMatchObject({ ok: true, emailStatus: "unavailable", orderRef: "AU-ABCDEF" });
+    expect(storage.remove).not.toHaveBeenCalled();
+  });
+
+  it("does not retry a suppressed recipient", async () => {
+    storage.sendEmail.mockResolvedValueOnce({ sent: false, reason: "recipient_suppressed" });
+    const result = await submitOrder({ data: submission(new File(["proof"], "proof.png", { type: "image/png" })) });
+    expect(result).toMatchObject({ ok: true, emailStatus: "suppressed" });
+    expect(storage.sendEmail).toHaveBeenCalledTimes(1);
+  });
+
+  it("limits email sends to five existing orders per recipient per hour without rejecting the order", async () => {
+    storage.recent.mockResolvedValueOnce({ error: null, count: 5 });
+    const result = await submitOrder({ data: submission(new File(["proof"], "proof.png", { type: "image/png" })) });
+    expect(result).toMatchObject({ ok: true, emailStatus: "unavailable" });
+    expect(storage.sendEmail).not.toHaveBeenCalled();
+    expect(storage.insert).toHaveBeenCalledTimes(1);
   });
 });

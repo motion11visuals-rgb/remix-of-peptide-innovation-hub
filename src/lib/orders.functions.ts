@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { normalizeProof, orderFieldsSchema, orderItemSchema, priceOrder, validateProof } from "./order-logic";
 
-type SubmitResult = { ok: true; orderRef: string; subtotal: number; shipping: number; total: number } | { ok: false; error: string };
+type SubmitResult = { ok: true; orderRef: string; subtotal: number; shipping: number; total: number; emailStatus: "sent" | "suppressed" | "unavailable" } | { ok: false; error: string };
 
 function str(fd: FormData, key: string): string | undefined {
   const v = fd.get(key);
@@ -54,6 +54,13 @@ export const submitOrder = createServerFn({ method: "POST" })
     // after validating every field and recomputing prices from the catalog.
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const f = fields.data;
+    // Limit this public trigger using existing order events, not an email queue/table.
+    // Fail closed for email only: email issues must never prevent saving an order.
+    const recent = await supabaseAdmin.from("orders")
+      .select("id", { count: "exact", head: true })
+      .eq("email", f.email.toLowerCase())
+      .gte("created_at", new Date(Date.now() - 60 * 60 * 1000).toISOString());
+    const canEmail = !recent.error && recent.count !== null && recent.count < 5;
     const ext = (file.name.split(".").pop() ?? "png").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 5) || "png";
     const path = `${f.orderRef}/${crypto.randomUUID()}.${ext}`;
 
@@ -68,7 +75,7 @@ export const submitOrder = createServerFn({ method: "POST" })
     const insert = await supabaseAdmin.from("orders").insert({
       order_ref: f.orderRef,
       customer_name: f.customerName,
-      email: f.email,
+      email: f.email.toLowerCase(),
       phone: f.phone ?? null,
       organization: f.organization,
       affiliation: f.affiliation ?? null,
@@ -99,5 +106,33 @@ export const submitOrder = createServerFn({ method: "POST" })
       };
     }
 
-    return { ok: true, orderRef: f.orderRef, subtotal: priced.subtotal, shipping: priced.shipping, total: priced.total };
+    let emailStatus: "sent" | "suppressed" | "unavailable" = "unavailable";
+    if (canEmail) {
+      try {
+        const { sendTemplateEmail } = await import("./email-templates/send-email");
+        const { PAYMENT_METHODS } = await import("./payments");
+        const result = await sendTemplateEmail("order-confirmation", f.email.toLowerCase(), {
+          idempotencyKey: `order-confirmation-${f.orderRef}`,
+          replyTo: "synthesialabs1@gmail.com",
+          templateData: {
+            customerName: f.customerName,
+            orderRef: f.orderRef,
+            items: priced.lines,
+            subtotal: priced.subtotal,
+            shipping: priced.shipping,
+            processingFee: priced.processingFee,
+            total: priced.total,
+            paymentMethod: PAYMENT_METHODS.find((method) => method.id === f.paymentMethod)?.label ?? f.paymentMethod,
+            shippingAddress: `${f.address}, ${f.city}, ${f.state} ${f.zip}`,
+          },
+        });
+        emailStatus = result.sent ? "sent" : "suppressed";
+      } catch (error) {
+        // Do not log customer details, credentials, or full provider errors.
+        const code = error && typeof error === "object" && "code" in error ? error.code : "email_send_failed";
+        console.error("order confirmation email failed", { code });
+      }
+    }
+
+    return { ok: true, orderRef: f.orderRef, subtotal: priced.subtotal, shipping: priced.shipping, total: priced.total, emailStatus };
   });
