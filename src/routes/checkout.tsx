@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useCart } from "@/lib/cart";
 import { lineDetails } from "@/lib/cart-logic";
-import { isKitSlug, WAREHOUSE_SHIPPING_LABEL, hasWarehouseItems } from "@/lib/china-warehouse";
+import { isKitSlug, WAREHOUSE_SHIPPING_LABEL } from "@/lib/china-warehouse";
 import { generateOrderRef, normalizeProof, validateProof } from "@/lib/order-logic";
 import { submitOrder } from "@/lib/orders.functions";
 import { PAYMENT_METHODS, type PaymentMethodId } from "@/lib/payments";
@@ -77,7 +77,7 @@ function Checkout() {
   const [affiliation, setAffiliation] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState<{ orderRef: string; total: number; method: string; emailStatus: "sent" | "suppressed" | "unavailable" } | null>(null);
-  const totals = orderTotals(cart.subtotal, { warehouse: hasWarehouseItems(cart.lines.map((l) => l.slug)) });
+  const totals = orderTotals(cart.subtotal, { warehouseSubtotal: cart.lines.filter((l) => isKitSlug(l.slug)).reduce((s, l) => s + (lineDetails(l)?.total ?? 0), 0) });
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -399,7 +399,7 @@ function Checkout() {
             </dl>
             <p className="mt-3 text-xs text-muted-foreground">{formatPrice(SHIPPING_FLAT_RATE)} flat-rate shipping · Free on merchandise orders over ${FREE_SHIPPING_THRESHOLD}</p>
             {cart.lines.some((l) => isKitSlug(l.slug)) && (
-              <p className="mt-2 text-xs text-primary">China warehouse kits ship in {WAREHOUSE_SHIPPING_LABEL} · $35 shipping · Free shipping on orders over $280</p>
+              <p className="mt-2 text-xs text-primary">China warehouse kits ship in {WAREHOUSE_SHIPPING_LABEL} · $35 shipping on kits · Free over $280 in kits (regular items ship separately)</p>
             )}
             <p className="mt-2 text-xs text-muted-foreground">Processing: {ORDER_PROCESSING_LABEL} after payment verification and research eligibility review. Carrier transit time is additional.</p>
             <div className="mt-4 flex items-baseline justify-between border-t pt-4">

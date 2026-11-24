@@ -15,6 +15,10 @@ describe("china warehouse", () => {
     expect(reta(3)?.shipping).toBe(0); // $387
   });
   it("regular products keep $9 shipping", () => {
-    expect(priceOrder([{ slug: "semax", size: "10 mg", qty: 1 }])?.shipping ?? 9).toBe(9);
+    expect(priceOrder([{ slug: "retatrutide", size: "5 mg", qty: 1 }])?.shipping ?? 9).toBe(9);
+  });
+  it("mixed order: each side uses its own rule", () => {
+    const p = priceOrder([{ slug: "cw-retatrutide", size: "5 mg × 10 vials", qty: 3 }, { slug: "retatrutide", size: "5 mg", qty: 1 }]);
+    expect(p?.shipping).toBe(9); // kits $387 free, regular under $150 pays $9
   });
 });

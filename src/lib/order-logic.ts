@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { PRODUCTS, isSizeAvailable } from "./products";
 import { orderTotals, POLICY_VERSION } from "./store-policy";
-import { KITS, hasWarehouseItems } from "./china-warehouse";
+import { KITS, isKitSlug } from "./china-warehouse";
 
 export const MAX_PROOF_BYTES = 10 * 1024 * 1024;
 export const PROOF_TYPES = ["image/png", "image/jpeg", "image/webp", "image/heic", "image/heif"];
@@ -71,7 +71,7 @@ export function priceOrder(items: z.infer<typeof orderItemSchema>[], now: Date =
       total: size.price * item.qty,
     });
   }
-  const totals = orderTotals(lines.reduce((s, l) => s + l.total, 0), { warehouse: hasWarehouseItems(lines.map((l) => l.slug)) });
+  const totals = orderTotals(lines.reduce((s, l) => s + l.total, 0), { warehouseSubtotal: lines.filter((l) => isKitSlug(l.slug)).reduce((s, l) => s + l.total, 0) });
   return { lines, ...totals };
 }
 

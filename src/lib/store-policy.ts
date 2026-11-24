@@ -12,10 +12,14 @@ export const WAREHOUSE_SHIPPING_RATE = 35;
 export const WAREHOUSE_FREE_THRESHOLD = 280;
 
 /** Compare integer cents: exactly $150 still incurs shipping. */
-export function orderTotals(subtotal: number, opts: { warehouse?: boolean } = {}) {
+/** Mixed orders ship in two parts: regular items use the regular rule, warehouse kits use the warehouse rule. */
+export function orderTotals(subtotal: number, opts: { warehouseSubtotal?: number } = {}) {
   const cents = Math.round(subtotal * 100);
-  const [rate, threshold] = opts.warehouse ? [WAREHOUSE_SHIPPING_RATE, WAREHOUSE_FREE_THRESHOLD] : [SHIPPING_FLAT_RATE, FREE_SHIPPING_THRESHOLD];
-  const shipping = cents > threshold * 100 ? 0 : rate;
+  const whCents = Math.round((opts.warehouseSubtotal ?? 0) * 100);
+  const regCents = cents - whCents;
+  const regShip = regCents > 0 && regCents <= FREE_SHIPPING_THRESHOLD * 100 ? SHIPPING_FLAT_RATE : 0;
+  const whShip = whCents > 0 && whCents <= WAREHOUSE_FREE_THRESHOLD * 100 ? WAREHOUSE_SHIPPING_RATE : 0;
+  const shipping = regShip + whShip;
   return { subtotal: cents / 100, shipping, processingFee: PROCESSING_FEE, total: (cents + shipping * 100 + PROCESSING_FEE * 100) / 100 };
 }
 
