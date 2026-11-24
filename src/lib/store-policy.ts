@@ -35,3 +35,12 @@ export const POLICY_LINKS = [
 export function isPolicyPath(path: string) {
   return POLICY_LINKS.some((link) => link.to === path.replace(/\/$/, ""));
 }
+/** Black Friday code: 20% off US-warehouse items when they total $60+, 10% off China kits when they total over $300. */
+export const PROMO_CODE = "LABS20";
+export function promoDiscount(regularSubtotal: number, warehouseSubtotal: number, code?: string | null): number {
+  if ((code ?? "").trim().toUpperCase() !== PROMO_CODE) return 0;
+  const reg = Math.round(regularSubtotal * 100);
+  const wh = Math.round(warehouseSubtotal * 100);
+  const off = (reg >= 6000 ? Math.round(reg * 0.2) : 0) + (wh > 30000 ? Math.round(wh * 0.1) : 0);
+  return off / 100;
+}

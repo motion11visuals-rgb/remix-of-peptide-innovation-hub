@@ -19,7 +19,7 @@ import { PAYMENT_METHODS, type PaymentMethodId } from "@/lib/payments";
 import { BRAND, formatPrice } from "@/lib/products";
 import { AFFILIATIONS, readGateRecord } from "@/lib/research-gate";
 import { cn } from "@/lib/utils";
-import { orderTotals, POLICY_VERSION, ORDER_PROCESSING_LABEL, SHIPPING_FLAT_RATE, FREE_SHIPPING_THRESHOLD } from "@/lib/store-policy";
+import { orderTotals, promoDiscount, POLICY_VERSION, ORDER_PROCESSING_LABEL, SHIPPING_FLAT_RATE, FREE_SHIPPING_THRESHOLD } from "@/lib/store-policy";
 
 export const Route = createFileRoute("/checkout")({
   staticData: { sitemap: false },
@@ -77,7 +77,11 @@ function Checkout() {
   const [affiliation, setAffiliation] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState<{ orderRef: string; total: number; method: string; emailStatus: "sent" | "suppressed" | "unavailable" } | null>(null);
-  const totals = orderTotals(cart.subtotal, { warehouseSubtotal: cart.lines.filter((l) => isKitSlug(l.slug)).reduce((s, l) => s + (lineDetails(l)?.total ?? 0), 0) });
+  const [promo, setPromo] = useState("");
+  const whSub = cart.lines.filter((l) => isKitSlug(l.slug)).reduce((s, l) => s + (lineDetails(l)?.total ?? 0), 0);
+  const baseTotals = orderTotals(cart.subtotal, { warehouseSubtotal: whSub });
+  const discount = promoDiscount(cart.subtotal - whSub, whSub, promo);
+  const totals = { ...baseTotals, discount, total: Math.round((baseTotals.total - discount) * 100) / 100 };
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -392,9 +396,17 @@ function Checkout() {
                 );
               })}
             </ul>
+            <div className="mt-4 border-t pt-4">
+              <Label htmlFor="promoCode">Promo code</Label>
+              <Input id="promoCode" name="promoCode" value={promo} onChange={(e) => setPromo(e.target.value)} placeholder="Labs20" className="mt-1.5" />
+              {promo.trim() !== "" && (discount > 0
+                ? <p className="mt-1 text-xs text-primary">Code applied — you save {formatPrice(discount)}</p>
+                : <p className="mt-1 text-xs text-muted-foreground">Labs20: 20% off US warehouse items at $60+, 10% off China warehouse kits over $300.</p>)}
+            </div>
             <dl className="mt-4 space-y-3 border-t pt-4 text-sm">
               <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Merchandise subtotal</dt><dd>{formatPrice(totals.subtotal)}</dd></div>
               <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Processing fee</dt><dd>{formatPrice(totals.processingFee)}</dd></div>
+              {discount > 0 && <div className="flex justify-between gap-4 text-primary"><dt>Black Friday (LABS20)</dt><dd>−{formatPrice(discount)}</dd></div>}
               <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Shipping</dt><dd>{totals.shipping === 0 ? "Free" : formatPrice(totals.shipping)}</dd></div>
             </dl>
             <p className="mt-3 text-xs text-muted-foreground">{formatPrice(SHIPPING_FLAT_RATE)} flat-rate shipping · Free on merchandise orders over ${FREE_SHIPPING_THRESHOLD}</p>
