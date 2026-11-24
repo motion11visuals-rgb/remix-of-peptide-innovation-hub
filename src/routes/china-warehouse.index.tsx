@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import kitImage from "@/assets/kit-black.png.asset.json";
+import { KitPhoto } from "@/components/site/KitPhoto";
 import { WarehousePromo } from "@/components/site/WarehousePromo";
 import { KITS } from "@/lib/china-warehouse";
 import { BRAND, formatPrice } from "@/lib/products";
 
 const TITLE = "China Warehouse 10-Vial Research Peptide Kits | Synthesia Labs";
-const DESC = "Buy 10-vial research peptide kits from our China warehouse: Retatrutide, Tirzepatide, Semaglutide, BPC-157, HGH and more. Free shipping November & December. Research use only.";
+const DESC = "Buy 10-vial research peptide kits from our China warehouse: Retatrutide, Tirzepatide, Semaglutide, BPC-157, HGH and more. Free shipping over $280. Research use only.";
 
 export const Route = createFileRoute("/china-warehouse/")({
   staticData: { sitemap: true },
@@ -46,7 +46,7 @@ function Warehouse() {
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {KITS.map((k) => (
           <Link key={k.slug} to="/china-warehouse/$slug" params={{ slug: k.slug }} className="group overflow-hidden rounded-lg border bg-card transition-colors hover:border-primary/50">
-            <img src={kitImage.url} alt={`${k.name} 10-vial research kit`} className="aspect-square w-full object-cover" loading="lazy" />
+            <KitPhoto name={k.name} loading="lazy" className="aspect-square w-full" />
             <div className="p-5">
               <h2 className="font-display text-lg font-semibold text-foreground">{k.name} · 10-vial kit</h2>
               <p className="mt-1 text-sm text-muted-foreground">{k.summary}</p>

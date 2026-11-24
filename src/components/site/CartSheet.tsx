@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
-import kitImage from "@/assets/kit-black.png.asset.json";
+import { KitPhoto } from "@/components/site/KitPhoto";
 import { VialImage } from "./VialImage";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -53,7 +53,7 @@ export function CartSheet() {
                 return (
                   <li key={`${l.slug}-${l.size}`} className="flex gap-4 py-4">
                     {d.kit ? (
-                      <img src={kitImage.url} alt={`${d.product.name} 10-vial kit`} className="size-16 shrink-0 overflow-hidden rounded-md border object-cover" />
+                      <KitPhoto name={d.product.name} compact className="size-16 shrink-0 rounded-md border" />
                     ) : (
                       <VialImage name={d.product.name} liquid={d.liquid} className="size-16 shrink-0 overflow-hidden rounded-md border" />
                     )}

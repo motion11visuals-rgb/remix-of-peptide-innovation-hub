@@ -7,11 +7,15 @@ export const QUALITY_REFUND_CREDIT = 20;
 export const ORDER_PROCESSING_DAYS = { min: 1, max: 2 } as const;
 export const ORDER_PROCESSING_LABEL = `${ORDER_PROCESSING_DAYS.min}–${ORDER_PROCESSING_DAYS.max} days`;
 export const PROCESSING_FEE = 2;
+/** China warehouse orders: $35 shipping, free when subtotal is over $280. */
+export const WAREHOUSE_SHIPPING_RATE = 35;
+export const WAREHOUSE_FREE_THRESHOLD = 280;
 
 /** Compare integer cents: exactly $150 still incurs shipping. */
-export function orderTotals(subtotal: number, opts: { freeShipping?: boolean } = {}) {
+export function orderTotals(subtotal: number, opts: { warehouse?: boolean } = {}) {
   const cents = Math.round(subtotal * 100);
-  const shipping = opts.freeShipping || cents > FREE_SHIPPING_THRESHOLD * 100 ? 0 : SHIPPING_FLAT_RATE;
+  const [rate, threshold] = opts.warehouse ? [WAREHOUSE_SHIPPING_RATE, WAREHOUSE_FREE_THRESHOLD] : [SHIPPING_FLAT_RATE, FREE_SHIPPING_THRESHOLD];
+  const shipping = cents > threshold * 100 ? 0 : rate;
   return { subtotal: cents / 100, shipping, processingFee: PROCESSING_FEE, total: (cents + shipping * 100 + PROCESSING_FEE * 100) / 100 };
 }
 

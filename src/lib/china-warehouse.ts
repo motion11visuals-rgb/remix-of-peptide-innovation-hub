@@ -100,13 +100,7 @@ export function isKitSlug(slug: string): boolean {
   return KITS.some((k) => k.slug === slug);
 }
 
-/** Free warehouse shipping runs all of November and December (months 10 and 11, 0-based). */
-export function warehousePromoActive(now: Date = new Date()): boolean {
-  const m = now.getMonth();
-  return m === 10 || m === 11;
-}
-
-/** Free shipping applies only when every line ships from the China warehouse during the promo. */
-export function warehouseFreeShipping(slugs: string[], now: Date = new Date()): boolean {
-  return slugs.length > 0 && slugs.every(isKitSlug) && warehousePromoActive(now);
+/** True when the cart has any China warehouse kit; those orders use warehouse shipping rates. */
+export function hasWarehouseItems(slugs: string[]): boolean {
+  return slugs.some(isKitSlug);
 }
