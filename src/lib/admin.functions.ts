@@ -28,6 +28,9 @@ export const setOrderStatus = createServerFn({ method: "POST" })
   .middleware([requireOrderAuth])
   .inputValidator(parseOrderStatusInput)
   .handler(async ({ context, data }) => {
+    if (ordersDatabaseMismatch(import.meta.env['VITE_SUPABASE_URL'], import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'], process.env['SUPABASE_URL'], process.env['SUPABASE_PUBLISHABLE_KEY'])) {
+      throw new Error(ORDERS_DATABASE_MISMATCH);
+    }
     const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
     if (!isAdmin) throw new Error("Not allowed");
     const { data: rows, error } = await context.supabase.from("orders").update({ status: data.status }).eq("id", data.id).select("id, status");
