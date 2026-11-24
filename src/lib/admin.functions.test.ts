@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({ middleware: vi.fn(), auth: {}, rpc: vi.fn(), from: vi.fn() }));
-vi.mock("./order-auth", () => ({ requireOrderAuth: mocks.auth }));
+vi.mock("./order-auth", () => ({ requireOrderAuth: mocks.auth, ordersDatabaseMismatch: () => false, ORDERS_DATABASE_MISMATCH: "mismatch" }));
 vi.mock("@tanstack/react-start", () => ({
   createServerFn: () => {
     const builder = {

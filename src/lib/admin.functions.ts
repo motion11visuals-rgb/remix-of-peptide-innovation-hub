@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireOrderAuth } from "@/lib/order-auth";
+import { ORDERS_DATABASE_MISMATCH, ordersDatabaseMismatch, requireOrderAuth } from "@/lib/order-auth";
 import { parseOrderStatusInput } from "@/lib/order-status";
 
 // Uses the signed-in owner's own session (admin-only access rules in the database),
@@ -7,6 +7,9 @@ import { parseOrderStatusInput } from "@/lib/order-status";
 export const listOrders = createServerFn({ method: "GET" })
   .middleware([requireOrderAuth])
   .handler(async ({ context }) => {
+    if (ordersDatabaseMismatch(import.meta.env['VITE_SUPABASE_URL'], import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'], process.env['SUPABASE_URL'], process.env['SUPABASE_PUBLISHABLE_KEY'])) {
+      return { ok: false as const, error: ORDERS_DATABASE_MISMATCH, orders: [] };
+    }
     const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
     if (!isAdmin) return { ok: false as const, error: null, orders: [] };
     const { data, error } = await context.supabase.from("orders").select("*").order("created_at", { ascending: false }).limit(200);

@@ -13,6 +13,14 @@ export function orderAuthConfig(publicUrl: string | undefined, publicKey: string
   throw new Error("Order sign-in is not configured. Please check your website's connection settings.");
 }
 
+/** True when sign-in (browser settings) and saved orders (server settings) point at different databases. */
+export function ordersDatabaseMismatch(publicUrl: string | undefined, publicKey: string | undefined, serverUrl: string | undefined, serverKey: string | undefined) {
+  if (!publicUrl || !serverUrl || (serverKey && serverKey === publicKey)) return false;
+  try { return new URL(publicUrl).hostname !== new URL(serverUrl).hostname; } catch { return false; }
+}
+
+export const ORDERS_DATABASE_MISMATCH = "This page is signed in to a different database than the one saving your orders. In Vercel, set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY to the same Supabase project as SUPABASE_URL, redeploy, then sign up again on /auth.";
+
 export const requireOrderAuth = createMiddleware({ type: "function" }).server(async ({ next }) => {
   const config = orderAuthConfig(
     import.meta.env['VITE_SUPABASE_URL'],

@@ -53,3 +53,18 @@ describe("order sign-in verification", () => {
     expect(next).not.toHaveBeenCalled();
   });
 });
+import { ordersDatabaseMismatch } from "./order-auth";
+describe("orders database mismatch", () => {
+  it("flags sign-in on one project while orders save to another", () => {
+    expect(ordersDatabaseMismatch("https://aaa.supabase.co", "sb_publishable_a", "https://bbb.supabase.co", "sb_publishable_b")).toBe(true);
+  });
+  it("flags it when the server key is not set", () => {
+    expect(ordersDatabaseMismatch("https://aaa.supabase.co", "sb_publishable_a", "https://bbb.supabase.co", undefined)).toBe(true);
+  });
+  it("accepts the same project", () => {
+    expect(ordersDatabaseMismatch("https://aaa.supabase.co", "k1", "https://aaa.supabase.co", "k2")).toBe(false);
+  });
+  it("accepts an internal server address with the same key", () => {
+    expect(ordersDatabaseMismatch("https://aaa.supabase.co", "k", "http://internal:54321", "k")).toBe(false);
+  });
+});
