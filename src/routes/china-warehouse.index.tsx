@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { VialImage } from "@/components/site/VialImage";
+import kitImage from "@/assets/kit-black.png.asset.json";
 import { WarehousePromo } from "@/components/site/WarehousePromo";
 import { KITS } from "@/lib/china-warehouse";
 import { BRAND, formatPrice } from "@/lib/products";
@@ -46,7 +46,7 @@ function Warehouse() {
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {KITS.map((k) => (
           <Link key={k.slug} to="/china-warehouse/$slug" params={{ slug: k.slug }} className="group overflow-hidden rounded-lg border bg-card transition-colors hover:border-primary/50">
-            <VialImage name={k.name} liquid={k.liquid === true} alt={`${k.name} 10-vial research kit`} />
+            <img src={kitImage.url} alt={`${k.name} 10-vial research kit`} className="aspect-square w-full object-cover" loading="lazy" />
             <div className="p-5">
               <h2 className="font-display text-lg font-semibold text-foreground">{k.name} · 10-vial kit</h2>
               <p className="mt-1 text-sm text-muted-foreground">{k.summary}</p>

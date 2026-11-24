@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Check, CheckCircle2, Copy, ImageUp, Loader2, ShieldCheck, X } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
+import kitImage from "@/assets/kit-black.png.asset.json";
 import { VialImage } from "@/components/site/VialImage";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -375,7 +376,11 @@ function Checkout() {
                 if (!d) return null;
                 return (
                   <li key={`${l.slug}-${l.size}`} className="flex items-center gap-3 py-3">
-                    <VialImage name={d.product.name} liquid={d.liquid} className="size-12 shrink-0 overflow-hidden rounded-md border" />
+                    {d.kit ? (
+                      <img src={kitImage.url} alt={`${d.product.name} 10-vial kit`} className="size-12 shrink-0 overflow-hidden rounded-md border object-cover" />
+                    ) : (
+                      <VialImage name={d.product.name} liquid={d.liquid} className="size-12 shrink-0 overflow-hidden rounded-md border" />
+                    )}
                     <div className="flex-1">
                       <p className="text-sm font-semibold text-foreground">{d.product.name}</p>
                       <p className="text-xs text-muted-foreground">

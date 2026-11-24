@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, Minus, Plus, ShoppingBag } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { VialImage } from "@/components/site/VialImage";
+import kitImage from "@/assets/kit-black.png.asset.json";
 import { WarehousePromo } from "@/components/site/WarehousePromo";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
@@ -66,7 +66,7 @@ function KitPage() {
         <ArrowLeft className="size-4" /> All China warehouse kits
       </Link>
       <div className="mt-6 grid gap-12 lg:grid-cols-2">
-        <VialImage name={kit.name} liquid={kit.liquid === true} size="lg" alt={`${kit.name} 10-vial research kit`} className="overflow-hidden rounded-lg border" />
+        <img src={kitImage.url} alt={`${kit.name} 10-vial research kit`} className="w-full overflow-hidden rounded-lg border object-cover" />
         <div>
           <p className="eyebrow">China Warehouse · 10-vial kit</p>
           <h1 className="mt-3 text-4xl font-semibold text-foreground md:text-5xl">{kit.name} 10-vial kit</h1>

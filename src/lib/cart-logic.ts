@@ -30,7 +30,8 @@ export function lineDetails(line: CartLine) {
   const size = product?.sizes.find((s) => s.label === line.size);
   if (!product || !size || !isSizeAvailable(product, size.label)) return undefined;
   const liquid = product.slug === "lipo-c-b12" || ("liquid" in product && product.liquid === true);
-  return { product, liquid, unitPrice: size.price, total: size.price * line.qty };
+  const kit = KITS.some((k) => k.slug === line.slug);
+  return { product, liquid, kit, unitPrice: size.price, total: size.price * line.qty };
 }
 
 export function cartSubtotal(lines: CartLine[]): number {
