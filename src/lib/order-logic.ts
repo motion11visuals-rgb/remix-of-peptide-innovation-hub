@@ -5,6 +5,15 @@ import { orderTotals, POLICY_VERSION } from "./store-policy";
 export const MAX_PROOF_BYTES = 10 * 1024 * 1024;
 export const PROOF_TYPES = ["image/png", "image/jpeg", "image/webp", "image/heic", "image/heif"];
 
+/** Some phone file pickers omit MIME types; only infer supported image extensions. */
+export function normalizeProof(file: File): File {
+  if (file.type) return file;
+  const types: Record<string, string> = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", heic: "image/heic", heif: "image/heif" };
+  const extension = file.name.split(".").pop()?.toLowerCase() ?? "";
+  const type = types[extension];
+  return type ? new File([file], file.name, { type, lastModified: file.lastModified }) : file;
+}
+
 const REF_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
 export function generateOrderRef(random: () => number = Math.random): string {

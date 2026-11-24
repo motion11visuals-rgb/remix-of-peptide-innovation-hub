@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useCart } from "@/lib/cart";
 import { lineDetails } from "@/lib/cart-logic";
-import { generateOrderRef, validateProof } from "@/lib/order-logic";
+import { generateOrderRef, normalizeProof, validateProof } from "@/lib/order-logic";
 import { submitOrder } from "@/lib/orders.functions";
 import { PAYMENT_METHODS, type PaymentMethodId } from "@/lib/payments";
 import { BRAND, formatPrice } from "@/lib/products";
@@ -67,6 +67,8 @@ function Checkout() {
   const [method, setMethod] = useState<PaymentMethodId>("zelle");
   const [proof, setProof] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [previewFailed, setPreviewFailed] = useState(false);
+  const [proofError, setProofError] = useState<string | null>(null);
   const [agreed, setAgreed] = useState(false);
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [org, setOrg] = useState("");
@@ -101,12 +103,16 @@ function Checkout() {
 
   function onPickFile(file: File | undefined) {
     if (!file) return;
-    const err = validateProof(file);
+    const normalized = normalizeProof(file);
+    const err = validateProof(normalized);
     if (err) {
-      toast.error(err);
+      setProofError(err);
+      if (fileInput.current) fileInput.current.value = "";
       return;
     }
-    setProof(file);
+    setProofError(null);
+    setPreviewFailed(false);
+    setProof(normalized);
   }
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -308,53 +314,43 @@ function Checkout() {
               ref={fileInput}
               id="proof"
               type="file"
-              accept="image/png,image/jpeg,image/webp,image/heic,image/heif"
-              className="sr-only"
+              accept="image/*,.png,.jpg,.jpeg,.webp,.heic,.heif"
+              className="mt-5 block min-h-12 w-full min-w-0 rounded-md border border-input bg-background p-2 text-sm text-foreground file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-accent file:px-3 file:py-2 file:font-medium file:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               aria-label="Payment screenshot"
+              aria-invalid={Boolean(proofError)}
+              aria-describedby={proofError ? "proof-help proof-error" : "proof-help"}
               onChange={(e) => onPickFile(e.target.files?.[0])}
             />
+            <p id="proof-help" className="mt-2 text-xs text-muted-foreground">PNG, JPG, WEBP or HEIC · up to 10 MB</p>
+            {proofError && <p id="proof-error" role="alert" className="mt-2 text-sm text-destructive">{proofError}</p>}
             {proof && preview ? (
-              <div className="mt-5 flex items-center gap-5 rounded-lg border bg-surface p-4">
-                <img src={preview} alt="Payment screenshot preview" className="h-28 w-20 rounded-md border object-cover" />
+              <div className="mt-5 flex items-center gap-3 rounded-lg border bg-surface p-4">
+                {previewFailed ? (
+                  <div className="grid h-28 w-20 shrink-0 place-items-center rounded-md border bg-background"><ImageUp className="size-8 text-primary" /></div>
+                ) : (
+                  <img src={preview} alt="Payment screenshot preview" onError={() => setPreviewFailed(true)} className="h-28 w-20 shrink-0 rounded-md border object-cover" />
+                )}
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm text-foreground">{proof.name}</p>
                   <p className="text-xs text-muted-foreground">{(proof.size / 1024 / 1024).toFixed(2)} MB</p>
-                  <button
-                    type="button"
-                    onClick={() => fileInput.current?.click()}
-                    className="mt-2 text-sm text-primary hover:text-primary-glow"
-                  >
-                    Replace
-                  </button>
+                  <p className="mt-2 flex items-center gap-1 text-xs text-primary"><Check className="size-4 shrink-0" />Screenshot attached</p>
                 </div>
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="icon"
                   aria-label="Remove screenshot"
                   onClick={() => {
                     setProof(null);
+                    setProofError(null);
                     if (fileInput.current) fileInput.current.value = "";
                   }}
-                  className="text-muted-foreground hover:text-destructive"
+                  className="shrink-0 text-muted-foreground hover:text-destructive"
                 >
                   <X className="size-5" />
-                </button>
+                </Button>
               </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => fileInput.current?.click()}
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  onPickFile(e.dataTransfer.files[0]);
-                }}
-                className="mt-5 flex w-full flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-primary/30 bg-surface px-6 py-10 text-center transition-colors hover:border-primary/60"
-              >
-                <ImageUp className="size-8 text-primary" />
-                <span className="text-sm text-foreground">Click to upload or drag your screenshot here</span>
-                <span className="text-xs text-muted-foreground">PNG, JPG, WEBP or HEIC · up to 10 MB</span>
-              </button>
-            )}
+            ) : null}
             <div className="mt-5 space-y-2">
               <Label htmlFor="notes">Order notes (optional)</Label>
               <Textarea id="notes" name="notes" rows={3} />

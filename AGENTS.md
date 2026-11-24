@@ -36,6 +36,7 @@ use the editor.
 - Cart state lives in a browser-local provider (`src/lib/cart.tsx`) with pure math in `src/lib/cart-logic.ts` (tested); checkout hands the cart summary to the contact form because no payment provider is connected.
 - Visitor entry gate rules live in `src/lib/research-gate.ts` (tested) and are stored per browser; the gate overlay mounts once in `__root.tsx`.
 - Checkout writes orders and payment screenshots only through the `submitOrder` server function (`src/lib/orders.functions.ts`), which re-prices from the catalog; the orders table and payment-proofs bucket have no visitor access.
+- Checkout uses a visible native image picker and `normalizeProof` for missing phone MIME types; shared validation still enforces the existing image formats and 10 MB limit.
 - Marketing opt-in emails from the entry gate go only to the private `marketing_signups` table via `subscribeMarketing` (src/lib/marketing.functions.ts); promos are sent from an external newsletter service, never the app-email sender.
 - Shipping math lives in `src/lib/store-policy.ts` and is reused by checkout and server pricing; persist subtotal, shipping, total, and accepted policy version separately so payment instructions match saved orders.
 - Checkout fees derive from `store-policy.ts` and server pricing; persist `processing_fee` separately from merchandise and shipping, and retain deprecated lab-tools data only for historical orders.

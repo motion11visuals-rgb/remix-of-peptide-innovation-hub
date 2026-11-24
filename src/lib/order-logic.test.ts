@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { generateOrderRef, isValidOrderRef, priceOrder, validateProof, MAX_PROOF_BYTES, orderFieldsSchema } from "./order-logic";
+import { generateOrderRef, isValidOrderRef, priceOrder, validateProof, normalizeProof, MAX_PROOF_BYTES, orderFieldsSchema } from "./order-logic";
 import { POLICY_VERSION } from "./store-policy";
 
 describe("checkout order rules", () => {
@@ -74,5 +74,17 @@ describe("checkout order rules", () => {
     const ref = generateOrderRef();
     expect(isValidOrderRef(ref)).toBe(true);
     expect(isValidOrderRef("AU-12")).toBe(false);
+  });
+
+  it.each([["Screenshot.PNG", "image/png"], ["payment.jpeg", "image/jpeg"], ["IMG_1001.HEIC", "image/heic"], ["payment.heif", "image/heif"], ["payment.webp", "image/webp"]])("accepts phone image %s when the picker omits its MIME type", (name, type) => {
+    const normalized = normalizeProof(new File(["image bytes"], name));
+    expect(normalized.type).toBe(type);
+    expect(normalized.size).toBe(11);
+    expect(validateProof(normalized)).toBeNull();
+  });
+
+  it("does not infer an image type for unknown files or override an explicit unsupported type", () => {
+    expect(validateProof(normalizeProof(new File(["not an image"], "proof.pdf")))).not.toBeNull();
+    expect(validateProof(normalizeProof(new File(["not an image"], "proof.png", { type: "application/pdf" })))).not.toBeNull();
   });
 });
