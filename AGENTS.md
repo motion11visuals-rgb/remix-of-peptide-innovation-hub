@@ -43,4 +43,4 @@ use the editor.
 - Each legal policy has a distinct route with shared `PolicyPage` presentation; policy pages remain accessible without the research gate so visitors can read terms before agreeing.
 - All catalog, product, cart, and checkout vial pictures use `VialImage` with an explicit liquid flag so product appearance stays consistent across shopping views.
 - Processing-day bounds and their display label live in `store-policy.ts` so homepage, shipping policy, and checkout share the tested time range.
-- Owner order view at /admin/orders (src/routes/_authenticated/admin.orders.tsx) reads orders via admin-checked listOrders in src/lib/admin.functions.ts; roles live in user_roles so order data never reaches visitors.
+- Owner order view at /admin/orders reads and approves orders via admin-checked listOrders/setOrderStatus in src/lib/admin.functions.ts using the signed-in session plus admin-only database policies (no private server key needed, so it works on external hosts); allowed review statuses live in src/lib/order-status.ts (tested).

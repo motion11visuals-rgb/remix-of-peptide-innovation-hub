@@ -1,4 +1,5 @@
 # Requested updates
+- [x] Owner can approve orders ("Review successful") on the orders page; orders page no longer needs a private server key.
 - [x] Check photo rejection throughout selection, submission, storage configuration, and owner-view code; normalize missing phone MIME types consistently without altering past orders.
 - [ ] Fix the reproduced live screenshot storage error — blocked on the Vercel “proof upload failed” log; no matching Cloud logs are available.
 - [x] Fix and verify payment screenshot attachment on phone-sized checkout.
