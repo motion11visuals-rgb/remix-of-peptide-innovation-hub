@@ -61,6 +61,18 @@ function Index() {
     <>
       <SaleCountdown headline="50% OFF the entire US catalog" sub="Discount applied automatically at checkout · $9 shipping · No code needed" />
 
+      {/* Warehouse tabs */}
+      <nav aria-label="Choose a warehouse" className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-6 pt-6">
+        <Link to="/products" className="flex items-center justify-center gap-3 rounded-lg border-2 border-primary bg-card px-4 py-4 text-center transition-colors hover:bg-accent">
+          <span className="text-3xl" aria-hidden>🇺🇸</span>
+          <span><span className="block font-display text-base font-semibold text-foreground md:text-lg">USA Warehouse</span><span className="block text-xs text-primary">50% off · $9 shipping</span></span>
+        </Link>
+        <Link to="/china-warehouse" className="flex items-center justify-center gap-3 rounded-lg border-2 border-primary bg-card px-4 py-4 text-center transition-colors hover:bg-accent">
+          <span className="text-3xl" aria-hidden>🇨🇳</span>
+          <span><span className="block font-display text-base font-semibold text-foreground md:text-lg">China Warehouse</span><span className="block text-xs text-primary">35% off · 10-vial kits</span></span>
+        </Link>
+      </nav>
+
       {/* Hero */}
       <section className="relative isolate overflow-hidden">
         <img
