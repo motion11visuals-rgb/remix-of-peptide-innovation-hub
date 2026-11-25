@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { VialImage } from "./VialImage";
-import { formatPrice, isSoldOut, startingPrice, type Product } from "@/lib/products";
+import { isSoldOut, startingPrice, type Product } from "@/lib/products";
+import { SalePrice } from "@/components/site/SalePrice";
 import { cn } from "@/lib/utils";
 
 export function ProductCard({ product }: { product: Product }) {
@@ -45,8 +46,7 @@ export function ProductCard({ product }: { product: Product }) {
             <span className="font-display text-sm text-muted-foreground">Sold out</span>
           ) : (
             <span className="font-display text-sm text-foreground">
-              {product.compareAt && <span className="mr-2 text-muted-foreground line-through">{formatPrice(product.compareAt)}</span>}
-              from <span className="text-primary">{formatPrice(startingPrice(product))}</span>
+              from <SalePrice price={startingPrice(product)} className="font-semibold text-primary" />
             </span>
           )}
         </div>

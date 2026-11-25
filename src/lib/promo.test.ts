@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { orderTotals, saleDiscount, PROCESSING_FEE } from "./store-policy";
+import { orderTotals, saleDiscount, PROCESSING_FEE, salePrice as salePriceFn } from "./store-policy";
 import { priceOrder } from "./order-logic";
 import { getKit } from "./china-warehouse";
 import { getProduct } from "./products";
@@ -26,4 +26,9 @@ describe("Synthesia H2O", () => {
     expect(p?.sizes.map((s) => s.price)).toEqual([3, 9]);
   });
   it("China kit of 10 mL vials is $35", () => expect(getKit("cw-synthesia-h2o")?.sizes[0]?.price).toBe(35));
+});
+
+describe("sale prices on product pages", () => {
+  it("US $9 item shows $4.50", () => expect(salePriceFn(9, false, during)).toBe(4.5));
+  it("China $35 kit shows $22.75", () => expect(salePriceFn(35, true, during)).toBe(22.75));
 });

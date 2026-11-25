@@ -9,6 +9,7 @@ import { useCart } from "@/lib/cart";
 import { MAX_QTY } from "@/lib/cart-logic";
 import { getKit, WAREHOUSE_SHIPPING_LABEL } from "@/lib/china-warehouse";
 import { BRAND, formatPrice } from "@/lib/products";
+import { SalePrice } from "@/components/site/SalePrice";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/china-warehouse/$slug")({
@@ -76,11 +77,11 @@ function KitPage() {
             {kit.sizes.map((s, i) => (
               <button key={s.label} onClick={() => setSize(i)} className={cn("rounded-md border px-5 py-3 text-left transition-colors", size === i ? "border-primary bg-accent" : "hover:border-primary/50")}>
                 <div className="font-display text-sm text-foreground">{s.label}</div>
-                <div className="text-sm text-primary">{formatPrice(s.price)}</div>
+                <div className="text-sm text-primary"><SalePrice warehouse price={s.price} oldClassName="text-xs" /></div>
               </button>
             ))}
           </div>
-          <p className="mt-8 font-display text-3xl font-semibold text-primary-glow">{formatPrice(current?.price ?? 0)}</p>
+          <p className="mt-8 font-display text-3xl font-semibold text-primary-glow"><SalePrice warehouse price={current?.price ?? 0} oldClassName="text-xl font-normal" /></p>
           <div className="mt-5 flex flex-wrap items-center gap-3">
             <div className="flex h-12 items-center rounded-md border">
               <button aria-label="Decrease quantity" onClick={() => setQty((q) => Math.max(1, q - 1))} className="grid h-full w-11 place-items-center text-muted-foreground hover:text-foreground"><Minus className="size-4" /></button>

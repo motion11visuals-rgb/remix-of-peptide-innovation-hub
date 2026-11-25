@@ -48,3 +48,8 @@ export function saleDiscount(regularSubtotal: number, warehouseSubtotal: number,
   const off = Math.round(Math.round(regularSubtotal * 100) * US_SALE_RATE) + Math.round(Math.round(warehouseSubtotal * 100) * WAREHOUSE_SALE_RATE);
   return off / 100;
 }
+/** Per-item sale price shown on shopping pages (rounded to cents). */
+export function salePrice(price: number, warehouse = false, now: Date = new Date()): number {
+  if (!saleActive(now)) return price;
+  return Math.round(price * 100 * (1 - (warehouse ? WAREHOUSE_SALE_RATE : US_SALE_RATE))) / 100;
+}

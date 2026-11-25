@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { KitPhoto } from "@/components/site/KitPhoto";
 import { WarehousePromo } from "@/components/site/WarehousePromo";
 import { KITS } from "@/lib/china-warehouse";
-import { BRAND, formatPrice } from "@/lib/products";
+import { SalePrice } from "@/components/site/SalePrice";
+import { BRAND } from "@/lib/products";
 
 const TITLE = "China Warehouse 10-Vial Research Peptide Kits | Synthesia Labs";
 const DESC = "Buy 10-vial research peptide kits from our China warehouse: Retatrutide, Tirzepatide, Semaglutide, BPC-157, HGH and more. 35% off for Black Friday. Research use only.";
@@ -51,7 +52,7 @@ function Warehouse() {
               <h2 className="font-display text-lg font-semibold text-foreground">{k.name} · 10-vial kit</h2>
               <p className="mt-1 text-sm text-muted-foreground">{k.summary}</p>
               <p className="mt-2 text-xs text-muted-foreground">{k.sizes.map((s) => s.label.replace(" × 10 vials", "")).join(" · ")}</p>
-              <p className="mt-3 text-primary">From {formatPrice(Math.min(...k.sizes.map((s) => s.price)))}</p>
+              <p className="mt-3 text-primary">From <SalePrice warehouse price={Math.min(...k.sizes.map((s) => s.price))} className="font-semibold" /></p>
             </div>
           </Link>
         ))}

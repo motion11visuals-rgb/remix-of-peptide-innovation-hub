@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/site/ProductCard";
 import { BRAND, PRODUCTS, formatPrice, getProduct, isSizeAvailable, isSoldOut } from "@/lib/products";
 import { cn } from "@/lib/utils";
+import { SalePrice } from "@/components/site/SalePrice";
 import { productHead } from "@/lib/product-seo";
 
 export const Route = createFileRoute("/products/$slug")({
@@ -88,7 +89,7 @@ function ProductPage() {
                   >
                     <div className={cn("font-display text-sm text-foreground", !available && "line-through")}>{s.label}</div>
                     <div className={cn("text-sm", available ? "text-primary" : "text-muted-foreground")}>
-                      {available ? formatPrice(s.price) : "Sold out"}
+                      {available ? <SalePrice price={s.price} oldClassName="text-xs" /> : "Sold out"}
                     </div>
                   </button>
                 );
@@ -103,7 +104,7 @@ function ProductPage() {
               </span>
             ) : (
               <span className="font-display text-3xl font-semibold text-primary-glow">
-                {formatPrice(current?.price ?? 0)}
+                <SalePrice price={current?.price ?? 0} oldClassName="text-xl font-normal" />
               </span>
             )}
           </div>
