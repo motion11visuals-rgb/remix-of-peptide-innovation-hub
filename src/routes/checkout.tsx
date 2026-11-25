@@ -17,7 +17,6 @@ import { generateOrderRef, normalizeProof, validateProof } from "@/lib/order-log
 import { submitOrder } from "@/lib/orders.functions";
 import { PAYMENT_METHODS, type PaymentMethodId } from "@/lib/payments";
 import { BRAND, formatPrice } from "@/lib/products";
-import { AFFILIATIONS, readGateRecord } from "@/lib/research-gate";
 import { cn } from "@/lib/utils";
 import { orderTotals, promoDiscount, POLICY_VERSION, ORDER_PROCESSING_LABEL, SHIPPING_FLAT_RATE, FREE_SHIPPING_THRESHOLD } from "@/lib/store-policy";
 
@@ -86,12 +85,6 @@ function Checkout() {
 
   useEffect(() => {
     setOrderRef(generateOrderRef());
-    const gate = readGateRecord();
-    if (gate) {
-      setOrg(gate.organization);
-      const label = AFFILIATIONS.find((a) => a.value === gate.affiliation)?.label ?? "";
-      setAffiliation(gate.affiliation === "other" && gate.otherDetail ? `Other: ${gate.otherDetail}` : label);
-    }
   }, []);
 
   useEffect(() => {

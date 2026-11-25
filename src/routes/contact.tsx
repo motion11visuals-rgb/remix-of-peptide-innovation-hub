@@ -9,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { BRAND } from "@/lib/products";
 import { WHATSAPP_URL } from "@/components/site/WhatsAppButton";
-import { readGateRecord } from "@/lib/research-gate";
 
 type ContactSearch = { product?: string | undefined };
 
@@ -36,10 +35,6 @@ function Contact() {
   const [agreed, setAgreed] = useState(false);
   const [org, setOrg] = useState("");
 
-  useEffect(() => {
-    const gate = readGateRecord();
-    if (gate) setOrg(gate.organization);
-  }, []);
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
