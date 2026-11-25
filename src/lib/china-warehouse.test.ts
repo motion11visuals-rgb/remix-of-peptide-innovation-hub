@@ -2,6 +2,11 @@ import { describe, expect, it } from "vitest";
 import { getKit } from "./china-warehouse";
 import { priceOrder } from "./order-logic";
 
+import { beforeAll as __ba, afterAll as __aa, vi as __vi } from "vitest";
+__ba(() => { __vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-12-10T00:00:00Z") }); });
+__aa(() => { __vi.useRealTimers(); });
+
+
 const reta = (qty: number) => priceOrder([{ slug: "cw-retatrutide", size: "5 mg × 10 vials", qty }]);
 
 describe("china warehouse", () => {

@@ -42,7 +42,7 @@ export const submitOrder = createServerFn({ method: "POST" })
       return { ok: false, error: "Your cart could not be read. Please try again." };
     }
     const items = z.array(orderItemSchema).max(50).safeParse(rawItems);
-    const priced = items.success ? priceOrder(items.data, new Date(), str(data, "promoCode")) : null;
+    const priced = items.success ? priceOrder(items.data, new Date()) : null;
     if (!priced) return { ok: false, error: "Your cart has an item that is sold out or no longer carried. Please update your cart." };
 
     const proof = data.get("proof");
@@ -92,7 +92,7 @@ export const submitOrder = createServerFn({ method: "POST" })
       payment_method: f.paymentMethod,
       payment_name: f.paymentName ?? null,
       proof_path: path,
-      notes: [priced.discount > 0 ? `Promo LABS20: -$${priced.discount.toFixed(2)}` : null, f.notes ?? null].filter(Boolean).join(" | ") || null,
+      notes: [priced.discount > 0 ? `Black Friday sale: -$${priced.discount.toFixed(2)}` : null, f.notes ?? null].filter(Boolean).join(" | ") || null,
     });
     if (insert.error) {
       console.error("order insert failed", insert.error);

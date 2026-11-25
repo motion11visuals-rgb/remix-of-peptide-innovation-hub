@@ -29,9 +29,10 @@ export function lineDetails(line: CartLine) {
   const product = PRODUCTS.find((p) => p.slug === line.slug) ?? KITS.find((k) => k.slug === line.slug);
   const size = product?.sizes.find((s) => s.label === line.size);
   if (!product || !size || !isSizeAvailable(product, size.label)) return undefined;
-  const liquid = product.slug === "lipo-c-b12" || ("liquid" in product && product.liquid === true);
+  const clear = "clear" in product && product.clear === true;
+  const liquid: boolean | "clear" = clear ? "clear" : product.slug === "lipo-c-b12" || ("liquid" in product && product.liquid === true);
   const kit = KITS.some((k) => k.slug === line.slug);
-  return { product, liquid, kit, unitPrice: size.price, total: size.price * line.qty };
+  return { product, liquid, clear, kit, unitPrice: size.price, total: size.price * line.qty };
 }
 
 export function cartSubtotal(lines: CartLine[]): number {

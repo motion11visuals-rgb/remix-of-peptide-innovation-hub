@@ -16,8 +16,8 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="grid h-full place-items-center bg-foreground">
           <VialImage
             name={product.name}
-            liquid={product.slug === "lipo-c-b12"}
-            alt={`${product.name} (${product.fullName}) ${product.purity} ${product.slug === "lipo-c-b12" ? "red liquid " : ""}research vial — Synthesia Labs, research use only`}
+            liquid={product.clear ? "clear" : product.slug === "lipo-c-b12"}
+            alt={`${product.name} (${product.fullName}) ${product.purity} ${product.clear ? "clear liquid " : product.slug === "lipo-c-b12" ? "red liquid " : ""}research vial — Synthesia Labs, research use only`}
             className={cn("h-full transition-transform duration-700 group-hover:scale-105", soldOut && "opacity-40 grayscale")}
           />
         </div>

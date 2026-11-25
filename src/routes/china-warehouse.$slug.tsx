@@ -23,7 +23,7 @@ export const Route = createFileRoute("/china-warehouse/$slug")({
     if (!kit) return { meta: [{ title: "Kit unavailable | Synthesia Labs" }, { name: "robots", content: "noindex" }] };
     const strengths = kit.sizes.map((s) => s.label.replace(" × 10 vials", "")).join(", ");
     const title = `${kit.name} 10-Vial Kit (${strengths}) | Synthesia Labs`;
-    const desc = `${kit.name} research kit of 10 vials in ${strengths}. ${kit.summary}. Ships from our China warehouse in ${WAREHOUSE_SHIPPING_LABEL}; free shipping over $280. Research use only.`;
+    const desc = `${kit.name} research kit of 10 vials in ${strengths}. ${kit.summary}. Ships from our China warehouse in ${WAREHOUSE_SHIPPING_LABEL}; 35% off for Black Friday. Research use only.`;
     const url = `/china-warehouse/${kit.slug}`;
     return {
       meta: [
@@ -66,7 +66,7 @@ function KitPage() {
         <ArrowLeft className="size-4" /> All China warehouse kits
       </Link>
       <div className="mt-6 grid gap-12 lg:grid-cols-2">
-        <KitPhoto name={kit.name} className="aspect-square w-full rounded-lg border" />
+        <KitPhoto name={kit.name} clear={kit.clear} className="aspect-square w-full rounded-lg border" />
         <div>
           <p className="eyebrow">China Warehouse · 10-vial kit</p>
           <h1 className="mt-3 text-4xl font-semibold text-foreground md:text-5xl">{kit.name} 10-vial kit</h1>

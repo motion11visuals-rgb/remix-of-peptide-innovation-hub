@@ -18,7 +18,7 @@ import { submitOrder } from "@/lib/orders.functions";
 import { PAYMENT_METHODS, type PaymentMethodId } from "@/lib/payments";
 import { BRAND, formatPrice } from "@/lib/products";
 import { cn } from "@/lib/utils";
-import { orderTotals, promoDiscount, POLICY_VERSION, ORDER_PROCESSING_LABEL, SHIPPING_FLAT_RATE, FREE_SHIPPING_THRESHOLD } from "@/lib/store-policy";
+import { orderTotals, saleDiscount, saleActive, POLICY_VERSION, ORDER_PROCESSING_LABEL, SHIPPING_FLAT_RATE, FREE_SHIPPING_THRESHOLD } from "@/lib/store-policy";
 
 export const Route = createFileRoute("/checkout")({
   staticData: { sitemap: false },
@@ -76,10 +76,9 @@ function Checkout() {
   const [affiliation, setAffiliation] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState<{ orderRef: string; total: number; method: string; emailStatus: "sent" | "suppressed" | "unavailable" } | null>(null);
-  const [promo, setPromo] = useState("");
   const whSub = cart.lines.filter((l) => isKitSlug(l.slug)).reduce((s, l) => s + (lineDetails(l)?.total ?? 0), 0);
   const baseTotals = orderTotals(cart.subtotal, { warehouseSubtotal: whSub });
-  const discount = promoDiscount(cart.subtotal - whSub, whSub, promo);
+  const discount = saleDiscount(cart.subtotal - whSub, whSub);
   const totals = { ...baseTotals, discount, total: Math.round((baseTotals.total - discount) * 100) / 100 };
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -374,7 +373,7 @@ function Checkout() {
                 return (
                   <li key={`${l.slug}-${l.size}`} className="flex items-center gap-3 py-3">
                     {d.kit ? (
-                      <KitPhoto name={d.product.name} compact className="size-12 shrink-0 rounded-md border" />
+                      <KitPhoto name={d.product.name} clear={d.clear} compact className="size-12 shrink-0 rounded-md border" />
                     ) : (
                       <VialImage name={d.product.name} liquid={d.liquid} className="size-12 shrink-0 overflow-hidden rounded-md border" />
                     )}
@@ -389,22 +388,15 @@ function Checkout() {
                 );
               })}
             </ul>
-            <div className="mt-4 border-t pt-4">
-              <Label htmlFor="promoCode">Promo code</Label>
-              <Input id="promoCode" name="promoCode" value={promo} onChange={(e) => setPromo(e.target.value)} placeholder="Labs20" className="mt-1.5" />
-              {promo.trim() !== "" && (discount > 0
-                ? <p className="mt-1 text-xs text-primary">Code applied — you save {formatPrice(discount)}</p>
-                : <p className="mt-1 text-xs text-muted-foreground">Labs20: 20% off US warehouse items at $60+, 10% off China warehouse kits over $300.</p>)}
-            </div>
             <dl className="mt-4 space-y-3 border-t pt-4 text-sm">
               <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Merchandise subtotal</dt><dd>{formatPrice(totals.subtotal)}</dd></div>
               <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Processing fee</dt><dd>{formatPrice(totals.processingFee)}</dd></div>
-              {discount > 0 && <div className="flex justify-between gap-4 text-primary"><dt>Black Friday (LABS20)</dt><dd>−{formatPrice(discount)}</dd></div>}
+              {discount > 0 && <div className="flex justify-between gap-4 text-primary"><dt>Black Friday sale (50% US · 35% China)</dt><dd>−{formatPrice(discount)}</dd></div>}
               <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Shipping</dt><dd>{totals.shipping === 0 ? "Free" : formatPrice(totals.shipping)}</dd></div>
             </dl>
-            <p className="mt-3 text-xs text-muted-foreground">{formatPrice(SHIPPING_FLAT_RATE)} flat-rate shipping · Free on merchandise orders over ${FREE_SHIPPING_THRESHOLD}</p>
+            <p className="mt-3 text-xs text-muted-foreground">{saleActive() ? `Black Friday: ${formatPrice(SHIPPING_FLAT_RATE)} US shipping · $35 China warehouse shipping · no free shipping during the sale` : `${formatPrice(SHIPPING_FLAT_RATE)} flat-rate shipping · Free on merchandise orders over $${FREE_SHIPPING_THRESHOLD}`}</p>
             {cart.lines.some((l) => isKitSlug(l.slug)) && (
-              <p className="mt-2 text-xs text-primary">China warehouse kits ship in {WAREHOUSE_SHIPPING_LABEL} · $35 shipping on kits · Free over $280 in kits (regular items ship separately)</p>
+              <p className="mt-2 text-xs text-primary">China warehouse kits ship in {WAREHOUSE_SHIPPING_LABEL} · $35 shipping on kits{saleActive() ? "" : " · Free over $280 in kits"} (regular items ship separately)</p>
             )}
             <p className="mt-2 text-xs text-muted-foreground">Processing: {ORDER_PROCESSING_LABEL} after payment verification and research eligibility review. Carrier transit time is additional.</p>
             <div className="mt-4 flex items-baseline justify-between border-t pt-4">

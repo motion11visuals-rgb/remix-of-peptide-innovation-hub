@@ -2,23 +2,28 @@ import { describe, expect, it } from "vitest";
 import { generateOrderRef, isValidOrderRef, priceOrder, validateProof, normalizeProof, MAX_PROOF_BYTES, orderFieldsSchema } from "./order-logic";
 import { POLICY_VERSION } from "./store-policy";
 
+import { beforeAll as __ba, afterAll as __aa, vi as __vi } from "vitest";
+__ba(() => { __vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-12-10T00:00:00Z") }); });
+__aa(() => { __vi.useRealTimers(); });
+
+
 describe("checkout order rules", () => {
-  it("charges a flat $2 processing fee with no lab-tools item", () => {
+  it("charges a flat $2.99 processing fee with no lab-tools item", () => {
     const items = [{ slug: "retatrutide", size: "5 mg", qty: 1 }];
     const priced = priceOrder(items);
     expect(priced?.subtotal).toBe(35);
     expect(priced?.shipping).toBe(9);
-    expect(priced?.processingFee).toBe(2);
-    expect(priced?.total).toBe(46);
+    expect(priced?.processingFee).toBe(2.99);
+    expect(priced?.total).toBe(46.99);
     expect(priced?.lines.map((line) => line.slug)).toEqual(["retatrutide"]);
   });
 
-  it("does not let the $2 processing fee qualify merchandise for free shipping", () => {
+  it("does not let the $2.99 processing fee qualify merchandise for free shipping", () => {
     const priced = priceOrder([{ slug: "retatrutide", size: "10 mg", qty: 3 }]);
     expect(priced?.subtotal).toBe(150);
     expect(priced?.shipping).toBe(9);
-    expect(priced?.processingFee).toBe(2);
-    expect(priced?.total).toBe(161);
+    expect(priced?.processingFee).toBe(2.99);
+    expect(priced?.total).toBe(161.99);
   });
 
   it("rejects the canceled lab-tools set even when submitted directly", () => {
@@ -33,15 +38,15 @@ describe("checkout order rules", () => {
     ]);
     expect(priced?.subtotal).toBe(140);
     expect(priced?.shipping).toBe(9);
-    expect(priced?.total).toBe(151);
+    expect(priced?.total).toBe(151.99);
   });
 
   it("recomputes free shipping from catalog prices on orders over $150", () => {
     const priced = priceOrder([{ slug: "retatrutide", size: "20 mg", qty: 2 }]);
     expect(priced?.subtotal).toBe(190);
     expect(priced?.shipping).toBe(0);
-    expect(priced?.processingFee).toBe(2);
-    expect(priced?.total).toBe(192);
+    expect(priced?.processingFee).toBe(2.99);
+    expect(priced?.total).toBe(192.99);
   });
 
   it("requires affirmative acceptance of current store policies", () => {

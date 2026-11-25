@@ -7,6 +7,8 @@ export type Kit = {
   name: string;
   summary: string;
   liquid?: boolean;
+  /** Clear liquid (e.g. Synthesia H2O); shows the clear-liquid kit photo. */
+  clear?: boolean;
   soldOut?: boolean;
   sizes: { label: string; price: number; soldOut?: boolean }[];
 };
@@ -91,6 +93,9 @@ export const KITS: Kit[] = ROWS.map(([name, summary, sizes, liquid]) => ({
   ...(liquid ? { liquid } : {}),
   sizes: sizes.map(([mg, base]) => ({ label: kitLabel(mg), price: base * KIT_MARKUP })),
 }));
+
+/** Synthesia H2O kit: owner-set final price (not marked up). */
+KITS.push({ slug: "cw-synthesia-h2o", name: "Synthesia H2O", summary: "Clear liquid research water, 10 mL vials", liquid: true, clear: true, sizes: [{ label: kitLabel("10 mL"), price: 35 }] });
 
 export function getKit(slug: string): Kit | undefined {
   return KITS.find((k) => k.slug === slug);

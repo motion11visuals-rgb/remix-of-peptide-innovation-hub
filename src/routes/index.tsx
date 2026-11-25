@@ -5,6 +5,7 @@ import lab from "@/assets/lab-analysis.jpg";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/site/ProductCard";
 import { BRAND, PRODUCTS } from "@/lib/products";
+import { SaleCountdown } from "@/components/site/SaleCountdown";
 import { ORDER_PROCESSING_LABEL } from "@/lib/store-policy";
 
 export const Route = createFileRoute("/")({
@@ -58,17 +59,7 @@ function Index() {
   const featured = PRODUCTS.filter((p) => p.featured);
   return (
     <>
-      {/* Black Friday */}
-      <section className="border-b border-primary bg-accent">
-        <div className="mx-auto max-w-7xl px-6 py-6 text-center">
-          <p className="eyebrow">Black Friday sale</p>
-          <p className="mt-2 font-classic text-2xl font-semibold text-primary md:text-4xl">20% OFF US warehouse orders $60+</p>
-          <p className="mt-1 font-classic text-lg font-semibold text-foreground md:text-xl">10% off China warehouse kits over $300</p>
-          <p className="mt-3 text-sm text-muted-foreground">
-            Use code <span className="rounded border border-primary px-2 py-0.5 font-display font-semibold text-primary">Labs20</span> at checkout
-          </p>
-        </div>
-      </section>
+      <SaleCountdown headline="50% OFF the entire US catalog" sub="Discount applied automatically at checkout · $9 shipping · No code needed" />
 
       {/* Hero */}
       <section className="relative isolate overflow-hidden">

@@ -53,7 +53,7 @@ export function CartSheet() {
                 return (
                   <li key={`${l.slug}-${l.size}`} className="flex gap-4 py-4">
                     {d.kit ? (
-                      <KitPhoto name={d.product.name} compact className="size-16 shrink-0 rounded-md border" />
+                      <KitPhoto name={d.product.name} clear={d.clear} compact className="size-16 shrink-0 rounded-md border" />
                     ) : (
                       <VialImage name={d.product.name} liquid={d.liquid} className="size-16 shrink-0 overflow-hidden rounded-md border" />
                     )}

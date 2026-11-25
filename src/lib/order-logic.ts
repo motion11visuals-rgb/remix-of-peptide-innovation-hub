@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { PRODUCTS, isSizeAvailable } from "./products";
-import { orderTotals, POLICY_VERSION, promoDiscount } from "./store-policy";
+import { orderTotals, POLICY_VERSION, saleDiscount } from "./store-policy";
 import { KITS, isKitSlug } from "./china-warehouse";
 
 export const MAX_PROOF_BYTES = 10 * 1024 * 1024;
@@ -55,8 +55,7 @@ export const orderFieldsSchema = z.object({
 export type PricedLine = { slug: string; name: string; size: string; qty: number; unitPrice: number; total: number };
 
 /** Prices an order from the catalog; never trusts client-sent prices. Returns null if any item is unknown or sold out. */
-export function priceOrder(items: z.infer<typeof orderItemSchema>[], now: Date = new Date(), promoCode?: string): { lines: PricedLine[]; subtotal: number; shipping: number; processingFee: number; discount: number; total: number } | null {
-  void now;
+export function priceOrder(items: z.infer<typeof orderItemSchema>[], now: Date = new Date()): { lines: PricedLine[]; subtotal: number; shipping: number; processingFee: number; discount: number; total: number } | null {
   if (items.length === 0) return null;
   const lines: PricedLine[] = [];
   for (const item of items) {
@@ -74,8 +73,8 @@ export function priceOrder(items: z.infer<typeof orderItemSchema>[], now: Date =
   }
   const sub = lines.reduce((s, l) => s + l.total, 0);
   const wh = lines.filter((l) => isKitSlug(l.slug)).reduce((s, l) => s + l.total, 0);
-  const totals = orderTotals(sub, { warehouseSubtotal: wh });
-  const discount = promoDiscount(sub - wh, wh, promoCode);
+  const totals = orderTotals(sub, { warehouseSubtotal: wh, now });
+  const discount = saleDiscount(sub - wh, wh, now);
   return { lines, ...totals, discount, total: Math.round((totals.total - discount) * 100) / 100 };
 }
 

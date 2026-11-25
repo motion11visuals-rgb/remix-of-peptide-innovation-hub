@@ -4,7 +4,7 @@ import { PRODUCTS, isSizeAvailable, isSoldOut, startingPrice } from "./products"
 describe("stock", () => {
   it("only Retatrutide, Tirzepatide, GHK-Cu, HGH and Semax are in stock", () => {
     const inStock = PRODUCTS.filter((p) => !isSoldOut(p)).map((p) => p.slug).sort();
-    expect(inStock).toEqual(["ghk-cu", "hgh", "lipo-c-b12", "mots-c", "retatrutide", "semax", "tirzepatide"]);
+    expect(inStock).toEqual(["ghk-cu", "hgh", "lipo-c-b12", "mots-c", "retatrutide", "semax", "synthesia-h2o", "tirzepatide"]);
   });
 
   it("in-stock peptides come in 5, 10 and 20 mg", () => {

@@ -19,6 +19,8 @@ export type Product = {
   soldOut?: boolean;
   /** Former price shown struck through. */
   compareAt?: number;
+  /** Clear liquid vial (shows the clear-liquid picture). */
+  clear?: boolean;
 };
 
 export const PRODUCTS: Product[] = [
@@ -303,6 +305,26 @@ PRODUCTS.splice(2, 0, {
   sizes: [{ label: "10 mL", price: 35 }],
   compareAt: 60,
   featured: true,
+});
+
+PRODUCTS.push({
+  slug: "synthesia-h2o",
+  name: "Synthesia H2O",
+  fullName: "Synthesia H2O Research Water",
+  category: "Recovery",
+  summary: "Clear liquid research water in sealed vials.",
+  description: "Clear, colorless research-grade water supplied in sealed vials for in-vitro laboratory use.",
+  sequence: "H2O (non-peptide)",
+  formula: "H2O",
+  molecularWeight: "18.02 g/mol",
+  cas: "7732-18-5",
+  purity: "Research grade",
+  form: "Clear liquid",
+  sizes: [
+    { label: "3 mL", price: 3 },
+    { label: "10 mL", price: 9 },
+  ],
+  clear: true,
 });
 
 export const CATEGORIES: Category[] = ["Metabolic", "Recovery", "Growth Hormone", "Cognitive", "Longevity", "Cosmetic"];

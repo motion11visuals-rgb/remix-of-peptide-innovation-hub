@@ -3,6 +3,11 @@ import { submitOrder } from "./orders.functions";
 import { MAX_PROOF_BYTES } from "./order-logic";
 import { POLICY_VERSION } from "./store-policy";
 
+import { beforeAll as __ba, afterAll as __aa, vi as __vi } from "vitest";
+__ba(() => { __vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-12-10T00:00:00Z") }); });
+__aa(() => { __vi.useRealTimers(); });
+
+
 const storage = vi.hoisted(() => ({
   upload: vi.fn().mockResolvedValue({ error: null }),
   insert: vi.fn().mockResolvedValue({ error: null }),
@@ -68,14 +73,14 @@ describe("payment screenshot submission", () => {
 
   it("emails each saved order with its server-priced details and event idempotency key", async () => {
     const result = await submitOrder({ data: submission(new File(["proof"], "proof.png", { type: "image/png" })) });
-    expect(result).toMatchObject({ ok: true, total: 46, emailStatus: "sent" });
+    expect(result).toMatchObject({ ok: true, total: 46.99, emailStatus: "sent" });
     expect(storage.sendEmail).toHaveBeenCalledTimes(1);
     expect(storage.sendEmail).toHaveBeenCalledWith("order-confirmation", "upload-test@example.com", {
       idempotencyKey: "order-confirmation-AU-ABCDEF", replyTo: "synthesialabs1@gmail.com",
       templateData: {
         customerName: "Upload Test", orderRef: "AU-ABCDEF",
         items: [{ slug: "retatrutide", name: "GLP-RT", size: "5 mg", qty: 1, unitPrice: 35, total: 35 }],
-        subtotal: 35, shipping: 9, processingFee: 2, total: 46,
+        subtotal: 35, shipping: 9, processingFee: 2.99, total: 46.99,
         paymentMethod: "Zelle", shippingAddress: "123 Test Street, Miami, FL 33182",
       },
     });

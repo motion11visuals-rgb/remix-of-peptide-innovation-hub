@@ -59,7 +59,7 @@ function ProductPage() {
       </Link>
       <div className="mt-8 grid gap-12 lg:grid-cols-2">
         <div className="self-start overflow-hidden rounded-lg border bg-background lg:sticky lg:top-32">
-          <VialImage name={product.name} liquid={product.slug === "lipo-c-b12"} alt={`${product.name} (${product.fullName}) ${product.purity} purity, ${product.slug === "lipo-c-b12" ? "red liquid, " : ""}${product.form.toLowerCase()} — Synthesia Labs research vial`} size="lg" className="w-full" />
+          <VialImage name={product.name} liquid={product.clear ? "clear" : product.slug === "lipo-c-b12"} alt={`${product.name} (${product.fullName}) ${product.purity} purity, ${product.clear ? "clear liquid, " : product.slug === "lipo-c-b12" ? "red liquid, " : ""}${product.form.toLowerCase()} — Synthesia Labs research vial`} size="lg" className="w-full" />
         </div>
         <div>
           <p className="eyebrow">{product.category}</p>
