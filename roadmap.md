@@ -23,3 +23,6 @@
 - [x] Confirm customer orders, promo emails, and payment screenshots are locked from visitors.
 - [x] Fix mobile hero: headline was unreadable over the vial photo on both home and quality pages.
 - [ ] Keep test orders and test promo email in the database until the owner deletes them (owner's choice).
+
+- [x] Verify live HTTPS redirects and crawl access; align all public canonical and sitemap URLs to the final HTTPS www host.
+- [ ] Confirm Google HTTPS validation after Vercel redeploys — blocked on external deployment and Google’s validation process.

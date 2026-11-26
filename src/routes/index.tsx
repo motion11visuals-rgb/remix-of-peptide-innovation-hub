@@ -1,3 +1,4 @@
+import { siteUrl } from "@/lib/site-url";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, FlaskConical, ShieldCheck, Snowflake, Truck } from "lucide-react";
 import hero from "@/assets/hero-vials.jpg";
@@ -23,17 +24,17 @@ export const Route = createFileRoute("/")({
         content: "Research peptides and laboratory compounds with facility COAs on request. Best prices. Best quality. 150+ lifetime orders completed. Research use only.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: siteUrl("/") },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: siteUrl("/") }],
     scripts: [{
       type: "application/ld+json",
       children: JSON.stringify({
         "@context": "https://schema.org",
         "@graph": [
-          { "@type": "Organization", "@id": "/#organization", name: BRAND.name, url: "/", email: BRAND.email, sameAs: ["https://www.instagram.com/synthesialabs/"] },
-          { "@type": "WebSite", "@id": "/#website", name: BRAND.name, url: "/", description: "Research peptides and laboratory compounds. For laboratory research use only, not for human consumption.", publisher: { "@id": "/#organization" }, inLanguage: "en" },
+          { "@type": "Organization", "@id": siteUrl("/#organization"), name: BRAND.name, url: siteUrl("/"), email: BRAND.email, sameAs: ["https://www.instagram.com/synthesialabs/"] },
+          { "@type": "WebSite", "@id": siteUrl("/#website"), name: BRAND.name, url: siteUrl("/"), description: "Research peptides and laboratory compounds. For laboratory research use only, not for human consumption.", publisher: { "@id": siteUrl("/#organization") }, inLanguage: "en" },
         ],
       }),
     }],

@@ -1,3 +1,4 @@
+import { siteUrl } from "./site-url";
 import { BRAND, isSizeAvailable, type Product } from "./products";
 
 /** Browser-safe metadata derived from the same catalog used to price orders. */
@@ -10,7 +11,7 @@ export function productHead(product: Product) {
   const title = `${searchName} | Research Use Only | ${BRAND.name}`;
   const sizes = product.sizes.map((size) => size.label).join(", ");
   const description = `${name}: ${sizes}. ${product.summary} Laboratory research use only; facility COA available on request.`;
-  const url = `/products/${product.slug}`;
+  const url = siteUrl(`/products/${product.slug}`);
 
   return {
     meta: [
@@ -65,8 +66,8 @@ export function productHead(product: Product) {
           {
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: BRAND.name, item: "/" },
-              { "@type": "ListItem", position: 2, name: "Research catalog", item: "/products" },
+              { "@type": "ListItem", position: 1, name: BRAND.name, item: siteUrl("/") },
+              { "@type": "ListItem", position: 2, name: "Research catalog", item: siteUrl("/products") },
               { "@type": "ListItem", position: 3, name, item: url },
             ],
           },

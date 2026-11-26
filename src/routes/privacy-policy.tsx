@@ -4,6 +4,6 @@ import { PRIVACY_POLICY } from "@/lib/policy-content";
 
 export const Route = createFileRoute("/privacy-policy")({
   staticData: { sitemap: true },
-  head: () => policyHead(PRIVACY_POLICY),
+  head: () => policyHead(PRIVACY_POLICY, "/privacy-policy"),
   component: () => <PolicyPage policy={PRIVACY_POLICY} />,
 });

@@ -1,3 +1,4 @@
+import { siteUrl } from "@/lib/site-url";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MessageCircle } from "lucide-react";
 import lab from "@/assets/lab-analysis.jpg";
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/quality")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: siteUrl("/quality") }],
   }),
   component: Quality,
 });

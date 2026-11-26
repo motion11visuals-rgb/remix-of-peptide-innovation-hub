@@ -1,3 +1,4 @@
+import { siteUrl } from "@/lib/site-url";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { KitPhoto } from "@/components/site/KitPhoto";
 import { WarehousePromo } from "@/components/site/WarehousePromo";
@@ -17,18 +18,18 @@ export const Route = createFileRoute("/china-warehouse/")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/china-warehouse" },
+      { property: "og:url", content: siteUrl("/china-warehouse") },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/china-warehouse" }],
+    links: [{ rel: "canonical", href: siteUrl("/china-warehouse") }],
     scripts: [{
       type: "application/ld+json",
       children: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         name: "Synthesia Labs China warehouse 10-vial kits",
-        url: "/china-warehouse",
-        mainEntity: { "@type": "ItemList", numberOfItems: KITS.length, itemListElement: KITS.map((k, i) => ({ "@type": "ListItem", position: i + 1, name: `${k.name} 10-vial kit`, url: `/china-warehouse/${k.slug}` })) },
+        url: siteUrl("/china-warehouse"),
+        mainEntity: { "@type": "ItemList", numberOfItems: KITS.length, itemListElement: KITS.map((k, i) => ({ "@type": "ListItem", position: i + 1, name: `${k.name} 10-vial kit`, url: siteUrl(`/china-warehouse/${k.slug}`) })) },
       }),
     }],
   }),

@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://synthesialabsofficial.com/sitemap.xml
+Sitemap: https://www.synthesialabsofficial.com/sitemap.xml

@@ -1,3 +1,4 @@
+import { siteUrl } from "@/lib/site-url";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import hero from "@/assets/hero-vials.jpg";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: siteUrl("/about") }],
   }),
   component: About,
 });

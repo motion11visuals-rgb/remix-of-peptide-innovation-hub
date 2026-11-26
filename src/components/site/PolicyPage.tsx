@@ -1,9 +1,10 @@
+import { siteUrl } from "@/lib/site-url";
 import { Link } from "@tanstack/react-router";
 import { BRAND } from "@/lib/products";
 import type { PolicyContent } from "@/lib/policy-content";
 import { POLICY_DATE, POLICY_LINKS } from "@/lib/store-policy";
 
-export function policyHead(policy: PolicyContent) {
+export function policyHead(policy: PolicyContent, path: string) {
   const title = `${policy.title} — ${BRAND.name}`;
   return { meta: [
     { title },
@@ -12,7 +13,7 @@ export function policyHead(policy: PolicyContent) {
     { property: "og:description", content: policy.description },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
-  ] };
+  ], links: [{ rel: "canonical", href: siteUrl(path) }] };
 }
 
 export function PolicyPage({ policy }: { policy: PolicyContent }) {

@@ -4,6 +4,6 @@ import { RESEARCH_POLICY } from "@/lib/policy-content";
 
 export const Route = createFileRoute("/research-use-only")({
   staticData: { sitemap: true },
-  head: () => policyHead(RESEARCH_POLICY),
+  head: () => policyHead(RESEARCH_POLICY, "/research-use-only"),
   component: () => <PolicyPage policy={RESEARCH_POLICY} />,
 });

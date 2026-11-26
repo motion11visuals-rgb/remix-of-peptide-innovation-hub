@@ -4,6 +4,6 @@ import { ACCESSIBILITY_POLICY } from "@/lib/policy-content";
 
 export const Route = createFileRoute("/accessibility")({
   staticData: { sitemap: true },
-  head: () => policyHead(ACCESSIBILITY_POLICY),
+  head: () => policyHead(ACCESSIBILITY_POLICY, "/accessibility"),
   component: () => <PolicyPage policy={ACCESSIBILITY_POLICY} />,
 });

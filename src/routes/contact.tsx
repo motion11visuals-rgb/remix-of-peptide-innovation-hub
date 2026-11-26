@@ -1,3 +1,4 @@
+import { siteUrl } from "@/lib/site-url";
 import { createFileRoute } from "@tanstack/react-router";
 import { Mail, MessageCircle, Clock } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
@@ -26,6 +27,7 @@ export const Route = createFileRoute("/contact")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: siteUrl("/contact") }],
   }),
   component: Contact,
 });

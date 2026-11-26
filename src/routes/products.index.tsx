@@ -1,3 +1,4 @@
+import { siteUrl } from "@/lib/site-url";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ProductCard } from "@/components/site/ProductCard";
@@ -13,21 +14,21 @@ export const Route = createFileRoute("/products/")({
       { property: "og:title", content: "Research Peptides & Compounds Catalog | Synthesia Labs" },
       { property: "og:description", content: "Browse vial sizes, prices and availability for research peptides and laboratory compounds. Facility COAs on request; not for human consumption." },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/products" },
+      { property: "og:url", content: siteUrl("/products") },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/products" }],
+    links: [{ rel: "canonical", href: siteUrl("/products") }],
     scripts: [{
       type: "application/ld+json",
       children: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         name: "Synthesia Labs research catalog",
-        url: "/products",
+        url: siteUrl("/products"),
         mainEntity: {
           "@type": "ItemList",
           numberOfItems: PRODUCTS.length,
-          itemListElement: PRODUCTS.map((product, index) => ({ "@type": "ListItem", position: index + 1, name: `${product.name} — ${product.fullName}`, url: `/products/${product.slug}` })),
+          itemListElement: PRODUCTS.map((product, index) => ({ "@type": "ListItem", position: index + 1, name: `${product.name} — ${product.fullName}`, url: siteUrl(`/products/${product.slug}`) })),
         },
       }),
     }],

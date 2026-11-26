@@ -31,7 +31,7 @@ use the editor.
 
 ## Project rules
 - Order confirmation emails send synchronously through the managed template helper only after submitOrder saves the order, with event-based deduplication and a five-per-recipient/hour cap derived from existing orders; email failures never undo an order, and no email queue or tables are created.
-- Product search metadata and per-size structured offers are derived from the catalog in `src/lib/product-seo.ts` so search prices and availability stay aligned with shopping pages; use relative page URLs until a public domain is known.
+- Product search metadata and per-size structured offers are derived from the catalog in `src/lib/product-seo.ts` so search prices and availability stay aligned with shopping pages; use the verified final HTTPS origin from `src/lib/site-url.ts` for page URLs.
 - Product catalog lives in a single static data module (`src/lib/products.ts`); pages read from it so adding a product needs no route changes.
 - Shared header/footer wrap `<Outlet />` in `src/routes/__root.tsx`; pages render only their own content.
 - Cart state lives in a browser-local provider (`src/lib/cart.tsx`) with pure math in `src/lib/cart-logic.ts` (tested); checkout hands the cart summary to the contact form because no payment provider is connected.
@@ -47,3 +47,5 @@ use the editor.
 - Owner order reads and approvals use requireOrderAuth to verify the bearer via getUser against the browser's paired URL/publishable key (internal preview URL only when keys match), then check has_role and apply admin-only database policies; this prevents external-host environment mismatches and JWKS-only token rejection without a private key. Allowed review statuses live in order-status.ts (tested).
 - China warehouse kits (src/lib/china-warehouse.ts, priced supplier ×3) use warehouse shipping rates from store-policy.ts on their own subtotal; regular items in a mixed order keep regular rates; kit photos use KitPhoto so each shows its peptide name.
 - Timed sales (end date, US/warehouse rates, no-free-shipping during sale) live in `store-policy.ts` and apply automatically in both checkout and server pricing; banners use `SaleCountdown` from the same end date so the timer and prices never disagree.
+
+- Canonicals, structured page URLs, and the sitemap share the verified final HTTPS origin in `src/lib/site-url.ts` so Google sees one preferred host rather than redirecting sitemap entries.

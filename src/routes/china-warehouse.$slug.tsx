@@ -1,3 +1,4 @@
+import { siteUrl } from "@/lib/site-url";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, Minus, Plus, ShoppingBag } from "lucide-react";
 import { useState } from "react";
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/china-warehouse/$slug")({
     const strengths = kit.sizes.map((s) => s.label.replace(" × 10 vials", "")).join(", ");
     const title = `${kit.name} 10-Vial Kit (${strengths}) | Synthesia Labs`;
     const desc = `${kit.name} research kit of 10 vials in ${strengths}. ${kit.summary}. Ships from our China warehouse in ${WAREHOUSE_SHIPPING_LABEL}; 35% off for Black Friday. Research use only.`;
-    const url = `/china-warehouse/${kit.slug}`;
+    const url = siteUrl(`/china-warehouse/${kit.slug}`);
     return {
       meta: [
         { title },

@@ -1,10 +1,11 @@
+import { SITE_ORIGIN } from "@/lib/site-url";
 import { createFileRoute } from "@tanstack/react-router";
 import { getRouterInstance } from "@tanstack/react-start";
 import { isSitemapRouteIncluded, sitemapPathForLocation, sitemapStaticPaths, sitemapXML, type SitemapEntry } from "@/lib/sitemap";
 import { PRODUCTS } from "@/lib/products";
 import { KITS } from "@/lib/china-warehouse";
 
-const BASE_URL = "https://synthesialabsofficial.com";
+const BASE_URL = SITE_ORIGIN;
 
 export const Route = createFileRoute("/sitemap.xml")({
   staticData: { sitemap: false },
